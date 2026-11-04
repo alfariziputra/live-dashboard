@@ -606,15 +606,27 @@ function renderHistory(){
   html+=`<section class="card"><div class="chead"><div><h2>Brand progress by month</h2><div class="hint">GMV with achievement vs target beneath · green ≥100% · red &lt;85%</div></div></div><div class="scroll"><table><thead><tr><th class="l">Brand</th>${MN.map(m=>`<th>${m}</th>`).join("")}</tr></thead><tbody>`+
     NB.map(b=>{const x=H2.brands[b];return `<tr><td class="l"><b>${b}</b></td>${MN.map((m,i)=>cell(x.gmv[i],x.target[i])).join("")}</tr>`;}).join("")+
     `<tr class="ovt"><td class="l">All brands</td>${H.map(x=>cell(x.g,x.t)).join("")}</tr></tbody></table></div></section>`;
-  html+=`<section class="card"><div class="chead"><div><h2>Account progress by month</h2><div class="hint">Every account · GMV with achievement vs target beneath</div></div></div><div class="scroll"><table><thead><tr><th class="l">Account</th><th class="l">Channel</th>${MN.map(m=>`<th>${m}</th>`).join("")}</tr></thead><tbody>`+
-    NB.map(b=>AN.filter(a=>ACC[a].brand===b).map(a=>`<tr><td class="l"><b>${a}</b></td><td class="l"><span class="chn ${ACC[a].channel==="TikTok"?"tk":ACC[a].channel==="Shopee"?"sp":""}">${ACC[a].channel}</span></td>${MN.map((m,i)=>cell(ACC[a].gmv[i],ACC[a].target[i])).join("")}</tr>`).join("")).join("")+
-    `</tbody></table></div></section>`;
+  if(!state.af) state.af={brand:"ALL",chan:"ALL",acc:"ALL"};
+  const AF=state.af, CH=[...new Set(AN.map(a=>ACC[a].channel))];
+  const stl="font:inherit;padding:7px 10px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink)";
+  const accRows=()=>{const L=AN.filter(a=>(AF.brand==="ALL"||ACC[a].brand===AF.brand)&&(AF.chan==="ALL"||ACC[a].channel===AF.chan)&&(AF.acc==="ALL"||a===AF.acc));
+    return NB.map(b=>L.filter(a=>ACC[a].brand===b).map(a=>`<tr><td class="l"><b>${a}</b></td><td class="l"><span class="chn ${ACC[a].channel==="TikTok"?"tk":ACC[a].channel==="Shopee"?"sp":""}">${ACC[a].channel}</span></td>${MN.map((m,i)=>cell(ACC[a].gmv[i],ACC[a].target[i])).join("")}<td class="num">${(()=>{const g=sum(ACC[a].gmv.map(v=>v||0)),t=sum(ACC[a].target.map((t,i)=>ACC[a].gmv[i]!=null?(t||0):0));return t?`<div>${fmtC(g)}</div><div style="font-size:11px" class="${g/t>=1?"pos":g/t>=.85?"muted":"neg"}">${pct(g/t*100,0)}</div>`:"–";})()}</td></tr>`).join("")).join("")||`<tr><td class="l muted" colspan="${MN.length+3}">No account matches this filter</td></tr>`;};
+  html+=`<section class="card"><div class="chead"><div><h2>Account progress by month</h2><div class="hint">GMV with achievement vs target beneath · filter by brand, channel or account</div></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+    <select id="afb" style="${stl}"><option value="ALL">All brands</option>${NB.map(b=>`<option value="${b}"${AF.brand===b?" selected":""}>${b}</option>`).join("")}</select>
+    <select id="afc" style="${stl}"><option value="ALL">All channels</option>${CH.map(c=>`<option value="${c}"${AF.chan===c?" selected":""}>${c}</option>`).join("")}</select>
+    <select id="afa" style="${stl}"><option value="ALL">All accounts</option>${AN.map(a=>`<option value="${a}"${AF.acc===a?" selected":""}>${a}</option>`).join("")}</select></div></div>
+    <div class="scroll"><table><thead><tr><th class="l">Account</th><th class="l">Channel</th>${MN.map(m=>`<th>${m}</th>`).join("")}<th>Jan–Oct</th></tr></thead><tbody id="atb">`+accRows()+`</tbody></table></div></section>`;
   html+=`<section class="card"><div class="chead"><div><h2>Monthly total detail</h2></div></div><div class="scroll"><table><thead><tr><th class="l">Month</th><th>GMV target</th><th>GMV</th><th>Achievement</th><th>Gap to target</th><th>vs previous month</th></tr></thead><tbody>`+
     H.map((x,i)=>{const p=i?H[i-1]:null,gap=x.g-x.t;return `<tr><td class="l"><b>${x.m}</b></td><td class="num muted">${fmtN(x.t)}</td><td class="num">${fmtN(x.g)}</td><td>${pillHtml(x.g/x.t*100)}</td><td class="num"><span class="${gap>=0?"pos":"neg"}">${gap>=0?"+":"−"}${fmtN(Math.abs(gap))}</span></td><td>${p?deltaHtml(x.g,p.g):"<span class='muted'>–</span>"}</td></tr>`;}).join("")+
     `<tr class="ovt"><td class="l">Total</td><td class="num">${fmtN(gT)}</td><td class="num">${fmtN(gG)}</td><td>${pillHtml(gG/gT*100)}</td><td class="num"><span class="${gG>=gT?"pos":"neg"}">${gG>=gT?"+":"−"}${fmtN(Math.abs(gG-gT))}</span></td><td></td></tr></tbody></table></div></section>
     <footer><div>Source: monthly GMV report (totals), OVERALL BRAND GMV and IDN LIVE GMV tables (LIVE REPORT base) and this tracker (October). Brand and account figures can differ slightly from the monthly totals in January, August and September because the source tables differ. Accounts launched later (Premium, Fashion, Outlet, Corolla Indonesia, Westbronco Shopee) start in their first month.</div></footer>`;
   main.innerHTML=html;
   document.getElementById("hsel").onchange=e=>{state.hsel=e.target.value;rerender();};
+  const aup=()=>{document.getElementById("atb").innerHTML=accRows();};
+  document.getElementById("afb").onchange=e=>{AF.brand=e.target.value;AF.acc="ALL";document.getElementById("afa").value="ALL";aup();};
+  document.getElementById("afc").onchange=e=>{AF.chan=e.target.value;AF.acc="ALL";document.getElementById("afa").value="ALL";aup();};
+  document.getElementById("afa").onchange=e=>{AF.acc=e.target.value;if(AF.acc!=="ALL"){state.hsel="A:"+AF.acc;rerender();}else aup();};
   const labels=MN;
   const o=baseOpts(); o.scales.y.ticks.callback=v=>fmtC(v);
   o.plugins.tooltip.callbacks={label:c=>` ${c.dataset.label}: Rp ${fmtN(c.raw)}`,afterBody:it=>{const i=it[0].dataIndex,a=ach(S.gmv[i],S.target[i]);return a==null?"":`Achievement: ${pct(a)}`;}};
