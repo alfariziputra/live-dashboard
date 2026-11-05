@@ -11,7 +11,7 @@
    "name": "Freelance table",
    "link": "https://hcnnitoo29wy.feishu.cn/base/CsuTb3WC4akyexs0AnVcc5GZncd?table=tblYBX1os8ZQzFgO",
    "desc": "Backup / freelance hosts (LIVE REPORT Base)",
-   "order": 999,
+   "order": 2.0,
    "id": "reczz28VxhqWmj67"
   },
   {
@@ -19,7 +19,7 @@
    "name": "LIVE TARGET sheet",
    "link": "https://hcnnitoo29wy.feishu.cn/sheets/Xg3isEqiohNAKnt51eWcDwHnnRS?sheet=2Mjxem",
    "desc": "Monthly live targets per account",
-   "order": 999,
+   "order": 1.0,
    "id": "reczz28VxhqWmaGc"
   }
  ],
