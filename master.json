@@ -1,0 +1,27 @@
+{
+ "folders": [
+  "Commission",
+  "Back up/Freelance",
+  "Absence",
+  "Live Target"
+ ],
+ "files": [
+  {
+   "folder": "Back up/Freelance",
+   "name": "Freelance table",
+   "link": "https://hcnnitoo29wy.feishu.cn/base/CsuTb3WC4akyexs0AnVcc5GZncd?table=tblYBX1os8ZQzFgO",
+   "desc": "Backup / freelance hosts (LIVE REPORT Base)",
+   "order": 999,
+   "id": "reczz28VxhqWmj67"
+  },
+  {
+   "folder": "Live Target",
+   "name": "LIVE TARGET sheet",
+   "link": "https://hcnnitoo29wy.feishu.cn/sheets/Xg3isEqiohNAKnt51eWcDwHnnRS?sheet=2Mjxem",
+   "desc": "Monthly live targets per account",
+   "order": 999,
+   "id": "reczz28VxhqWmaGc"
+  }
+ ],
+ "table_url": "https://hcnnitoo29wy.feishu.cn/base/CsuTb3WC4akyexs0AnVcc5GZncd?table=tblHYOv5AAFJsr3T"
+}
