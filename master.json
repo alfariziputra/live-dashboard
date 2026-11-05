@@ -7,12 +7,28 @@
  ],
  "files": [
   {
+   "folder": "Commission",
+   "name": "OCT Commission",
+   "link": "https://hcnnitoo29wy.feishu.cn/sheets/GSVSsoizRhcIKOtuM3Vc8wOVnQh?from=from_copylink&sheet=0YNhGL",
+   "desc": "Commission doc",
+   "order": 999.0,
+   "id": "reczz28VxpOa9bEl"
+  },
+  {
    "folder": "Back up/Freelance",
    "name": "Freelance table",
    "link": "https://hcnnitoo29wy.feishu.cn/base/CsuTb3WC4akyexs0AnVcc5GZncd?table=tblYBX1os8ZQzFgO",
    "desc": "Backup / freelance hosts (LIVE REPORT Base)",
    "order": 2.0,
    "id": "reczz28VxhqWmj67"
+  },
+  {
+   "folder": "Absence",
+   "name": "Absence Check",
+   "link": "https://hcnnitoo29wy.feishu.cn/sheets/RFmRsEnUShMK7JtIF5Icg4LXn5g?sheet=XpjrLB",
+   "desc": "Absence doc",
+   "order": 999.0,
+   "id": "reczz28Vxq5GDPjx"
   },
   {
    "folder": "Live Target",
