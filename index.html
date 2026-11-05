@@ -159,6 +159,19 @@ details.card[open]>summary::after{content:"Hide ▴"}
 .ov .gp{display:inline-block;font-size:12px;font-weight:700;padding:3px 10px;border-radius:6px;white-space:nowrap}.ov .gp.pos{background:var(--good-bg);color:var(--good-ink)}.ov .gp.neg{background:var(--bad-bg);color:var(--bad-ink)}
 .ov tr.ovt td{background:var(--surface-2);font-weight:700}
 @media (max-width:1000px){.ov .kp{grid-template-columns:repeat(2,minmax(0,1fr))}}
+#tAna{min-width:1180px}
+#tAna tr:not(.dxr):not(.tot) td{border-bottom:0;padding-bottom:4px}
+#tAna tr.dxr td{padding-top:0;padding-bottom:12px}
+#tAna th.sh{cursor:pointer;user-select:none}
+#tAna th.sh:hover{color:var(--ink)}
+#tAna th[aria-sort]{color:var(--ink)}
+#tAna .ar{font-size:9px;margin-left:4px;opacity:.6}
+#tAna td{vertical-align:top}
+#tAna td.dx{white-space:normal;font-size:12.5px;line-height:1.45;color:var(--ink-2)}
+#tAna td.dx div{max-width:1080px;position:sticky;left:10px}
+#tAna td.dx div:before{content:"→ ";color:var(--ink-3)}
+#tAna td.dx b{color:var(--ink)}
+.sel{font:inherit;font-size:12px;font-weight:600;color:var(--ink-2);background:var(--surface-2);border:1px solid var(--line);border-radius:8px;padding:5px 10px}
 footer{font-size:12px;color:var(--ink-3);margin-top:8px;line-height:1.7}
 .hidden{display:none!important}
 @media (max-width:1000px){
@@ -713,22 +726,194 @@ function renderCompare(){
   mk("cMix",{type:"bar",data:{labels:mds.map(x=>x.m.label),datasets:bnames.map((b,bi)=>({label:b,data:share.map(s=>s[bi]),backgroundColor:css(DATA.brandColors[b]),borderColor:css("--surface"),borderWidth:2,borderRadius:3,barThickness:34}))},options:o3});
 }
 
+/* ---------- render: account analysis ---------- */
+function renderAccounts(){
+  const ks=ORDER.filter(k=>!M[k].noTarget && prevOf(k) && model(k).last>=0);
+  if(!ks.length){ document.getElementById("main").innerHTML=`<div class="card">Not enough months to compare yet.</div>`; return; }
+  if(!state.accMonth||!ks.includes(state.accMonth)) state.accMonth=ks[ks.length-1];
+  if(!state.accSort) state.accSort={key:"cTot",dir:1};
+  if(!state.accBrand) state.accBrand="all";
+  const k=state.accMonth, md=model(k), m=md.m, pk=prevOf(k), pmd=model(pk), pm=pmd.m;
+  const last=md.last, daysLeft=md.n-(last+1);
+  const idx=[]; for(let i=0;i<=last;i++) if(md.hasData[i]) idx.push(i);
+  const pidx=idx.filter(i=>i<pmd.n&&pmd.hasData[i]);
+  const agg=(mm,a,ix)=>{let g=0,v=0,o=0,t=0;ix.forEach(i=>{g+=(mm.g[a]||[])[i]||0;v+=(mm.views[a]||[])[i]||0;o+=(mm.orders[a]||[])[i]||0;t+=(mm.tgt[a]||[])[i]||0;});return {g,v,o,t,d:ix.length};};
+  const lmean=(a,b)=>a===b?a:(a-b)/(Math.log(a)-Math.log(b));
+  // GMV per day = views/day × conversion × AOV  → LMDI split of the change (exact, no residual)
+  function decompose(c,p){
+    if(!(c.g>0&&c.v>0&&c.o>0&&p.g>0&&p.v>0&&p.o>0&&c.d&&p.d)) return null;
+    const G1=p.g/p.d, G2=c.g/c.d, L=lmean(G2,G1)*c.d;
+    const V1=p.v/p.d, V2=c.v/c.d, C1=p.o/p.v, C2=c.o/c.v, A1=p.g/p.o, A2=c.g/c.o;
+    return {cV:L*Math.log(V2/V1), cC:L*Math.log(C2/C1), cA:L*Math.log(A2/A1), cTot:(G2-G1)*c.d,
+      gPct:(G2/G1-1)*100, vPct:(V2/V1-1)*100, cPct:(C2/C1-1)*100, aPct:(A2/A1-1)*100, V2, C2, A2};
+  }
+  // continuous daily GMV series up to the selected month's last data day (for the 7-day trend)
+  const series=a=>{const out=[];for(const kk of ORDER){const mm=model(kk);const lim=kk===k?last:mm.last;for(let i=0;i<=lim;i++){if(mm.hasData[i]) out.push((M[kk].g[a]||[])[i]||0);} if(kk===k) break;} return out;};
+  const weeks=s=>{const w=[];for(let e=s.length;e-7>=0&&w.length<8;e-=7) w.unshift(sum(s.slice(e-7,e)));return w;};
+
+  let rows=ACCTS.map(a=>{
+    const c=agg(m,a,idx), p=agg(pm,a,pidx), dc=decompose(c,p);
+    const brand=Object.keys(BRANDS).find(b=>BRANDS[b].includes(a))||"";
+    const monthTgt=sum((m.tgt[a]||[]).map(v=>v||0));
+    const ach=c.t>0?c.g/c.t*100:null;
+    // forecast: GMV so far + remaining target x achievement rate of the last 7 data days (momentum, keeps campaign-day weighting)
+    const r7=agg(m,a,idx.slice(-7)); const rate=r7.t>0?r7.g/r7.t:(c.t>0?c.g/c.t:null);
+    const proj=md.complete?c.g:(rate!=null?c.g+Math.max(0,monthTgt-c.t)*rate:null);
+    const projAch=monthTgt>0&&proj!=null?proj/monthTgt*100:null;
+    const need=!md.complete&&daysLeft>0&&monthTgt>0?Math.max(0,monthTgt-c.g)/daysLeft:null;
+    const w=weeks(series(a)); const wk=w.length>=2&&w[w.length-2]>0?(w[w.length-1]/w[w.length-2]-1)*100:null;
+    const r={a,brand,pic:PIC[a]||"–",g:c.g,avg:c.d?c.g/c.d:0,ach,projAch,need,w,wk,cvr:c.v>0?c.o/c.v*100:null,vpd:c.d?c.v/c.d:null,...(dc||{})};
+    if(dc){const ps=[["Traffic",dc.cV],["Conversion",dc.cC],["AOV",dc.cA]];const sg=dc.cTot>=0?1:-1;
+      const main=ps.filter(x=>x[1]*sg>0).sort((x,y)=>Math.abs(y[1])-Math.abs(x[1]))[0]||ps.sort((x,y)=>Math.abs(y[1])-Math.abs(x[1]))[0];
+      r.drv=main[0]; r.drvUp=dc.cTot>=0;}
+    return r;
+  });
+  // peer ranks (1 = best of the portfolio)
+  const rank=(key,dst)=>{rows.filter(r=>r[key]!=null).slice().sort((x,y)=>y[key]-x[key]).forEach((r,i)=>r[dst]=i+1);};
+  rank("cvr","rC"); rank("vpd","rV");
+  const nR=rows.filter(r=>r.cvr!=null).length;
+  const avgCvr=(()=>{let o=0,v=0;ACCTS.forEach(a=>{const c=agg(m,a,idx);o+=c.o;v+=c.v;});return v?o/v*100:null;})();
+
+  function diagnose(r){
+    if(r.cTot==null) return `<span class="muted">Not enough data for a comparison.</span>`;
+    const tips={Traffic:"more live hours, ads boost and short videos",Conversion:"host delivery, script, price and product line-up",AOV:"bundles and pushing higher-priced items"};
+    let t;
+    if(r.cTot<0){
+      t=`<b>${r.drv} is the main drop</b> (${r.drv==="Traffic"?"views/day "+sgn(r.vPct):r.drv==="Conversion"?"CVR "+sgn(r.cPct):"AOV "+sgn(r.aPct)}) → focus on ${tips[r.drv]}.`;
+      if(r.drv==="Traffic"&&r.cPct>0) t+=` Conversion is up, so the live itself is selling fine.`;
+    } else {
+      t=`<b>Growing, mainly from ${r.drv.toLowerCase()}</b>.`;
+      const neg=[["Traffic",r.cV,r.vPct],["Conversion",r.cC,r.cPct],["AOV",r.cA,r.aPct]].filter(x=>x[1]<0).sort((x,y)=>x[1]-y[1])[0];
+      if(neg&&Math.abs(neg[1])>Math.abs(r.cTot)*.3) t+=` Watch ${neg[0].toLowerCase()} (${sgn(neg[2])}).`;
+    }
+    if(r.rC&&r.rC>nR-3&&r.cvr<avgCvr) t+=` CVR is among the lowest in the portfolio (${r.cvr.toFixed(2)}% vs ${avgCvr.toFixed(2)}% average).`;
+    if(!md.complete&&r.projAch!=null&&r.projAch<85) t+=` <span class="neg">At this pace it ends at ${r.projAch.toFixed(0)}% of target. Needs ${fmtC(r.need)}/day.</span>`;
+    return t;
+  }
+  const sgn=v=>v==null||!isFinite(v)?"–":(v>=0?"+":"")+v.toFixed(0)+"%";
+  const effHtml=(v,sub)=>v==null?`<span class="muted">–</span>`:`<span class="${v>=0?"pos":"neg"}">${v>=0?"+":"−"}${fmtC(Math.abs(v))}</span><div class="muted" style="font-size:11px;margin-top:2px">${sub}</div>`;
+  function spark(w){
+    if(!w||w.length<2) return `<span class="muted">–</span>`;
+    const W=84,H=24,mx=Math.max(...w),mn=Math.min(...w),rg=mx-mn||1;
+    const pts=w.map((v,i)=>`${(i/(w.length-1)*W).toFixed(1)},${(H-2-(v-mn)/rg*(H-4)).toFixed(1)}`).join(" ");
+    const up=w[w.length-1]>=w[w.length-2], col=up?"var(--good)":"var(--bad)";
+    const [lx,ly]=pts.split(" ").pop().split(",");
+    return `<svg width="${W+4}" height="${H}" viewBox="-2 0 ${W+4} ${H}" style="vertical-align:middle" role="img" aria-label="Weekly GMV, last ${w.length} weeks"><polyline points="${pts}" fill="none" stroke="var(--ink-3)" stroke-width="1.5" stroke-linejoin="round"/><circle cx="${lx}" cy="${ly}" r="2.6" fill="${col}"/></svg>`;
+  }
+
+  const shown=state.accBrand==="all"?rows:rows.filter(r=>r.brand===state.accBrand);
+  const T=k2=>sum(shown.map(r=>r[k2]||0));
+  const tot={g:T("g"),cTot:T("cTot"),cV:T("cV"),cC:T("cC"),cA:T("cA")};
+  const prevTot=tot.g-tot.cTot;
+  const declining=shown.filter(r=>r.cTot!=null&&r.cTot<0).length;
+  const trafficLed=shown.filter(r=>r.cTot<0&&r.drv==="Traffic").length;
+  const risk=shown.filter(r=>r.projAch!=null&&r.projAch<85).length;
+  const period=pidx.length===idx.length?`day 1–${m.days[last].day} in both`:`${m.short} 1–${m.days[last].day} vs ${pm.short} 1–${pm.days[pidx[pidx.length-1]].day}, compared per day`;
+
+  let html=`<section class="card"><div class="chead"><div><h2>Account analysis · ${m.label} vs ${pm.label}</h2>
+      <div class="hint">Same days (${period}) · GMV per day = views/day × conversion × AOV, and the change is split into those three effects (in Rp)</div></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+        <div class="seg" id="segAccM">${ks.map(x=>`<button data-v="${x}">${M[x].short} vs ${M[prevOf(x)].short}</button>`).join("")}</div>
+        <select id="selBrand" class="sel"><option value="all">All brands</option>${Object.keys(BRANDS).map(b=>`<option value="${b}">${b}</option>`).join("")}</select>
+      </div></div></section>`;
+
+  html+=`<section class="kpis">
+    <div class="kpi"><div class="l">GMV change</div><div class="v num ${tot.cTot>=0?"pos":"neg"}">${tot.cTot>=0?"+":"−"}${fmtC(Math.abs(tot.cTot))}</div><div class="s">${prevTot>0?sgn(tot.cTot/prevTot*100):"–"} vs ${pm.short} same days</div></div>
+    <div class="kpi"><div class="l">Traffic effect</div><div class="v num ${tot.cV>=0?"pos":"neg"}">${tot.cV>=0?"+":"−"}${fmtC(Math.abs(tot.cV))}</div><div class="s">from more / fewer views</div></div>
+    <div class="kpi"><div class="l">Conversion effect</div><div class="v num ${tot.cC>=0?"pos":"neg"}">${tot.cC>=0?"+":"−"}${fmtC(Math.abs(tot.cC))}</div><div class="s">from orders per view</div></div>
+    <div class="kpi"><div class="l">AOV effect</div><div class="v num ${tot.cA>=0?"pos":"neg"}">${tot.cA>=0?"+":"−"}${fmtC(Math.abs(tot.cA))}</div><div class="s">from basket size</div></div>
+    <div class="kpi"><div class="l">Accounts declining</div><div class="v num">${declining} / ${shown.length}</div><div class="s">${trafficLed} traffic-led${md.complete?"":` · ${risk} forecast &lt;85%`}</div></div>
+  </section>`;
+
+  html+=`<section class="card"><div class="chead"><div><h2>All accounts</h2><div class="hint">Click any column header to sort · click again to reverse · effects are Rp of GMV gained / lost vs ${pm.short}</div></div></div>
+    <div class="scroll"><table id="tAna" class="sortable"></table></div>
+    <div class="hint" style="margin-top:10px">Forecast = GMV so far + the rest of the month&#39;s target &times; the achievement rate of the last 7 days (recent momentum counts, campaign days stay weighted). 7-day trend = GMV in rolling 7-day blocks, last 8 weeks; % is latest week vs the week before. Ranks are 1 = best of ${nR} accounts.</div></section>`;
+
+  html+=`<section class="card"><div class="chead"><div><h2>What moved each account's GMV</h2><div class="hint">Rp effect of traffic, conversion and AOV vs ${pm.label}, same days</div></div></div>
+    <div class="legend"><span><i style="background:var(--s1)"></i>Traffic</span><span><i style="background:var(--s3)"></i>Conversion</span><span><i style="background:var(--s4)"></i>AOV</span></div>
+    <div class="chartbox" style="height:${Math.max(220,shown.length*34+60)}px"><canvas id="cDrv" role="img" aria-label="GMV change by driver per account"></canvas></div></section>`;
+
+  document.getElementById("main").innerHTML=html;
+  document.querySelectorAll("#segAccM button").forEach(b=>{b.setAttribute("aria-pressed",b.dataset.v===k);b.onclick=()=>{state.accMonth=b.dataset.v;rerender();};});
+  const sb=document.getElementById("selBrand"); sb.value=state.accBrand; sb.onchange=()=>{state.accBrand=sb.value;rerender();};
+
+  const COLS=[
+    {k:"a",t:"Account",l:1,s:"str"},
+    {k:"g",t:"GMV"},
+    {k:"gPct",t:"GMV/day vs "+pm.short},
+    {k:"cV",t:"Traffic effect"},
+    {k:"cC",t:"Conversion effect"},
+    {k:"cA",t:"AOV effect"},
+    {k:"drv",t:"Main driver",l:1,s:"str"},
+    {k:"ach",t:"Ach. to date",l:1},
+    ...(md.complete?[]:[{k:"projAch",t:"Forecast",l:1},{k:"need",t:"Need / day"}]),
+    {k:"wk",t:"7-day trend"},
+    {k:"rC",t:"CVR rank",asc:1},
+    {k:"rV",t:"Traffic rank",asc:1}
+  ];
+  function drawTable(){
+    const {key,dir}=state.accSort, col=COLS.find(c=>c.k===key)||COLS[1];
+    const list=shown.slice().sort((x,y)=>{
+      const a=x[key],b=y[key];
+      if(a==null&&b==null) return 0; if(a==null) return 1; if(b==null) return -1;
+      const r=col.s==="str"?String(a).localeCompare(String(b)):(a-b);
+      return r*dir;
+    });
+    let h=`<thead><tr>${COLS.map(c=>{const on=c.k===key;return `<th class="${c.l?"l":""}${c.k?" sh":""}" ${c.k?`data-k="${c.k}"`:""} ${on?`aria-sort="${dir>0?"ascending":"descending"}"`:""}>${c.t}${c.k?`<span class="ar">${on?(dir>0?"▲":"▼"):"↕"}</span>`:""}</th>`;}).join("")}</tr></thead><tbody>`;
+    list.forEach(r=>{
+      const drv=r.drv?`<span class="pill ${r.drvUp?"good":"bad"}">${r.drvUp?"▲":"▼"} ${r.drv}</span>`:`<span class="muted">–</span>`;
+      h+=`<tr><td><b>${r.a}</b><div class="muted" style="font-size:11px">${r.brand} · ${r.pic}</div></td>
+        <td class="num">${fmtC(r.g)}<div class="muted" style="font-size:11px">${fmtC(r.avg)}/day</div></td>
+        <td class="num">${r.gPct==null?"<span class='muted'>–</span>":`<span class="${r.gPct>=0?"pos":"neg"}">${r.gPct>=0?"▲":"▼"} ${Math.abs(r.gPct).toFixed(1)}%</span>`}</td>
+        <td class="num">${effHtml(r.cV,`views/day ${sgn(r.vPct)}`)}</td>
+        <td class="num">${effHtml(r.cC,`CVR ${r.cvr==null?"–":r.cvr.toFixed(2)+"%"} (${sgn(r.cPct)})`)}</td>
+        <td class="num">${effHtml(r.cA,`AOV ${r.A2?fmtC(r.A2):"–"} (${sgn(r.aPct)})`)}</td>
+        <td class="l">${drv}</td>
+        <td class="l">${r.ach==null?"<span class='muted'>–</span>":pillHtml(r.ach)}</td>
+        ${md.complete?"":`<td class="l">${r.projAch==null?"<span class='muted'>–</span>":pillHtml(r.projAch)}</td><td class="num">${r.need==null?"–":fmtC(r.need)}<div class="muted" style="font-size:11px">now ${fmtC(r.avg)}</div></td>`}
+        <td class="num">${spark(r.w)}<div style="font-size:11px">${r.wk==null?"<span class='muted'>–</span>":`<span class="${r.wk>=0?"pos":"neg"}">${sgn(r.wk)} wk</span>`}</div></td>
+        <td class="num">${r.rC?`#${r.rC}`:"–"}</td>
+        <td class="num">${r.rV?`#${r.rV}`:"–"}</td></tr>
+        <tr class="dxr"><td colspan="${COLS.length}" class="l dx"><div>${diagnose(r)}</div></td></tr>`;
+    });
+    h+=`<tr class="tot"><td>Total${state.accBrand==="all"?"":" · "+state.accBrand}</td><td class="num">${fmtC(tot.g)}</td><td class="num">${prevTot>0?sgn(tot.cTot/prevTot*100):"–"}</td>
+      <td class="num">${effHtml(tot.cV,"")}</td><td class="num">${effHtml(tot.cC,"")}</td><td class="num">${effHtml(tot.cA,"")}</td><td colspan="${COLS.length-6}"></td></tr></tbody>`;
+    const el=document.getElementById("tAna"); el.innerHTML=h;
+    el.querySelectorAll("th.sh").forEach(th=>th.onclick=()=>{
+      const kk=th.dataset.k, c=COLS.find(x=>x.k===kk);
+      if(state.accSort.key===kk) state.accSort.dir*=-1; else state.accSort={key:kk,dir:(c.s==="str"||c.asc)?1:-1};
+      drawTable();
+    });
+  }
+  drawTable();
+
+  const ord=shown.filter(r=>r.cTot!=null).sort((x,y)=>x.cTot-y.cTot);
+  const o=baseOpts(); o.indexAxis="y";
+  o.scales.x={stacked:true,grid:{color:css("--grid")},ticks:{color:css("--ink-3"),font:{size:11},callback:v=>fmtC(v)},border:{display:false}};
+  o.scales.y={stacked:true,grid:{display:false},ticks:{color:css("--ink-2"),font:{size:12}},border:{display:false}};
+  o.plugins.tooltip.callbacks={label:c=>` ${c.dataset.label}: ${c.raw>=0?"+":"−"}Rp ${fmtN(Math.abs(c.raw))}`,footer:it=>"Net GMV change: "+(ord[it[0].dataIndex].cTot>=0?"+":"−")+"Rp "+fmtN(Math.abs(ord[it[0].dataIndex].cTot))};
+  mk("cDrv",{type:"bar",data:{labels:ord.map(r=>SHORT[r.a]||r.a),datasets:[
+    {label:"Traffic",data:ord.map(r=>r.cV),backgroundColor:css("--s1"),borderColor:css("--surface"),borderWidth:1,barThickness:20},
+    {label:"Conversion",data:ord.map(r=>r.cC),backgroundColor:css("--s3"),borderColor:css("--surface"),borderWidth:1,barThickness:20},
+    {label:"AOV",data:ord.map(r=>r.cA),backgroundColor:css("--s4"),borderColor:css("--surface"),borderWidth:1,barThickness:20}]},options:o});
+}
+
 /* ---------- shell ---------- */
 function buildTabs(){
   const t=document.getElementById("tabs");
-  t.innerHTML=ORDER.map(k=>{const md=model(k);return `<button class="tab" role="tab" data-k="${k}">${M[k].label}<small>${md.complete?"full month":"day 1–"+M[k].days[md.last].day}</small></button>`;}).join("")+`<button class="tab" role="tab" data-k="cmp">Compare months</button><button class="tab" role="tab" data-k="hist">2026 history</button>`;
+  t.innerHTML=ORDER.map(k=>{const md=model(k);return `<button class="tab" role="tab" data-k="${k}">${M[k].label}<small>${md.complete?"full month":"day 1–"+M[k].days[md.last].day}</small></button>`;}).join("")+`<button class="tab" role="tab" data-k="acc">Account analysis</button><button class="tab" role="tab" data-k="cmp">Compare months</button><button class="tab" role="tab" data-k="hist">2026 history</button>`;
   t.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{state.month=b.dataset.k;rerender();});
 }
 function rerender(){
   killCharts();
   document.querySelectorAll(".tab").forEach(b=>b.setAttribute("aria-selected",b.dataset.k===state.month));
-  if(state.month==="cmp") renderCompare(); else if(state.month==="hist") renderHistory(); else renderMonth(state.month);
+  if(state.month==="acc") renderAccounts(); else if(state.month==="cmp") renderCompare(); else if(state.month==="hist") renderHistory(); else renderMonth(state.month);
   try{ history.replaceState(null,"","#"+state.month); }catch(e){}
   const lastK=ORDER[ORDER.length-1], md=model(lastK);
   document.getElementById("asof").innerHTML=`Data through<b>${M[lastK].label.split(' ')[0]} ${M[lastK].days[md.last].day}, 2026</b>`;
 }
 const h=(location.hash||"").replace("#","");
-if(ORDER.includes(h)||h==="cmp"||h==="hist") state.month=h;
+if(ORDER.includes(h)||h==="cmp"||h==="hist"||h==="acc") state.month=h;
 buildTabs(); rerender();
 if(window.matchMedia) void 0;
 if(typeof Chart==="undefined") document.getElementById("main").insertAdjacentHTML("afterbegin",`<div class="note">Charts could not load (Chart.js CDN blocked). Tables below still work.</div>`);
