@@ -1,0 +1,824 @@
+{
+ "source": "MIGO BMPD LIVE TEAM (Feishu)",
+ "people": [
+  {
+   "id": "MD012",
+   "name": "ELSA FITRIA DEWI",
+   "dept": "AG Local Department",
+   "role": "Host",
+   "title": "Livestream Host",
+   "status": "Aktif",
+   "join": "1-Feb-24"
+  },
+  {
+   "id": "MD134",
+   "name": "KANDINA SYAMSI",
+   "dept": "AG Local Department",
+   "role": "Host",
+   "title": "Livestream Host",
+   "status": "Aktif",
+   "join": "20-Mar-25"
+  },
+  {
+   "id": "MD174",
+   "name": "MELIA PUSPITA DEWI",
+   "dept": "AG Local Department",
+   "role": "Host",
+   "title": "Livestream Host",
+   "status": "Aktif",
+   "join": "16-Jun-25"
+  },
+  {
+   "id": "MD154",
+   "name": "NOVI ANTIKA SARAGIH",
+   "dept": "AG Local Department",
+   "role": "Host",
+   "title": "Livestream Host",
+   "status": "Aktif",
+   "join": "8-May-25"
+  },
+  {
+   "id": "MD076",
+   "name": "NURCHOLISOH",
+   "dept": "AG Local Department",
+   "role": "Host",
+   "title": "Livestream Host",
+   "status": "Aktif",
+   "join": "7-Oct-24"
+  },
+  {
+   "id": "MD024",
+   "name": "RIFQY DWI HERMAWAN",
+   "dept": "AG Local Department",
+   "role": "Host",
+   "title": "Livestream Host",
+   "status": "Aktif",
+   "join": "25-Mar-24"
+  },
+  {
+   "id": "MD018",
+   "name": "SHEILA POLIMAN",
+   "dept": "AG Local Department",
+   "role": "Host",
+   "title": "Livestream Host",
+   "status": "Aktif",
+   "join": "7-Mar-24"
+  },
+  {
+   "id": "MD079",
+   "name": "MUHAMAD KEVIN DZAKWAN",
+   "dept": "AG Local Department",
+   "role": "Co-Host",
+   "title": "Livestream Co-Host",
+   "status": "Aktif",
+   "join": "14-Oct-24"
+  },
+  {
+   "id": "MD291",
+   "name": "AGUSTINA JOAN THIERY CRISTE GLORIOSI",
+   "dept": "Bamboo Local Department",
+   "role": "Host",
+   "title": "Livestream Host",
+   "status": "Aktif",
+   "join": "2-Mar-26"
+  },
+  {
+   "id": "MD054",
+   "name": "ANNISA MULIAWATI",
+   "dept": "Bamboo Local Department",
+   "role": "Host",
+   "title": "Livestream Host",
+   "status": "Aktif",
+   "join": "5-Aug-24"
+  },
+  {
+   "id": "MD187",
+   "name": "ARUM FATIMATUZZAHRA",
+   "dept": "Bamboo Local Department",
+   "role": "Host",
+   "title": "Livestream Host",
+   "status": "Aktif",
+   "join": "22-Jul-25"
+  },
+  {
+   "id": "MD336",
+   "name": "AUDREY THARA JIE",
+   "dept": "Bamboo Local Department",
+   "role": "Host",
+   "title": "Livestream Host",
+   "status": "Aktif",
+   "join": "22-Jun-26"
+  },
+  {
+   "id": "MD118",
+   "name": "BERNARD VANADY",
+   "dept": "Bamboo Local Department",
+   "role": "Host",
+   "title": "Livestream Host",
+   "status": "Aktif",
+   "join": "3-Feb-25"
+  },
+  {
+   "id": "MD260",
+   "name": "CLANDINA DWIMARUTI",
+   "dept": "Bamboo Local Department",
+   "role": "Host",
+   "title": "Livestream Host",
+   "status": "Aktif",
+   "join": "26-Dec-25"
+  },
+  {
+   "id": "MD007",
+   "name": "DESI MEISYA",
+   "dept": "Bamboo Local Department",
+   "role": "Host",
+   "title": "Livestream Host",
+   "status": "Aktif",
+   "join": "27-Nov-23"
+  },
+  {
+   "id": "MD219",
+   "name": "DEWI PUTRI YANI SOLIA",
+   "dept": "Bamboo Local Department",
+   "role": "Host",
+   "title": "Livestream Host",
+   "status": "Aktif",
+   "join": "29-Sep-25"
+  },
+  {
+   "id": "MD297",
+   "name": "EFRIDA RONIKA SARI",
+   "dept": "Bamboo Local Department",
+   "role": "Host",
+   "title": "Livestream Host",
+   "status": "Aktif",
+   "join": "26-Mar-26"
+  },
+  {
+   "id": "MD252",
+   "name": "JASON PRATAMA PIET",
+   "dept": "Bamboo Local Department",
+   "role": "Host",
+   "title": "Livestream Host",
+   "status": "Aktif",
+   "join": "1-Dec-25"
+  },
+  {
+   "id": "MD309",
+   "name": "JULISTIARA DEKA PUTRI MAHARANI",
+   "dept": "Bamboo Local Department",
+   "role": "Host",
+   "title": "Livestream Host",
+   "status": "Aktif",
+   "join": "9-Apr-26"
+  },
+  {
+   "id": "MD072",
+   "name": "KANSIL REBECCA PATRICIA",
+   "dept": "Bamboo Local Department",
+   "role": "Host",
+   "title": "Livestream Host",
+   "status": "Aktif",
+   "join": "1-Oct-24"
+  },
+  {
+   "id": "MD067",
+   "name": "KHOIRUNNISA",
+   "dept": "Bamboo Local Department",
+   "role": "Host",
+   "title": "Livestream Host",
+   "status": "Aktif",
+   "join": "9-Sep-24"
+  },
+  {
+   "id": "MD267",
+   "name": "MARISSA NURHAYATI",
+   "dept": "Bamboo Local Department",
+   "role": "Host",
+   "title": "Livestream Host",
+   "status": "Aktif",
+   "join": "15-Jan-26"
+  },
+  {
+   "id": "MD310",
+   "name": "MARSHELLA CENVYSTA",
+   "dept": "Bamboo Local Department",
+   "role": "Host",
+   "title": "Livestream Host",
+   "status": "Aktif",
+   "join": "13-Apr-26"
+  },
+  {
+   "id": "MD101",
+   "name": "MOCHAMMAD ROYYAN",
+   "dept": "Bamboo Local Department",
+   "role": "Host",
+   "title": "Livestream Host",
+   "status": "Aktif",
+   "join": "5-Dec-24"
+  },
+  {
+   "id": "MD311",
+   "name": "MUHAMAD RUSLIANA WAHYUDIN",
+   "dept": "Bamboo Local Department",
+   "role": "Host",
+   "title": "Livestream Host",
+   "status": "Aktif",
+   "join": "16-Apr-26"
+  },
+  {
+   "id": "MD328",
+   "name": "NABILA BALQIS",
+   "dept": "Bamboo Local Department",
+   "role": "Host",
+   "title": "Livestream Host",
+   "status": "Aktif",
+   "join": "28-May-26"
+  },
+  {
+   "id": "MD209",
+   "name": "NADIA FEBI MAWARDANI",
+   "dept": "Bamboo Local Department",
+   "role": "Host",
+   "title": "Livestream Host",
+   "status": "Aktif",
+   "join": "8-Sep-25"
+  },
+  {
+   "id": "MD049",
+   "name": "NINDYA STANI ANGGAIRA",
+   "dept": "Bamboo Local Department",
+   "role": "Host",
+   "title": "Livestream Host",
+   "status": "Aktif",
+   "join": "22-Jul-24"
+  },
+  {
+   "id": "MD244",
+   "name": "NURADILA",
+   "dept": "Bamboo Local Department",
+   "role": "Host",
+   "title": "Livestream Host",
+   "status": "Aktif",
+   "join": "26-Nov-25"
+  },
+  {
+   "id": "MD122",
+   "name": "RAFEL RUSLI",
+   "dept": "Bamboo Local Department",
+   "role": "Host",
+   "title": "Livestream Host",
+   "status": "Aktif",
+   "join": "17-Feb-25"
+  },
+  {
+   "id": "MD115",
+   "name": "SAMSUL HADI",
+   "dept": "Bamboo Local Department",
+   "role": "Host",
+   "title": "Livestream Host",
+   "status": "Aktif",
+   "join": "3-Feb-25"
+  },
+  {
+   "id": "MD342",
+   "name": "SHERIN TRIANA",
+   "dept": "Bamboo Local Department",
+   "role": "Host",
+   "title": "Livestream Host",
+   "status": "Aktif",
+   "join": "3-Jul-26"
+  },
+  {
+   "id": "MD308",
+   "name": "TERA SRI RAHAYU",
+   "dept": "Bamboo Local Department",
+   "role": "Host",
+   "title": "Livestream Host",
+   "status": "Aktif",
+   "join": "6-Apr-26"
+  },
+  {
+   "id": "MD259",
+   "name": "TRULLY SUCI GIVALNI",
+   "dept": "Bamboo Local Department",
+   "role": "Host",
+   "title": "Livestream Host",
+   "status": "Aktif",
+   "join": "26-Dec-25"
+  },
+  {
+   "id": "MD009",
+   "name": "VERONIKA INGGRID PRIMAHESTI",
+   "dept": "Bamboo Local Department",
+   "role": "Host",
+   "title": "Livestream Host",
+   "status": "Aktif",
+   "join": "11-Dec-23"
+  },
+  {
+   "id": "MD186",
+   "name": "ZOANA PUTRI",
+   "dept": "Bamboo Local Department",
+   "role": "Host",
+   "title": "Livestream Host",
+   "status": "Aktif",
+   "join": "21-Jul-25"
+  },
+  {
+   "id": "MD116",
+   "name": "MICHAEL PUTRA GIOVANI WONGKAREN",
+   "dept": "Bamboo Local Department",
+   "role": "Co-Host",
+   "title": "Livestream Co-Host",
+   "status": "Aktif",
+   "join": "3-Feb-25"
+  },
+  {
+   "id": "MD293",
+   "name": "MOCHAMMAD RAFI RIZAL SUNARKO",
+   "dept": "Bamboo Local Department",
+   "role": "Co-Host",
+   "title": "Livestream Co-Host",
+   "status": "Aktif",
+   "join": "11-Mar-26"
+  },
+  {
+   "id": "MD171",
+   "name": "MUHAMMAD AKBAR RIFAI",
+   "dept": "Bamboo Local Department",
+   "role": "Co-Host",
+   "title": "Livestream Co-Host",
+   "status": "Aktif",
+   "join": "9-Jun-25"
+  },
+  {
+   "id": "MD277",
+   "name": "RIDWAN HARIRI",
+   "dept": "Bamboo Local Department",
+   "role": "Co-Host",
+   "title": "Livestream Co-Host",
+   "status": "Aktif",
+   "join": "2-Feb-26"
+  },
+  {
+   "id": "MD382",
+   "name": "NADYA CHRISYANTI PUTRI",
+   "dept": "Centralized Business Department - KOL",
+   "role": "LO",
+   "title": "Live Operation Specialist",
+   "status": "Aktif",
+   "join": "5-Oct-26"
+  },
+  {
+   "id": "MD135",
+   "name": "HANNY MARSELLA",
+   "dept": "Centralized Business Department - Live",
+   "role": "LO",
+   "title": "Live Operation Specialist",
+   "status": "Handover",
+   "join": "7-Apr-25"
+  },
+  {
+   "id": "MD137",
+   "name": "LENNY SELVIANI",
+   "dept": "Centralized Business Department - Live",
+   "role": "LO",
+   "title": "Live Operation Specialist",
+   "status": "Aktif",
+   "join": "9-Apr-25"
+  },
+  {
+   "id": "MD234",
+   "name": "MEISTA ASMALDA NURRISYA",
+   "dept": "Centralized Business Department - Live",
+   "role": "LO",
+   "title": "Live Operation Specialist",
+   "status": "Aktif",
+   "join": "10-Nov-25"
+  },
+  {
+   "id": "MD220",
+   "name": "MUHAMMAD ALFARIZI PUTRA SOHAR",
+   "dept": "Centralized Business Department - Live",
+   "role": "LO",
+   "title": "Live Operation Supervisor",
+   "status": "Aktif",
+   "join": "2-Oct-25"
+  },
+  {
+   "id": "MD034",
+   "name": "NAUFAL ALIEF VIRGYAWAN",
+   "dept": "Centralized Business Department - Live",
+   "role": "LO",
+   "title": "Live Operation Specialist",
+   "status": "Aktif",
+   "join": "30-May-24"
+  },
+  {
+   "id": "MD268",
+   "name": "RICKY LEONARDY",
+   "dept": "Centralized Business Department - Live",
+   "role": "LO",
+   "title": "Live Operation Specialist",
+   "status": "Aktif",
+   "join": "19-Jan-26"
+  },
+  {
+   "id": "MD249",
+   "name": "TUANKU MUDA BELIA",
+   "dept": "Centralized Business Department - Live",
+   "role": "LO",
+   "title": "Live Operation Specialist",
+   "status": "Aktif",
+   "join": "1-Dec-25"
+  },
+  {
+   "id": "MD327",
+   "name": "VICARLLO CHAU",
+   "dept": "Centralized Business Department - Live",
+   "role": "LO",
+   "title": "Live Operation Specialist",
+   "status": "Aktif",
+   "join": "26-May-26"
+  },
+  {
+   "id": "MD060",
+   "name": "ANANDA SINTIA DERA AGUSTIN",
+   "dept": "Comeup Local Department",
+   "role": "Host",
+   "title": "Livestream Host",
+   "status": "Aktif",
+   "join": "2-Sep-24"
+  },
+  {
+   "id": "MD389",
+   "name": "ARIFA RAHMADILA",
+   "dept": "Comeup Local Department",
+   "role": "Host",
+   "title": "Livestream Host",
+   "status": "Aktif",
+   "join": "26-Oct-26"
+  },
+  {
+   "id": "MD323",
+   "name": "AULIA SEPTIANA SYAFIRA",
+   "dept": "Comeup Local Department",
+   "role": "Host",
+   "title": "Livestream Host",
+   "status": "Aktif",
+   "join": "18-May-26"
+  },
+  {
+   "id": "MD145",
+   "name": "AULIA ZAHRA SAYIDATINA",
+   "dept": "Comeup Local Department",
+   "role": "Host",
+   "title": "Livestream Host",
+   "status": "Aktif",
+   "join": "28-Apr-25"
+  },
+  {
+   "id": "MD177",
+   "name": "AYU KHOERUNISA",
+   "dept": "Comeup Local Department",
+   "role": "Host",
+   "title": "Livestream Host",
+   "status": "Aktif",
+   "join": "18-Jun-25"
+  },
+  {
+   "id": "MD203",
+   "name": "HERA SETIA DWI SURYA",
+   "dept": "Comeup Local Department",
+   "role": "Host",
+   "title": "Livestream Host",
+   "status": "Aktif",
+   "join": "26-Aug-25"
+  },
+  {
+   "id": "MD199",
+   "name": "MAYLANDA SIANTURI",
+   "dept": "Comeup Local Department",
+   "role": "Host",
+   "title": "Livestream Host",
+   "status": "Aktif",
+   "join": "19-Aug-25"
+  },
+  {
+   "id": "MD360",
+   "name": "NAZWA INAYAH",
+   "dept": "Comeup Local Department",
+   "role": "Host",
+   "title": "Livestream Host",
+   "status": "Aktif",
+   "join": "10-Aug-26"
+  },
+  {
+   "id": "MD139",
+   "name": "NILA INDAH PUTRI",
+   "dept": "Comeup Local Department",
+   "role": "Host",
+   "title": "Livestream Host",
+   "status": "Aktif",
+   "join": "10-Apr-25"
+  },
+  {
+   "id": "MD175",
+   "name": "SYARIFAH SALMA",
+   "dept": "Comeup Local Department",
+   "role": "Host",
+   "title": "Livestream Host",
+   "status": "Aktif",
+   "join": "16-Jun-25"
+  },
+  {
+   "id": "MD228",
+   "name": "UMI NURJANAH",
+   "dept": "Comeup Local Department",
+   "role": "Host",
+   "title": "Livestream Host",
+   "status": "Aktif",
+   "join": "3-Nov-25"
+  },
+  {
+   "id": "MD248",
+   "name": "ZELIKA FATRIANA",
+   "dept": "Comeup Local Department",
+   "role": "Host",
+   "title": "Livestream Host",
+   "status": "Aktif",
+   "join": "1-Dec-25"
+  },
+  {
+   "id": "MD316",
+   "name": "FARID AKBAR SURYA ATMAJA",
+   "dept": "Comeup Local Department",
+   "role": "Co-Host",
+   "title": "Livestream Co-Host",
+   "status": "Aktif",
+   "join": "11-May-26"
+  },
+  {
+   "id": "MD232",
+   "name": "MUHAMMAD IKHSAN",
+   "dept": "Comeup Local Department",
+   "role": "Co-Host",
+   "title": "Livestream Co-Host",
+   "status": "Aktif",
+   "join": "6-Nov-25"
+  },
+  {
+   "id": "MD266",
+   "name": "DESVITA MAHARANI",
+   "dept": "Stars Local Department",
+   "role": "Host",
+   "title": "Livestream Host",
+   "status": "Aktif",
+   "join": "13-Jan-26"
+  },
+  {
+   "id": "MD183",
+   "name": "RAISABILLA",
+   "dept": "Stars Local Department",
+   "role": "Host",
+   "title": "Livestream Host",
+   "status": "Aktif",
+   "join": "2-Jul-25"
+  },
+  {
+   "id": "MD173",
+   "name": "SITI SOIDAH",
+   "dept": "Stars Local Department",
+   "role": "Host",
+   "title": "Livestream Host",
+   "status": "Aktif",
+   "join": "13-Jun-25"
+  },
+  {
+   "id": "MD148",
+   "name": "TASYA SALSABILA",
+   "dept": "Stars Local Department",
+   "role": "Host",
+   "title": "Livestream Host",
+   "status": "Aktif",
+   "join": "5-May-25"
+  },
+  {
+   "id": "MD335",
+   "name": "TIARA SEPTIA PUTRI",
+   "dept": "Stars Local Department",
+   "role": "Host",
+   "title": "Livestream Host",
+   "status": "Aktif",
+   "join": "22-Jun-26"
+  },
+  {
+   "id": "MD333",
+   "name": "TUTUT",
+   "dept": "Stars Local Department",
+   "role": "Host",
+   "title": "Livestream Host",
+   "status": "Aktif",
+   "join": "15-Jun-26"
+  },
+  {
+   "id": "MD157",
+   "name": "RIA RESTIANA PERTIWI",
+   "dept": "Stars Local Department",
+   "role": "Co-Host",
+   "title": "Livestream Co-Host",
+   "status": "Aktif",
+   "join": "19-May-25"
+  },
+  {
+   "id": "MD161",
+   "name": "ANIS APRIYANI",
+   "dept": "V WIN Local Department",
+   "role": "Host",
+   "title": "Livestream Host",
+   "status": "Aktif",
+   "join": "26-May-25"
+  },
+  {
+   "id": "MD062",
+   "name": "ANNISA SALAAMA",
+   "dept": "V WIN Local Department",
+   "role": "Host",
+   "title": "Livestream Host",
+   "status": "Aktif",
+   "join": "3-Sep-24"
+  },
+  {
+   "id": "MD324",
+   "name": "ANNISA SEKAR NADIA",
+   "dept": "V WIN Local Department",
+   "role": "Host",
+   "title": "Livestream Host",
+   "status": "Aktif",
+   "join": "21-May-26"
+  },
+  {
+   "id": "MD359",
+   "name": "ASRIH WULANDARI",
+   "dept": "V WIN Local Department",
+   "role": "Host",
+   "title": "Livestream Host",
+   "status": "Handover",
+   "join": "10-Aug-26"
+  },
+  {
+   "id": "MD254",
+   "name": "BALQIS AULIA WIJAYA",
+   "dept": "V WIN Local Department",
+   "role": "Host",
+   "title": "Livestream Host",
+   "status": "Aktif",
+   "join": "15-Dec-25"
+  },
+  {
+   "id": "MD027",
+   "name": "DILA SRI KARTINI PUTRI",
+   "dept": "V WIN Local Department",
+   "role": "Host",
+   "title": "Livestream Host",
+   "status": "Aktif",
+   "join": "26-Apr-24"
+  },
+  {
+   "id": "MD113",
+   "name": "GIESTA AMAZIA S. TURANGAN",
+   "dept": "V WIN Local Department",
+   "role": "Host",
+   "title": "Livestream Host",
+   "status": "Aktif",
+   "join": "20-Jan-25"
+  },
+  {
+   "id": "MD237",
+   "name": "HOLIS ISYALIA",
+   "dept": "V WIN Local Department",
+   "role": "Host",
+   "title": "Livestream Host",
+   "status": "Aktif",
+   "join": "17-Nov-25"
+  },
+  {
+   "id": "MD229",
+   "name": "JESSLYN FELICIA",
+   "dept": "V WIN Local Department",
+   "role": "Host",
+   "title": "Livestream Host",
+   "status": "Aktif",
+   "join": "3-Nov-25"
+  },
+  {
+   "id": "MD127",
+   "name": "MARYA ANTONETTY TARIGAN",
+   "dept": "V WIN Local Department",
+   "role": "Host",
+   "title": "Livestream Host",
+   "status": "Aktif",
+   "join": "10-Mar-25"
+  },
+  {
+   "id": "MD238",
+   "name": "NABILA PUSPITA NINGSIH",
+   "dept": "V WIN Local Department",
+   "role": "Host",
+   "title": "Livestream Host",
+   "status": "Aktif",
+   "join": "17-Nov-25"
+  },
+  {
+   "id": "MD200",
+   "name": "OKTAVIA MARIA",
+   "dept": "V WIN Local Department",
+   "role": "Host",
+   "title": "Livestream Host",
+   "status": "Aktif",
+   "join": "19-Aug-25"
+  },
+  {
+   "id": "MD032",
+   "name": "SALSABILLA ZOCHAROH",
+   "dept": "V WIN Local Department",
+   "role": "Host",
+   "title": "Livestream Host",
+   "status": "Aktif",
+   "join": "27-May-24"
+  },
+  {
+   "id": "MD045",
+   "name": "SARAH TIFFANY",
+   "dept": "V WIN Local Department",
+   "role": "Host",
+   "title": "Livestream Host",
+   "status": "Aktif",
+   "join": "15-Jul-24"
+  },
+  {
+   "id": "MD063",
+   "name": "SHEMA AMELLIA AGUSTIN",
+   "dept": "V WIN Local Department",
+   "role": "Host",
+   "title": "Livestream Host",
+   "status": "Aktif",
+   "join": "5-Sep-24"
+  },
+  {
+   "id": "MD341",
+   "name": "TALITHA ARIESMA PUTRI",
+   "dept": "V WIN Local Department",
+   "role": "Host",
+   "title": "Livestream Host",
+   "status": "Aktif",
+   "join": "1-Jul-26"
+  },
+  {
+   "id": "MD384",
+   "name": "YULIANA PUTRI",
+   "dept": "V WIN Local Department",
+   "role": "Host",
+   "title": "Livestream Host",
+   "status": "Aktif",
+   "join": "9-Oct-26"
+  },
+  {
+   "id": "MD330",
+   "name": "GIRAS BERNARDI ABIMANYU",
+   "dept": "V WIN Local Department",
+   "role": "Co-Host",
+   "title": "Livestream Co-Host",
+   "status": "Aktif",
+   "join": "9-Jun-26"
+  },
+  {
+   "id": "MD146",
+   "name": "MOHAMAD FARHAN FAUZI",
+   "dept": "V WIN Local Department",
+   "role": "Co-Host",
+   "title": "Livestream Co-Host",
+   "status": "Aktif",
+   "join": "28-Apr-25"
+  },
+  {
+   "id": "MD098",
+   "name": "MUHAMMAD ZENCA FACHRIZA",
+   "dept": "V WIN Local Department",
+   "role": "Co-Host",
+   "title": "Livestream Co-Host",
+   "status": "Aktif",
+   "join": "3-Dec-24"
+  },
+  {
+   "id": "MD280",
+   "name": "SEPTY REFAEL LEONARD SAPULETE",
+   "dept": "V WIN Local Department",
+   "role": "Co-Host",
+   "title": "Livestream Co-Host",
+   "status": "Aktif",
+   "join": "4-Feb-26"
+  }
+ ]
+}

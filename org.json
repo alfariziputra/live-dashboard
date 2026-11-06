@@ -1,0 +1,673 @@
+{
+ "version": 1,
+ "updated": "2026-11-06",
+ "tree": {
+  "id": "n71",
+  "t": "root",
+  "name": "BMPD LIVE",
+  "sub": "MIGO Live Brand Indonesia",
+  "tag": "",
+  "pid": "",
+  "c": [
+   {
+    "id": "n70",
+    "t": "lead",
+    "name": "Muhammad Alfarizi Putra Sohar",
+    "sub": "LO Supervisor",
+    "tag": "",
+    "pid": "MD220",
+    "c": [
+     {
+      "id": "n24",
+      "t": "brand",
+      "name": "Mossdoom",
+      "sub": "V WIN Local Department",
+      "tag": "",
+      "pid": "",
+      "c": [
+       {
+        "id": "n10",
+        "t": "lo",
+        "name": "Naufal Alief Virgyawan",
+        "sub": "LO Specialist",
+        "tag": "",
+        "pid": "MD034",
+        "c": [
+         {
+          "id": "n6",
+          "t": "account",
+          "name": "Mossdoom Tiktok Official",
+          "sub": "",
+          "tag": "",
+          "pid": "",
+          "c": [
+           {
+            "id": "n1",
+            "t": "host",
+            "name": "Salsabilla Zocharoh",
+            "sub": "",
+            "tag": "",
+            "pid": "MD032",
+            "c": []
+           },
+           {
+            "id": "n2",
+            "t": "host",
+            "name": "Sarah Tiffany",
+            "sub": "",
+            "tag": "",
+            "pid": "MD045",
+            "c": []
+           },
+           {
+            "id": "n3",
+            "t": "host",
+            "name": "Dila Sri Kartini Putri",
+            "sub": "",
+            "tag": "",
+            "pid": "MD027",
+            "c": []
+           },
+           {
+            "id": "n4",
+            "t": "host",
+            "name": "Shema Amellia Agustin",
+            "sub": "",
+            "tag": "",
+            "pid": "MD063",
+            "c": []
+           },
+           {
+            "id": "n5",
+            "t": "host",
+            "name": "Anis Apriyani",
+            "sub": "",
+            "tag": "",
+            "pid": "MD161",
+            "c": []
+           }
+          ]
+         },
+         {
+          "id": "n9",
+          "t": "account",
+          "name": "Mossdoom Premium",
+          "sub": "",
+          "tag": "",
+          "pid": "",
+          "c": [
+           {
+            "id": "n7",
+            "t": "host",
+            "name": "Talitha Ariesma Putri",
+            "sub": "",
+            "tag": "",
+            "pid": "MD341",
+            "c": []
+           },
+           {
+            "id": "n8",
+            "t": "host",
+            "name": "Asrih Wulandari",
+            "sub": "",
+            "tag": "",
+            "pid": "MD359",
+            "c": []
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "id": "n23",
+        "t": "lo",
+        "name": "Nadya Chrisyanti Putri",
+        "sub": "LO Specialist",
+        "tag": "",
+        "pid": "MD382",
+        "c": [
+         {
+          "id": "n16",
+          "t": "account",
+          "name": "Mossdoom ID",
+          "sub": "Marketing Account",
+          "tag": "",
+          "pid": "",
+          "c": [
+           {
+            "id": "n11",
+            "t": "host",
+            "name": "Marya Antonetty Tarigan",
+            "sub": "",
+            "tag": "",
+            "pid": "MD127",
+            "c": []
+           },
+           {
+            "id": "n12",
+            "t": "host",
+            "name": "Nabila Puspita Ningsih",
+            "sub": "",
+            "tag": "",
+            "pid": "MD238",
+            "c": []
+           },
+           {
+            "id": "n13",
+            "t": "host",
+            "name": "Sella",
+            "sub": "",
+            "tag": "",
+            "pid": "",
+            "c": []
+           },
+           {
+            "id": "n14",
+            "t": "host",
+            "name": "Holis Isyalia",
+            "sub": "",
+            "tag": "",
+            "pid": "MD237",
+            "c": []
+           },
+           {
+            "id": "n15",
+            "t": "host",
+            "name": "Annisa Sekar Nadia",
+            "sub": "",
+            "tag": "",
+            "pid": "MD324",
+            "c": []
+           }
+          ]
+         },
+         {
+          "id": "n22",
+          "t": "account",
+          "name": "Mossdoom Shopee Official",
+          "sub": "",
+          "tag": "",
+          "pid": "",
+          "c": [
+           {
+            "id": "n17",
+            "t": "host",
+            "name": "Annisa Salaama",
+            "sub": "",
+            "tag": "",
+            "pid": "MD062",
+            "c": []
+           },
+           {
+            "id": "n18",
+            "t": "host",
+            "name": "Balqis Aulia Wijaya",
+            "sub": "",
+            "tag": "",
+            "pid": "MD254",
+            "c": []
+           },
+           {
+            "id": "n19",
+            "t": "host",
+            "name": "Yuliana Putri",
+            "sub": "",
+            "tag": "",
+            "pid": "MD384",
+            "c": []
+           },
+           {
+            "id": "n20",
+            "t": "host",
+            "name": "Oktavia Maria",
+            "sub": "",
+            "tag": "",
+            "pid": "MD200",
+            "c": []
+           },
+           {
+            "id": "n21",
+            "t": "host",
+            "name": "Jesslyn Felicia",
+            "sub": "",
+            "tag": "",
+            "pid": "MD229",
+            "c": []
+           }
+          ]
+         }
+        ]
+       }
+      ],
+      "color": "#5e9468"
+     },
+     {
+      "id": "n38",
+      "t": "brand",
+      "name": "Bostanten",
+      "sub": "Bamboo Local Department",
+      "tag": "",
+      "pid": "",
+      "c": [
+       {
+        "id": "n28",
+        "t": "lo",
+        "name": "Tuanku Muda Belia",
+        "sub": "LO Specialist",
+        "tag": "",
+        "pid": "MD249",
+        "c": [
+         {
+          "id": "n25",
+          "t": "account",
+          "name": "Bostanten Bag Tiktok",
+          "sub": "",
+          "tag": "",
+          "pid": "",
+          "c": []
+         },
+         {
+          "id": "n26",
+          "t": "account",
+          "name": "Bostanten Bag Shopee",
+          "sub": "",
+          "tag": "",
+          "pid": "",
+          "c": []
+         },
+         {
+          "id": "n27",
+          "t": "account",
+          "name": "Bostanten Outlet",
+          "sub": "",
+          "tag": "",
+          "pid": "",
+          "c": []
+         }
+        ]
+       },
+       {
+        "id": "n31",
+        "t": "lo",
+        "name": "Meista Asmalda Nurrisya",
+        "sub": "LO Specialist",
+        "tag": "",
+        "pid": "MD234",
+        "c": [
+         {
+          "id": "n29",
+          "t": "account",
+          "name": "Bostanten Shoes Tiktok",
+          "sub": "",
+          "tag": "",
+          "pid": "",
+          "c": []
+         },
+         {
+          "id": "n30",
+          "t": "account",
+          "name": "Bostanten Shoes Shopee",
+          "sub": "",
+          "tag": "",
+          "pid": "",
+          "c": []
+         }
+        ]
+       },
+       {
+        "id": "n37",
+        "t": "lo",
+        "name": "Vicarllo Chau",
+        "sub": "LO Specialist",
+        "tag": "",
+        "pid": "MD327",
+        "c": [
+         {
+          "id": "n32",
+          "t": "account",
+          "name": "Bostanten Men",
+          "sub": "",
+          "tag": "",
+          "pid": "",
+          "c": []
+         },
+         {
+          "id": "n33",
+          "t": "account",
+          "name": "Bostanten Men Shopee",
+          "sub": "",
+          "tag": "",
+          "pid": "",
+          "c": []
+         },
+         {
+          "id": "n36",
+          "t": "account",
+          "name": "Bostanten Fashion",
+          "sub": "",
+          "tag": "",
+          "pid": "",
+          "c": [
+           {
+            "id": "n34",
+            "t": "host",
+            "name": "Audrey Thara Jie",
+            "sub": "",
+            "tag": "",
+            "pid": "MD336",
+            "c": []
+           },
+           {
+            "id": "n35",
+            "t": "host",
+            "name": "Setiani Purnama Dewi",
+            "sub": "",
+            "tag": "",
+            "pid": "",
+            "c": []
+           }
+          ]
+         }
+        ]
+       }
+      ],
+      "color": "#c4625e"
+     },
+     {
+      "id": "n54",
+      "t": "brand",
+      "name": "Corolla",
+      "sub": "Comeup Local Department",
+      "tag": "",
+      "pid": "",
+      "c": [
+       {
+        "id": "n53",
+        "t": "lo",
+        "name": "Hanny Marsella",
+        "sub": "LO Specialist",
+        "tag": "Replacement: Sarah Nabilla",
+        "pid": "MD135",
+        "c": [
+         {
+          "id": "n44",
+          "t": "account",
+          "name": "Corolla Official Shopee",
+          "sub": "",
+          "tag": "",
+          "pid": "",
+          "c": [
+           {
+            "id": "n39",
+            "t": "host",
+            "name": "Aulia Zahra Sayidatina",
+            "sub": "",
+            "tag": "",
+            "pid": "MD145",
+            "c": []
+           },
+           {
+            "id": "n40",
+            "t": "host",
+            "name": "Maylanda Sianturi",
+            "sub": "",
+            "tag": "",
+            "pid": "MD199",
+            "c": []
+           },
+           {
+            "id": "n41",
+            "t": "host",
+            "name": "Hera Setia Dwi Surya",
+            "sub": "",
+            "tag": "",
+            "pid": "MD203",
+            "c": []
+           },
+           {
+            "id": "n42",
+            "t": "host",
+            "name": "Umi Nurjanah",
+            "sub": "",
+            "tag": "",
+            "pid": "MD228",
+            "c": []
+           },
+           {
+            "id": "n43",
+            "t": "host",
+            "name": "Aulia Septiana Syafira",
+            "sub": "",
+            "tag": "",
+            "pid": "MD323",
+            "c": []
+           }
+          ]
+         },
+         {
+          "id": "n50",
+          "t": "account",
+          "name": "Corolla Official Tiktok",
+          "sub": "",
+          "tag": "",
+          "pid": "",
+          "c": [
+           {
+            "id": "n45",
+            "t": "host",
+            "name": "Ananda Sintia Dera Agustin",
+            "sub": "",
+            "tag": "",
+            "pid": "MD060",
+            "c": []
+           },
+           {
+            "id": "n46",
+            "t": "host",
+            "name": "Nila Indah Putri",
+            "sub": "",
+            "tag": "",
+            "pid": "MD139",
+            "c": []
+           },
+           {
+            "id": "n47",
+            "t": "host",
+            "name": "Syarifah Salma",
+            "sub": "",
+            "tag": "",
+            "pid": "MD175",
+            "c": []
+           },
+           {
+            "id": "n48",
+            "t": "host",
+            "name": "Ayu Khoerunisa",
+            "sub": "",
+            "tag": "",
+            "pid": "MD177",
+            "c": []
+           },
+           {
+            "id": "n49",
+            "t": "host",
+            "name": "Zelika Fatriana",
+            "sub": "",
+            "tag": "",
+            "pid": "MD248",
+            "c": []
+           }
+          ]
+         },
+         {
+          "id": "n52",
+          "t": "account",
+          "name": "Corolla.indonesia",
+          "sub": "",
+          "tag": "",
+          "pid": "",
+          "c": [
+           {
+            "id": "n51",
+            "t": "host",
+            "name": "Nazwa Inayah",
+            "sub": "",
+            "tag": "Replacing Ave Marcela",
+            "pid": "MD360",
+            "c": []
+           }
+          ]
+         }
+        ]
+       }
+      ],
+      "color": "#7d68c4"
+     },
+     {
+      "id": "n65",
+      "t": "brand",
+      "name": "Westbronco",
+      "sub": "Stars Local Department",
+      "tag": "",
+      "pid": "",
+      "c": [
+       {
+        "id": "n64",
+        "t": "lo",
+        "name": "Lenny Selviani",
+        "sub": "LO Specialist",
+        "tag": "",
+        "pid": "MD137",
+        "c": [
+         {
+          "id": "n59",
+          "t": "account",
+          "name": "Westbronco Tiktok",
+          "sub": "",
+          "tag": "",
+          "pid": "",
+          "c": [
+           {
+            "id": "n55",
+            "t": "host",
+            "name": "Siti Soidah",
+            "sub": "",
+            "tag": "",
+            "pid": "MD173",
+            "c": []
+           },
+           {
+            "id": "n56",
+            "t": "host",
+            "name": "Desvita Maharani",
+            "sub": "",
+            "tag": "",
+            "pid": "MD266",
+            "c": []
+           },
+           {
+            "id": "n57",
+            "t": "host",
+            "name": "Tasya Salsabila",
+            "sub": "",
+            "tag": "",
+            "pid": "MD148",
+            "c": []
+           },
+           {
+            "id": "n58",
+            "t": "host",
+            "name": "Tiara Septia Putri",
+            "sub": "",
+            "tag": "NEW HOST",
+            "pid": "MD335",
+            "c": []
+           }
+          ]
+         },
+         {
+          "id": "n63",
+          "t": "account",
+          "name": "Westbronco Shopee",
+          "sub": "",
+          "tag": "",
+          "pid": "",
+          "c": [
+           {
+            "id": "n60",
+            "t": "host",
+            "name": "Raisabilla",
+            "sub": "",
+            "tag": "",
+            "pid": "MD183",
+            "c": []
+           },
+           {
+            "id": "n61",
+            "t": "host",
+            "name": "Tutut",
+            "sub": "",
+            "tag": "NEW HOST",
+            "pid": "MD333",
+            "c": []
+           },
+           {
+            "id": "n62",
+            "t": "host",
+            "name": "Audrey Thara Jie",
+            "sub": "",
+            "tag": "NEW HOST",
+            "pid": "MD336",
+            "c": []
+           }
+          ]
+         }
+        ]
+       }
+      ],
+      "color": "#e2a13b"
+     },
+     {
+      "id": "n69",
+      "t": "brand",
+      "name": "AG",
+      "sub": "AG Local Department",
+      "tag": "",
+      "pid": "",
+      "c": [
+       {
+        "id": "n68",
+        "t": "lo",
+        "name": "Ricky Leonardy",
+        "sub": "LO Specialist",
+        "tag": "",
+        "pid": "MD268",
+        "c": [
+         {
+          "id": "n66",
+          "t": "account",
+          "name": "AG Tiktok",
+          "sub": "",
+          "tag": "",
+          "pid": "",
+          "c": []
+         },
+         {
+          "id": "n67",
+          "t": "account",
+          "name": "AG Shopee",
+          "sub": "",
+          "tag": "",
+          "pid": "",
+          "c": []
+         }
+        ]
+       }
+      ],
+      "color": "#111318"
+     }
+    ]
+   }
+  ]
+ }
+}

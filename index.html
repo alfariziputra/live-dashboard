@@ -412,6 +412,89 @@ a.drow[href]:hover{border-color:var(--gold);background:#fff}
 .dgo{font-size:12.5px;font-weight:600;color:var(--s1);white-space:nowrap}
 @media (max-width:1000px){.fgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:700px){.fgrid{gap:10px}.fcard{padding:16px}}
+/* team organization */
+.ocard{padding:0;overflow:hidden}
+.otools{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap;padding:20px 24px;border-bottom:1px solid var(--line)}
+.otl h2{font-size:15px;font-weight:600}
+.otr{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.otr input{min-width:220px}
+.pbtn.sm.gold{background:linear-gradient(135deg,var(--gold-2),var(--gold));color:#0b1220}
+.pbtn:disabled{opacity:.45;cursor:default}
+.zbar{display:flex;border:1px solid var(--line);border-radius:999px;overflow:hidden}
+.zbar button{appearance:none;border:0;background:var(--surface);font:inherit;font-size:13px;font-weight:600;padding:6px 12px;cursor:pointer;color:var(--ink-2)}
+.zbar button+button{border-left:1px solid var(--line)}
+.obody{display:flex;min-height:560px}
+.ocanvas{flex:1;overflow:auto;cursor:grab;background:radial-gradient(circle at 1px 1px,rgba(14,19,32,.07) 1px,transparent 0) 0 0/22px 22px,var(--surface-2);max-height:78vh;padding:24px 12px}
+.ocanvas.panning{cursor:grabbing;user-select:none}
+.oinner{transform-origin:0 0}
+.ot{display:inline-block;min-width:100%}
+.ot ul{display:flex;justify-content:center;padding:22px 0 0;margin:0;list-style:none;position:relative}
+.ot>ul{padding-top:0}
+.ot li{position:relative;padding:22px 7px 0;display:flex;flex-direction:column;align-items:center}
+.ot li::before,.ot li::after{content:"";position:absolute;top:0;right:50%;width:50%;height:22px;border-top:1.5px solid #9aa0ab}
+.ot li::after{right:auto;left:50%;border-left:1.5px solid #9aa0ab}
+.ot li:only-child::before,.ot li:only-child::after{display:none}
+.ot li:only-child{padding-top:0}
+.ot li:first-child::before,.ot li:last-child::after{border:0 none}
+.ot li:last-child::before{border-right:1.5px solid #9aa0ab;border-radius:0 8px 0 0}
+.ot li:first-child::after{border-radius:8px 0 0 0}
+.ot ul ul::before{content:"";position:absolute;top:0;left:50%;height:22px;border-left:1.5px solid #9aa0ab}
+.ot>ul>li{padding-top:0}.ot>ul>li::before,.ot>ul>li::after{display:none}
+.ot ul.stack{flex-direction:column;align-items:center;padding-top:14px}
+.ot ul.stack::before{height:14px}
+.ot ul.stack>li{padding:0}
+.ot ul.stack>li::after{display:none}
+.ot ul.stack>li::before{display:block;top:-12px;left:50%;right:auto;width:0;height:12px;border:0;border-left:1.5px solid #9aa0ab;border-radius:0}
+.ot ul.stack>li:first-child::before{display:none}
+.ot ul.stack>li+li{margin-top:12px}
+.oc{position:relative;width:150px;min-height:44px;padding:9px 11px;border-radius:12px;background:var(--bc);color:#fff;text-align:center;box-shadow:0 1px 2px rgba(0,0,0,.08),0 6px 16px -10px rgba(0,0,0,.4);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;transition:transform .12s,box-shadow .12s,opacity .12s}
+.oc .on{font-size:12px;font-weight:650;line-height:1.25;outline:none;word-break:break-word}
+.oc .os{font-size:10.5px;opacity:.82;line-height:1.25;outline:none;min-height:1em}
+.oc i{font-style:normal;font-size:10px;opacity:.8;margin-top:2px}
+.oc .ofl{display:flex;flex-wrap:wrap;gap:3px;justify-content:center;margin-top:3px}
+.oc .tg{font-style:normal;font-size:9px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;background:rgba(255,255,255,.22);border-radius:999px;padding:1px 6px}
+.oc .tg.hv{background:#fde7c2;color:#8a5a08}.oc .tg.warn{background:#fde2df;color:#9a3530}
+.oc.t-root,.oc.t-lead{--bc:#0f1830!important;background:linear-gradient(135deg,#0b1220,#1d2c55);width:190px;border:1px solid rgba(198,166,100,.5)}
+.oc.t-root .on,.oc.t-lead .on{font-size:13px}
+.oc.t-root .os,.oc.t-lead .os{color:var(--gold-2);opacity:1}
+.oc.t-brand{width:176px;padding:12px;font-size:14px}
+.oc.t-brand .on{font-size:14.5px;font-weight:700;letter-spacing:-.01em}
+.oc.t-lo{box-shadow:0 0 0 2px #fff inset,0 6px 16px -10px rgba(0,0,0,.4);filter:saturate(1.05) brightness(.92)}
+.oc.t-host{width:146px;min-height:38px;background:#fff;color:var(--ink);border:1.5px solid var(--bc);box-shadow:0 1px 2px rgba(0,0,0,.05)}
+.oc.t-host .on{font-size:11.5px;font-weight:600}
+.oc.t-host .tg{background:color-mix(in srgb,var(--bc) 18%,#fff);color:var(--ink)}
+.oc.t-host .tg.hv{background:#fde7c2;color:#8a5a08}.oc.t-host .tg.warn{background:#fde2df;color:#9a3530}
+.oc.hit{box-shadow:0 0 0 3px var(--gold),0 10px 24px -10px rgba(198,166,100,.9);transform:scale(1.06);z-index:2}
+.oc.dim{opacity:.35}
+.editing .oc[draggable="true"]{cursor:grab}
+.editing .oc:hover .oact{opacity:1}
+.oc .oact{position:absolute;top:-11px;right:-8px;display:flex;gap:3px;opacity:0;transition:opacity .12s}
+.oc .oact button{appearance:none;border:1px solid var(--line);background:#fff;color:var(--ink-2);width:22px;height:22px;border-radius:50%;font-size:11px;line-height:1;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.15)}
+.oc .oact button:hover{background:var(--ink);color:#fff}
+.editing .oc .on,.editing .oc .os{cursor:text}
+.editing .oc.t-host .on:hover{background:rgba(14,19,32,.06)}
+.oc [contenteditable]:focus{background:rgba(255,255,255,.95)!important;color:var(--ink);border-radius:4px;padding:0 3px;cursor:text}
+.oc.dragging{opacity:.4}
+.oc.dropok,.odrop.dropok{box-shadow:0 0 0 3px var(--gold),0 0 0 7px rgba(198,166,100,.25);transform:scale(1.04)}
+.dnd .oc{transition:box-shadow .1s}
+.odrop{width:146px;padding:9px;border:1.5px dashed #9aa0ab;border-radius:12px;font-size:11px;color:var(--ink-3);text-align:center;background:rgba(255,255,255,.6)}
+.opool{width:0;overflow:hidden;border-left:0 solid var(--line);background:var(--surface);transition:width .2s;max-height:78vh;overflow-y:auto}
+.opool.on{width:290px;border-left-width:1px}
+.opool.dropok{background:#fdf6e7}
+.opool .ph{position:sticky;top:0;background:var(--surface);padding:16px 16px 10px;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:4px;z-index:1}
+.opool .ph b{font-size:14px}.opool .ph span{font-size:11.5px;color:var(--ink-3)}.opool .ph input{margin-top:6px;width:100%}
+.opool .pg{padding:10px 14px 4px}
+.opool .pgh{font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-bottom:6px}
+.opool .pgh span{color:var(--gold);margin-left:4px}
+.opool .pp{display:flex;align-items:center;gap:6px;padding:7px 10px;border:1px solid var(--line);border-radius:10px;margin-bottom:6px;font-size:12px;cursor:grab;background:var(--surface-2)}
+.opool .pp:hover{border-color:var(--gold)}
+.opool .pp b{flex:1;font-weight:600}
+.rb{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;border-radius:999px;padding:1px 7px;background:#e3edfb;color:#1d58a8}
+.rb.co{background:#efe7fb;color:#5b3fa8}.rb.lo{background:#0b1220;color:var(--gold-2)}.rb.hv{background:#fde7c2;color:#8a5a08}
+.opool .pfoot{font-size:11px;color:var(--ink-3);padding:10px 16px 18px}
+.otoast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);background:#0b1220;color:#fff;padding:12px 20px;border-radius:12px;font-size:13px;font-weight:500;box-shadow:0 12px 30px -10px rgba(0,0,0,.5);z-index:80;opacity:0;transition:opacity .25s;pointer-events:none;border:1px solid rgba(198,166,100,.5)}
+.otoast.bad{background:#7d2620}
+@media (max-width:700px){.otools{padding:14px}.otr input{min-width:0;flex:1}.ocanvas{max-height:70vh}}
 </style>
 </head>
 <body>
@@ -1837,16 +1920,211 @@ function renderFiles(){
   document.querySelectorAll(".fcard").forEach(c=>c.onclick=()=>{state.folder=state.folder===c.dataset.f?null:c.dataset.f;state.fq="";rerender();});
   const q=document.getElementById("fQ"); q.oninput=()=>{state.fq=q.value;draw();};
 }
+/* ---------- team organization (org chart, editable) ---------- */
+const GH_REPO="alfariziputra/live-dashboard", ORG_DRAFT_KEY="migo_org_draft", GH_TOK_KEY="migo_gh_token";
+const ORG_KIDS={root:"lead",lead:"brand",brand:"lo",lo:"account",account:"host"};
+const ORG_LABEL={root:"Company",lead:"Supervisor",brand:"Brand",lo:"LO Specialist",account:"Account",host:"Host"};
+const OS={pub:null,org:null,team:null,loaded:false,edit:false,hist:[],zoom:null,brand:"all",q:"",pool:false,poolQ:"",dirty:false,err:""};
+function orgLoad(){
+  if(OS.loaded) return Promise.resolve();
+  const j=u=>fetch(u+"?t="+Date.now(),{cache:"no-store"}).then(r=>r.ok?r.json():null).catch(()=>null);
+  return Promise.all([j("org.json"),j("team.json")]).then(([o,t])=>{
+    OS.loaded=true; OS.pub=o; OS.team=t&&t.people?t.people:[];
+    let d=null; try{d=JSON.parse(localStorage.getItem(ORG_DRAFT_KEY)||"null");}catch(e){}
+    OS.org=JSON.parse(JSON.stringify(d&&d.tree?d:o||{tree:null}));
+    OS.dirty=!!(d&&d.tree&&o&&JSON.stringify(d.tree)!==JSON.stringify(o.tree));
+    if(!o) OS.err="Could not load org.json";
+  });
+}
+function oWalk(n,f,p=null,d=0){f(n,p,d);(n.c||[]).forEach(c=>oWalk(c,f,n,d+1));}
+function oFind(id){let r=null;oWalk(OS.org.tree,(n,p)=>{if(n.id===id) r={n,p,i:p?p.c.indexOf(n):-1};});return r;}
+function oIsAnc(a,b){let ok=false;oWalk(a,n=>{if(n.id===b.id) ok=true;});return ok;}
+function oNewId(){return "n"+Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
+function oPerson(pid){return (OS.team||[]).find(p=>p.id===pid)||null;}
+const oTitle=s=>String(s||"").toLowerCase().replace(/(^|[\s.(-])([a-z])/g,(m,a,b)=>a+b.toUpperCase());
+function oChange(fn){OS.hist.push(JSON.stringify(OS.org.tree));if(OS.hist.length>60) OS.hist.shift();fn();OS.dirty=true;OS.org.updated=isoD(new Date());
+  try{localStorage.setItem(ORG_DRAFT_KEY,JSON.stringify(OS.org));}catch(e){}drawOrg();}
+function oToast(t,bad){let el=document.getElementById("oToast");if(!el){el=document.createElement("div");el.id="oToast";document.body.appendChild(el);}
+  el.className="otoast"+(bad?" bad":"");el.textContent=t;el.style.opacity=1;clearTimeout(el._t);el._t=setTimeout(()=>{el.style.opacity=0;},3200);}
+
+function renderOrg(){
+  const main=document.getElementById("main");
+  if(!OS.loaded){main.innerHTML=`<section class="card"><div class="empty">Loading team organization…</div></section>`;orgLoad().then(()=>{if(state.month==="org") renderOrg();});return;}
+  if(!OS.org||!OS.org.tree){main.innerHTML=`<section class="card"><div class="empty">${esc(OS.err||"No organization data yet.")}</div></section>`;return;}
+  main.innerHTML=`<div id="orgTop"></div><section class="card ocard"><div class="otools" id="oTools"></div><div class="obody"><div class="ocanvas" id="oCanvas"><div class="oinner" id="oInner"></div></div><aside class="opool" id="oPool"></aside></div></section>`;
+  drawOrg(); bindPan(); if(OS.zoom==null) setTimeout(()=>orgFit(),30);
+}
+function orgStats(){
+  const s={brands:0,lo:new Set(),acc:0,host:new Set(),hostSlots:0,unmatched:0,gone:0};
+  oWalk(OS.org.tree,n=>{if(n.t==="brand") s.brands++; if(n.t==="lo") s.lo.add(n.pid||n.name); if(n.t==="account") s.acc++;
+    if(n.t==="host"){s.hostSlots++;s.host.add(n.pid||n.name);if(!n.pid) s.unmatched++;else if(OS.team.length&&!oPerson(n.pid)) s.gone++;}});
+  const used=new Set();oWalk(OS.org.tree,n=>{if(n.pid) used.add(n.pid);});
+  s.pool=(OS.team||[]).filter(p=>!used.has(p.id));
+  return s;
+}
+function drawOrg(){
+  const top=document.getElementById("orgTop"); if(!top) return;
+  const st=orgStats(), brands=OS.org.tree.c.flatMap(l=>l.c).filter(b=>b.t==="brand");
+  top.innerHTML=`<section class="kpis"><div class="kpi"><div class="l">Brands</div><div class="v">${st.brands}</div><div class="s">${brands.map(b=>esc(b.name)).join(" · ")}</div></div>
+    <div class="kpi"><div class="l">LO specialists</div><div class="v">${st.lo.size}</div><div class="s">account leader PICs</div></div>
+    <div class="kpi"><div class="l">Accounts</div><div class="v">${st.acc}</div><div class="s">TikTok + Shopee</div></div>
+    <div class="kpi"><div class="l">Hosts in chart</div><div class="v">${st.host.size}</div><div class="s">${st.hostSlots!==st.host.size?`${st.hostSlots-st.host.size} on 2 accounts · `:""}${st.unmatched?`${st.unmatched} not in team list`:"all matched to team list"}</div></div>
+    <div class="kpi"><div class="l">Team list</div><div class="v">${OS.team.length||"–"}</div><div class="s">${st.pool.length} not placed yet (co-hosts, other hosts)</div></div></section>`;
+  const tools=document.getElementById("oTools");
+  tools.innerHTML=`<div class="otl"><h2>Team Organization</h2><div class="hint">${OS.edit?"<b>Edit mode:</b> drag a card onto another to move it (onto the same kind of card = place before it) · double-click a name or role to rename · hover a card for ＋ add, 🏷 label, ✕ remove":"BMPD Live team · LO specialist = leader PIC for each account · updated "+esc(OS.org.updated||"")}${OS.dirty?` · <span class="neg">unsaved changes on this device</span>`:""}</div></div>
+    <div class="otr"><input id="oQ" class="sel" type="search" placeholder="Find a person or account…" value="${esc(OS.q)}">
+      <select id="oB" class="sel"><option value="all">All brands</option>${brands.map(b=>`<option value="${esc(b.id)}" ${OS.brand===b.id?"selected":""}>${esc(b.name)}</option>`).join("")}</select>
+      <div class="zbar"><button data-z="-" aria-label="Zoom out">−</button><button data-z="fit">Fit</button><button data-z="+" aria-label="Zoom in">+</button></div>
+      ${OS.edit?`<button class="pbtn sm ghost" id="oUndo" ${OS.hist.length?"":"disabled"}>↶ Undo</button><button class="pbtn sm ghost" id="oPoolB">${OS.pool?"Hide":"Show"} team pool (${st.pool.length})</button><button class="pbtn sm ghost" id="oDl">Download</button>${OS.dirty?`<button class="pbtn sm ghost" id="oDiscard">Discard changes</button>`:""}<button class="pbtn sm gold" id="oSave">Save to website</button><button class="pbtn sm" id="oEdit">Done</button>`
+        :`<button class="pbtn sm" id="oEdit">✎ Edit</button>`}</div>`;
+  // chart
+  const tree=OS.org.tree;
+  let view=tree;
+  if(OS.brand!=="all"){const f=oFind(OS.brand);if(f){const lead=f.p;view={...tree,c:[{...lead,c:[f.n]}]};}else OS.brand="all";}
+  const q=OS.q.trim().toLowerCase();
+  document.getElementById("oInner").innerHTML=`<div class="ot${OS.edit?" editing":""}"><ul>${oNodeHtml(view,null,null,q)}</ul></div>`;
+  const pool=document.getElementById("oPool"); pool.classList.toggle("on",OS.edit&&OS.pool);
+  if(OS.edit&&OS.pool){
+    const pq=OS.poolQ.trim().toLowerCase(), groups={};
+    st.pool.filter(p=>!pq||(p.name+" "+p.dept+" "+p.role).toLowerCase().includes(pq)).forEach(p=>{(groups[p.dept]=groups[p.dept]||[]).push(p);});
+    pool.innerHTML=`<div class="ph"><b>Team pool</b><span>Not in the chart yet · drag onto an account</span><input id="oPQ" class="sel" type="search" placeholder="Search…" value="${esc(OS.poolQ)}"></div>`+
+      Object.keys(groups).sort().map(d=>`<div class="pg"><div class="pgh">${esc(d.replace(" Local Department","").replace("Centralized Business Department - ","CBD "))} <span>${groups[d].length}</span></div>${groups[d].map(p=>`<div class="pp" draggable="true" data-pool="${esc(p.id)}"><b>${esc(oTitle(p.name))}</b><span class="rb ${p.role==="Co-Host"?"co":p.role==="LO"?"lo":""}">${esc(p.role)}</span>${p.status!=="Aktif"?`<span class="rb hv">${esc(p.status)}</span>`:""}</div>`).join("")}</div>`).join("")+
+      `<div class="pfoot">Drag a host onto an account card. Drag a card onto an empty spot of the pool to remove it from the chart.</div>`;
+  }
+  bindOrg();
+  applyZoom();
+}
+function oNodeHtml(n,brand,lo,q){
+  const color=n.color||(brand&&brand.color)||"#0f1830";
+  if(n.t==="brand") brand=n; if(n.t==="lo") lo=n;
+  const p=n.pid?oPerson(n.pid):null, gone=n.pid&&OS.team.length&&!p;
+  const hit=q&&[n.name,n.sub,n.tag,p&&p.name].join(" ").toLowerCase().includes(q);
+  let meta="";
+  if(n.t==="brand"){let a=0,h=new Set();oWalk(n,x=>{if(x.t==="account") a++; if(x.t==="host") h.add(x.pid||x.name);});meta=`<i>${a} accounts · ${h.size} hosts</i>`;}
+  if(n.t==="account"){meta=`<i>PIC ${esc(lo?lo.name.split(" ")[0]:"–")} · ${n.c.length} host${n.c.length===1?"":"s"}</i>`;}
+  const flags=[n.tag?`<em class="tg">${esc(n.tag)}</em>`:"",p&&p.status&&p.status!=="Aktif"?`<em class="tg hv">${esc(p.status)}</em>`:"",
+    (n.t==="host"||n.t==="lo")&&!n.pid?`<em class="tg warn" title="Name not found in the Feishu team list">not in team list</em>`:"",gone?`<em class="tg warn">left team list</em>`:""].join("");
+  const sub=n.sub||(p&&n.t!=="host"?p.title:"")||"";
+  const ed=OS.edit&&n.t!=="root";
+  const card=`<div class="oc t-${n.t}${hit?" hit":""}${q&&!hit?" dim":""}" style="--bc:${color}" data-id="${n.id}" ${ed?'draggable="true"':""} title="${esc(p?`${oTitle(p.name)} · ${p.id} · ${p.title} · ${p.dept} · joined ${p.join}`:ORG_LABEL[n.t])}">
+      <div class="on" ${OS.edit?'spellcheck="false" data-f="name"':""}>${esc(n.name)}</div>
+      ${sub||OS.edit&&n.t!=="host"?`<div class="os" ${OS.edit?'spellcheck="false" data-f="sub"':""}>${esc(sub)}</div>`:""}
+      ${meta}${flags?`<div class="ofl">${flags}</div>`:""}
+      ${OS.edit?`<div class="oact">${ORG_KIDS[n.t]?`<button data-add="${n.id}" title="Add ${ORG_LABEL[ORG_KIDS[n.t]]}">＋</button>`:""}<button data-tag="${n.id}" title="Set label (e.g. NEW HOST)">🏷</button>${n.t!=="root"?`<button data-del="${n.id}" title="Remove">✕</button>`:""}</div>`:""}
+    </div>`;
+  const kids=n.c||[];
+  if(!kids.length) return `<li>${card}${OS.edit&&n.t==="account"?`<ul class="stack"><li><div class="odrop" data-into="${n.id}">drop host here</div></li></ul>`:""}</li>`;
+  const stack=n.t==="account";
+  return `<li>${card}<ul class="${stack?"stack":""}">${kids.map(c=>oNodeHtml(c,brand,lo,q)).join("")}</ul></li>`;
+}
+function oDrop(dragId,poolId,targetId){
+  const T=oFind(targetId); if(!T) return;
+  let node;
+  if(poolId){const p=oPerson(poolId);if(!p) return;
+    const t=T.n.t==="brand"||(T.n.t==="lo"&&p.role==="LO")?"lo":"host";
+    node={id:oNewId(),t,name:oTitle(p.name),sub:t==="lo"?"LO Specialist":"",tag:p.role==="Co-Host"?"Co-Host":"",pid:p.id,c:[]};}
+  else{const D=oFind(dragId);if(!D||!D.p) return;node=D.n;if(oIsAnc(node,T.n)){oToast("Can't move a card into itself",1);return;}}
+  oChange(()=>{
+    if(dragId){const D=oFind(dragId);D.p.c.splice(D.i,1);}
+    const T2=oFind(targetId);
+    if(T2.n.t===node.t&&T2.p){T2.p.c.splice(T2.p.c.indexOf(T2.n),0,node);}
+    else if(ORG_KIDS[T2.n.t]===node.t){T2.n.c.push(node);}
+    else{ // fall back: put it where it fits
+      if(node.t==="host"&&T2.n.t==="lo"&&T2.n.c[0]) T2.n.c[0].c.push(node);
+      else {OS.org.tree=JSON.parse(OS.hist[OS.hist.length-1]);OS.hist.pop();oToast(`A ${ORG_LABEL[node.t]} can't go under a ${ORG_LABEL[T2.n.t]}`,1);}
+    }
+  });
+}
+function bindOrg(){
+  const $=id=>document.getElementById(id);
+  $("oEdit").onclick=()=>{OS.edit=!OS.edit;if(OS.edit&&OS.pool===false) OS.pool=true;drawOrg();};
+  $("oQ").oninput=e=>{OS.q=e.target.value;clearTimeout(OS._qt);OS._qt=setTimeout(()=>{drawOrg();const i=$("oQ");i.focus();i.setSelectionRange(i.value.length,i.value.length);const h=document.querySelector(".oc.hit");if(h) h.scrollIntoView({block:"center",inline:"center",behavior:"smooth"});},250);};
+  $("oB").onchange=e=>{OS.brand=e.target.value;OS.zoom=null;drawOrg();orgFit();};
+  document.querySelectorAll(".zbar button").forEach(b=>b.onclick=()=>{const z=b.dataset.z;if(z==="fit") orgFit();else{OS.zoom=Math.max(.3,Math.min(1.6,(OS.zoom||1)+(z==="+"?.1:-.1)));applyZoom();}});
+  if(!OS.edit) return;
+  if($("oUndo")) $("oUndo").onclick=()=>{if(!OS.hist.length) return;OS.org.tree=JSON.parse(OS.hist.pop());try{localStorage.setItem(ORG_DRAFT_KEY,JSON.stringify(OS.org));}catch(e){}drawOrg();};
+  $("oPoolB").onclick=()=>{OS.pool=!OS.pool;drawOrg();};
+  $("oDl").onclick=()=>{const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(OS.org,null,1)],{type:"application/json"}));a.download="org.json";a.click();};
+  if($("oDiscard")) $("oDiscard").onclick=()=>{if(!confirm("Discard all unsaved changes and go back to the published chart?")) return;OS.org=JSON.parse(JSON.stringify(OS.pub));OS.dirty=false;OS.hist=[];try{localStorage.removeItem(ORG_DRAFT_KEY);}catch(e){}drawOrg();};
+  $("oSave").onclick=orgSave;
+  if($("oPQ")) $("oPQ").oninput=e=>{OS.poolQ=e.target.value;clearTimeout(OS._pt);OS._pt=setTimeout(()=>{drawOrg();const i=$("oPQ");if(i){i.focus();i.setSelectionRange(i.value.length,i.value.length);}},250);};
+  // inline rename
+  document.querySelectorAll(".oc [data-f]").forEach(el=>{
+    el.addEventListener("dblclick",e=>{e.stopPropagation();const c=el.closest(".oc");if(c) c.draggable=false;el.contentEditable="true";el.focus();
+      const r=document.createRange();r.selectNodeContents(el);const sel=window.getSelection();sel.removeAllRanges();sel.addRange(r);});
+    el.addEventListener("mousedown",e=>{if(el.isContentEditable) e.stopPropagation();});
+    el.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();el.blur();}if(e.key==="Escape"){el.blur();}});
+    el.addEventListener("blur",()=>{el.contentEditable="false";const cc=el.closest(".oc");if(cc&&cc.dataset.id) cc.draggable=true;const id=el.closest(".oc").dataset.id,f=el.dataset.f,v=el.textContent.replace(/\s+/g," ").trim(),N=oFind(id);
+      if(!N||(N.n[f]||"")===v) return; if(f==="name"&&!v){el.textContent=N.n.name;return;}
+      oChange(()=>{const M=oFind(id);M.n[f]=v;if(f==="name"&&M.n.pid){const p=oPerson(M.n.pid);if(p&&!oTitle(p.name).toLowerCase().includes(v.toLowerCase().split(" ")[0])) M.n.pid="";}});});
+  });
+  document.querySelectorAll("[data-add]").forEach(b=>b.onclick=e=>{e.stopPropagation();const id=b.dataset.add;
+    oChange(()=>{const N=oFind(id).n,t=ORG_KIDS[N.t];N.c.push({id:oNewId(),t,name:t==="host"?"New host":t==="account"?"New account":t==="lo"?"New LO":t==="brand"?"New brand":"New",sub:t==="lo"?"LO Specialist":"",tag:"",pid:"",c:[],...(t==="brand"?{color:"#2f5aa8"}:{})});});
+    setTimeout(()=>{const last=[...document.querySelectorAll(`.oc[data-id="${id}"] + ul > li:last-child > .oc .on`)].pop();if(last) last.dispatchEvent(new MouseEvent("dblclick",{bubbles:true}));},50);});
+  document.querySelectorAll("[data-del]").forEach(b=>b.onclick=e=>{e.stopPropagation();const N=oFind(b.dataset.del);if(!N) return;
+    let n=0;oWalk(N.n,()=>n++);if(n>1&&!confirm(`Remove "${N.n.name}" and the ${n-1} card${n>2?"s":""} under it?`)) return;
+    oChange(()=>{const M=oFind(b.dataset.del);M.p.c.splice(M.i,1);});});
+  document.querySelectorAll("[data-tag]").forEach(b=>b.onclick=e=>{e.stopPropagation();const N=oFind(b.dataset.tag);if(!N) return;
+    const v=prompt("Label for this card (e.g. NEW HOST, Handover, Replacement: …). Leave empty to remove.",N.n.tag||"");if(v===null) return;
+    oChange(()=>{oFind(b.dataset.tag).n.tag=v.trim();});});
+  // drag & drop
+  let drag=null;
+  document.querySelectorAll(".oc[draggable], .pp[draggable]").forEach(el=>{
+    el.addEventListener("dragstart",e=>{drag=el.dataset.pool?{pool:el.dataset.pool}:{id:el.dataset.id};e.dataTransfer.effectAllowed="move";e.dataTransfer.setData("text/plain",el.dataset.pool||el.dataset.id);el.classList.add("dragging");document.querySelector(".ot").classList.add("dnd");});
+    el.addEventListener("dragend",()=>{el.classList.remove("dragging");document.querySelectorAll(".dropok").forEach(x=>x.classList.remove("dropok"));const o=document.querySelector(".ot");if(o) o.classList.remove("dnd");});
+  });
+  document.querySelectorAll(".oc, .odrop").forEach(el=>{
+    el.addEventListener("dragover",e=>{if(!drag) return;e.preventDefault();el.classList.add("dropok");});
+    el.addEventListener("dragleave",()=>el.classList.remove("dropok"));
+    el.addEventListener("drop",e=>{e.preventDefault();el.classList.remove("dropok");if(!drag) return;const tid=el.dataset.id||el.dataset.into;const d=drag;drag=null;
+      if(d.id===tid) return; oDrop(d.id,d.pool,tid);});
+  });
+  const pool=$("oPool");
+  pool.addEventListener("dragover",e=>{if(drag&&drag.id){e.preventDefault();pool.classList.add("dropok");}});
+  pool.addEventListener("dragleave",()=>pool.classList.remove("dropok"));
+  pool.addEventListener("drop",e=>{e.preventDefault();pool.classList.remove("dropok");if(!drag||!drag.id) return;const id=drag.id;drag=null;const N=oFind(id);if(!N||!N.p) return;
+    if(N.n.c&&N.n.c.length&&!confirm(`Remove "${N.n.name}" and everything under it from the chart?`)) return;
+    oChange(()=>{const M=oFind(id);M.p.c.splice(M.i,1);});oToast(`Removed ${N.n.name} from the chart`);});
+}
+function applyZoom(){const i=document.getElementById("oInner");if(!i) return;const z=OS.zoom||1;i.style.transform=`scale(${z})`;
+  const ot=i.firstElementChild;if(ot){i.style.width=ot.scrollWidth*z+"px";i.style.height=ot.scrollHeight*z+"px";}}
+function orgFit(){const c=document.getElementById("oCanvas"),i=document.getElementById("oInner");if(!c||!i||!i.firstElementChild) return;
+  const w=i.firstElementChild.scrollWidth;OS.zoom=Math.max(window.innerWidth<700?.45:.62,Math.min(1,(c.clientWidth-24)/w));applyZoom();c.scrollLeft=0;c.scrollTop=0;}
+function bindPan(){const c=document.getElementById("oCanvas");if(!c) return;let s=null;
+  c.addEventListener("mousedown",e=>{if(e.target.closest(".oc,.odrop,button,input,[contenteditable]")) return;s={x:e.clientX,y:e.clientY,l:c.scrollLeft,t:c.scrollTop};c.classList.add("panning");});
+  window.addEventListener("mousemove",e=>{if(!s) return;c.scrollLeft=s.l-(e.clientX-s.x);c.scrollTop=s.t-(e.clientY-s.y);});
+  window.addEventListener("mouseup",()=>{s=null;c.classList.remove("panning");});}
+async function orgSave(){
+  let tok="";try{tok=localStorage.getItem(GH_TOK_KEY)||"";}catch(e){}
+  if(!tok){tok=(prompt("One-time setup: paste a GitHub token that can write to the live-dashboard repo (fine-grained, Contents: Read and write). It is stored only in this browser.")||"").trim();if(!tok) return;try{localStorage.setItem(GH_TOK_KEY,tok);}catch(e){}}
+  const b=document.getElementById("oSave");if(b){b.disabled=true;b.textContent="Saving…";}
+  const h={Authorization:"Bearer "+tok,Accept:"application/vnd.github+json"};
+  const url=`https://api.github.com/repos/${GH_REPO}/contents/org.json`;
+  try{
+    const cur=await fetch(url+"?ref=main",{headers:h,cache:"no-store"});
+    if(cur.status===401||cur.status===403){try{localStorage.removeItem(GH_TOK_KEY);}catch(e){}throw new Error("The token was rejected. Press Save again and paste a valid token.");}
+    const sha=cur.ok?(await cur.json()).sha:undefined;
+    let by="";try{by=localStorage.getItem("migo_me")||"";}catch(e){}
+    const body={...OS.org,updated:isoD(new Date()),by:by||"Putra"};
+    const txt=JSON.stringify(body,null,1);
+    const content=btoa(unescape(encodeURIComponent(txt)));
+    const put=await fetch(url,{method:"PUT",headers:h,body:JSON.stringify({message:`Team organization update${by?" by "+by:""}`,content,sha})});
+    if(!put.ok){const j=await put.json().catch(()=>({}));if(put.status===401||put.status===403){try{localStorage.removeItem(GH_TOK_KEY);}catch(e){}}throw new Error(j.message||("GitHub error "+put.status));}
+    OS.pub=JSON.parse(txt);OS.org=JSON.parse(txt);OS.dirty=false;OS.hist=[];try{localStorage.removeItem(ORG_DRAFT_KEY);}catch(e){}
+    oToast("Saved ✓ Everyone sees the new chart within about a minute.");OS.edit=false;drawOrg();
+  }catch(e){oToast(e.message||"Save failed",1);if(b){b.disabled=false;b.textContent="Save to website";}}
+}
+
 /* ---------- navigation ---------- */
 const NAV=[
   {g:"Monthly",keys:()=>ORDER.filter(k=>model(k).last>=0)},
   {g:"My view",keys:()=>["me"]},
   {g:"Analysis",keys:()=>["acc","whatif","cmp","hist"]},
-  {g:"Team",keys:()=>["weekly","team","act"]},
+  {g:"Team",keys:()=>["org","weekly","team","act"]},
   {g:"Planning",keys:()=>["camp","plan"]},
   {g:"Files",keys:()=>["files","rep"]}];
-const NAMES={me:"My view",acc:"Account analysis",whatif:"What-if",cmp:"Compare months",hist:"2026 history",weekly:"Weekly review",team:"Team & patterns",act:"Action log",camp:"Campaigns",plan:"Target planner",rep:"Reports",files:"Master files"};
-const VIEWS={me:renderMe,acc:()=>renderAccounts(),whatif:renderWhatIf,cmp:()=>renderCompare(),hist:()=>renderHistory(),weekly:renderWeekly,team:renderTeam,act:renderActions,camp:renderCampaigns,plan:renderPlanner,rep:renderReports,files:renderFiles};
+const NAMES={me:"My view",acc:"Account analysis",whatif:"What-if",cmp:"Compare months",hist:"2026 history",weekly:"Weekly review",team:"Team & patterns",act:"Action log",camp:"Campaigns",plan:"Target planner",rep:"Reports",files:"Master files",org:"Team Organization"};
+const VIEWS={me:renderMe,acc:()=>renderAccounts(),whatif:renderWhatIf,cmp:()=>renderCompare(),hist:()=>renderHistory(),weekly:renderWeekly,team:renderTeam,act:renderActions,camp:renderCampaigns,plan:renderPlanner,rep:renderReports,files:renderFiles,org:renderOrg};
 
 /* ---------- shell ---------- */
 function buildTabs(){
