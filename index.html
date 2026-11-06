@@ -1936,6 +1936,9 @@ function orgLoad(){
   return Promise.all([j("org.json"),j("team.json")]).then(([o,t])=>{
     OS.loaded=true; OS.pub=o; OS.team=t&&t.people?t.people:[];
     let d=null; try{d=JSON.parse(localStorage.getItem(ORG_DRAFT_KEY)||"null");}catch(e){}
+    const stamp=x=>x?(x.updated||"")+":"+JSON.stringify(x.tree).length:"";
+    if(d&&o&&d._base&&d._base!==stamp(o)){try{localStorage.setItem(ORG_DRAFT_KEY+"_old",JSON.stringify(d));localStorage.removeItem(ORG_DRAFT_KEY);}catch(e){}d=null;} // published chart changed since this draft
+    OS.base=stamp(o);
     OS.org=JSON.parse(JSON.stringify(d&&d.tree?d:o||{tree:null}));
     OS.dirty=!!(d&&d.tree&&o&&JSON.stringify(d.tree)!==JSON.stringify(o.tree));
     if(!o) OS.err="Could not load org.json";
@@ -1947,7 +1950,7 @@ function oIsAnc(a,b){let ok=false;oWalk(a,n=>{if(n.id===b.id) ok=true;});return 
 function oNewId(){return "n"+Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
 function oPerson(pid){return (OS.team||[]).find(p=>p.id===pid)||null;}
 const oTitle=s=>String(s||"").toLowerCase().replace(/(^|[\s.(-])([a-z])/g,(m,a,b)=>a+b.toUpperCase());
-function oChange(fn){OS.hist.push(JSON.stringify(OS.org.tree));if(OS.hist.length>60) OS.hist.shift();fn();OS.dirty=true;OS.org.updated=isoD(new Date());
+function oChange(fn){OS.hist.push(JSON.stringify(OS.org.tree));if(OS.hist.length>60) OS.hist.shift();fn();OS.dirty=true;OS.org._base=OS.base;
   try{localStorage.setItem(ORG_DRAFT_KEY,JSON.stringify(OS.org));}catch(e){}drawOrg();}
 function oToast(t,bad){let el=document.getElementById("oToast");if(!el){el=document.createElement("div");el.id="oToast";document.body.appendChild(el);}
   el.className="otoast"+(bad?" bad":"");el.textContent=t;el.style.opacity=1;clearTimeout(el._t);el._t=setTimeout(()=>{el.style.opacity=0;},3200);}
@@ -2110,7 +2113,7 @@ async function orgSave(){
     if(cur.status===401||cur.status===403){try{localStorage.removeItem(GH_TOK_KEY);}catch(e){}throw new Error("The token was rejected. Press Save again and paste a valid token.");}
     const sha=cur.ok?(await cur.json()).sha:undefined;
     let by="";try{by=localStorage.getItem("migo_me")||"";}catch(e){}
-    const body={...OS.org,updated:isoD(new Date()),by:by||"Putra"};
+    const body={...OS.org,updated:isoD(new Date()),by:by||"Putra"};delete body._base;
     const txt=JSON.stringify(body,null,1);
     const content=btoa(unescape(encodeURIComponent(txt)));
     const put=await fetch(url,{method:"PUT",headers:h,body:JSON.stringify({message:`Team organization update${by?" by "+by:""}`,content,sha})});
