@@ -477,6 +477,11 @@ a.drow[href]:hover{border-color:var(--gold);background:#fff}
 .oc.dragging{opacity:.4}
 .oc.dropok,.odrop.dropok{box-shadow:0 0 0 3px var(--gold),0 0 0 7px rgba(198,166,100,.25);transform:scale(1.04)}
 .dnd .oc{transition:box-shadow .1s}
+.oc.t-account.grp{background:#fff;color:var(--ink);border:1.5px dashed var(--bc);box-shadow:none}
+.oc.t-account.grp .on{color:var(--bc);filter:brightness(.8)}
+.ot ul.stack.grid{display:grid;grid-template-columns:repeat(3,146px);gap:8px;padding-top:14px}
+.ot ul.stack.grid>li{margin:0}
+.ot ul.stack.grid>li::before{display:none}
 .odrop{width:146px;padding:9px;border:1.5px dashed #9aa0ab;border-radius:12px;font-size:11px;color:var(--ink-3);text-align:center;background:rgba(255,255,255,.6)}
 .opool{width:0;overflow:hidden;border-left:0 solid var(--line);background:var(--surface);transition:width .2s;max-height:78vh;overflow-y:auto}
 .opool.on{width:290px;border-left-width:1px}
@@ -1956,7 +1961,7 @@ function renderOrg(){
 }
 function orgStats(){
   const s={brands:0,lo:new Set(),acc:0,host:new Set(),hostSlots:0,unmatched:0,gone:0};
-  oWalk(OS.org.tree,n=>{if(n.t==="brand") s.brands++; if(n.t==="lo") s.lo.add(n.pid||n.name); if(n.t==="account") s.acc++;
+  oWalk(OS.org.tree,n=>{if(n.t==="brand") s.brands++; if(n.t==="lo") s.lo.add(n.pid||n.name); if(n.t==="account"&&!n.grp) s.acc++;
     if(n.t==="host"){s.hostSlots++;s.host.add(n.pid||n.name);if(!n.pid) s.unmatched++;else if(OS.team.length&&!oPerson(n.pid)) s.gone++;}});
   const used=new Set();oWalk(OS.org.tree,n=>{if(n.pid) used.add(n.pid);});
   s.pool=(OS.team||[]).filter(p=>!used.has(p.id));
@@ -1968,8 +1973,8 @@ function drawOrg(){
   top.innerHTML=`<section class="kpis"><div class="kpi"><div class="l">Brands</div><div class="v">${st.brands}</div><div class="s">${brands.map(b=>esc(b.name)).join(" · ")}</div></div>
     <div class="kpi"><div class="l">LO specialists</div><div class="v">${st.lo.size}</div><div class="s">account leader PICs</div></div>
     <div class="kpi"><div class="l">Accounts</div><div class="v">${st.acc}</div><div class="s">TikTok + Shopee</div></div>
-    <div class="kpi"><div class="l">Hosts in chart</div><div class="v">${st.host.size}</div><div class="s">${st.hostSlots!==st.host.size?`${st.hostSlots-st.host.size} on 2 accounts · `:""}${st.unmatched?`${st.unmatched} not in team list`:"all matched to team list"}</div></div>
-    <div class="kpi"><div class="l">Team list</div><div class="v">${OS.team.length||"–"}</div><div class="s">${st.pool.length} not placed yet (co-hosts, other hosts)</div></div></section>`;
+    <div class="kpi"><div class="l">Hosts &amp; co-hosts</div><div class="v">${st.host.size}</div><div class="s">${st.hostSlots!==st.host.size?`${st.hostSlots-st.host.size} on 2 accounts · `:""}${st.unmatched?`${st.unmatched} not in team list`:"all matched to team list"}</div></div>
+    <div class="kpi"><div class="l">Team list</div><div class="v">${OS.team.length||"–"}</div><div class="s">${st.pool.length?st.pool.length+" not in the chart yet":"everyone is in the chart"}</div></div></section>`;
   const tools=document.getElementById("oTools");
   tools.innerHTML=`<div class="otl"><h2>Team Organization</h2><div class="hint">${OS.edit?"<b>Edit mode:</b> drag a card onto another to move it (onto the same kind of card = place before it) · double-click a name or role to rename · hover a card for ＋ add, 🏷 label, ✕ remove":"BMPD Live team · LO specialist = leader PIC for each account · updated "+esc(OS.org.updated||"")}${OS.dirty?` · <span class="neg">unsaved changes on this device</span>`:""}</div></div>
     <div class="otr"><input id="oQ" class="sel" type="search" placeholder="Find a person or account…" value="${esc(OS.q)}">
@@ -2000,13 +2005,13 @@ function oNodeHtml(n,brand,lo,q){
   const p=n.pid?oPerson(n.pid):null, gone=n.pid&&OS.team.length&&!p;
   const hit=q&&[n.name,n.sub,n.tag,p&&p.name].join(" ").toLowerCase().includes(q);
   let meta="";
-  if(n.t==="brand"){let a=0,h=new Set();oWalk(n,x=>{if(x.t==="account") a++; if(x.t==="host") h.add(x.pid||x.name);});meta=`<i>${a} accounts · ${h.size} hosts</i>`;}
-  if(n.t==="account"){meta=`<i>PIC ${esc(lo?lo.name.split(" ")[0]:"–")} · ${n.c.length} host${n.c.length===1?"":"s"}</i>`;}
+  if(n.t==="brand"){let a=0,h=new Set();oWalk(n,x=>{if(x.t==="account"&&!x.grp) a++; if(x.t==="host") h.add(x.pid||x.name);});meta=`<i>${a} accounts · ${h.size} hosts</i>`;}
+  if(n.t==="account"){meta=n.grp?`<i>${n.c.length} ${n.c.length===1?"person":"people"} · drag onto their account</i>`:`<i>PIC ${esc(lo?lo.name.split(" ")[0]:"–")} · ${n.c.length} host${n.c.length===1?"":"s"}</i>`;}
   const flags=[n.tag?`<em class="tg">${esc(n.tag)}</em>`:"",p&&p.status&&p.status!=="Aktif"?`<em class="tg hv">${esc(p.status)}</em>`:"",
     (n.t==="host"||n.t==="lo")&&!n.pid?`<em class="tg warn" title="Name not found in the Feishu team list">not in team list</em>`:"",gone?`<em class="tg warn">left team list</em>`:""].join("");
   const sub=n.sub||(p&&n.t!=="host"?p.title:"")||"";
   const ed=OS.edit&&n.t!=="root";
-  const card=`<div class="oc t-${n.t}${hit?" hit":""}${q&&!hit?" dim":""}" style="--bc:${color}" data-id="${n.id}" ${ed?'draggable="true"':""} title="${esc(p?`${oTitle(p.name)} · ${p.id} · ${p.title} · ${p.dept} · joined ${p.join}`:ORG_LABEL[n.t])}">
+  const card=`<div class="oc t-${n.t}${n.grp?" grp":""}${hit?" hit":""}${q&&!hit?" dim":""}" style="--bc:${color}" data-id="${n.id}" ${ed?'draggable="true"':""} title="${esc(p?`${oTitle(p.name)} · ${p.id} · ${p.title} · ${p.dept} · joined ${p.join}`:ORG_LABEL[n.t])}">
       <div class="on" ${OS.edit?'spellcheck="false" data-f="name"':""}>${esc(n.name)}</div>
       ${sub||OS.edit&&n.t!=="host"?`<div class="os" ${OS.edit?'spellcheck="false" data-f="sub"':""}>${esc(sub)}</div>`:""}
       ${meta}${flags?`<div class="ofl">${flags}</div>`:""}
@@ -2015,7 +2020,7 @@ function oNodeHtml(n,brand,lo,q){
   const kids=n.c||[];
   if(!kids.length) return `<li>${card}${OS.edit&&n.t==="account"?`<ul class="stack"><li><div class="odrop" data-into="${n.id}">drop host here</div></li></ul>`:""}</li>`;
   const stack=n.t==="account";
-  return `<li>${card}<ul class="${stack?"stack":""}">${kids.map(c=>oNodeHtml(c,brand,lo,q)).join("")}</ul></li>`;
+  return `<li>${card}<ul class="${stack?"stack":""}${stack&&kids.length>6?" grid":""}">${kids.map(c=>oNodeHtml(c,brand,lo,q)).join("")}</ul></li>`;
 }
 function oDrop(dragId,poolId,targetId){
   const T=oFind(targetId); if(!T) return;
