@@ -500,6 +500,69 @@ a.drow[href]:hover{border-color:var(--gold);background:#fff}
 .otoast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);background:#0b1220;color:#fff;padding:12px 20px;border-radius:12px;font-size:13px;font-weight:500;box-shadow:0 12px 30px -10px rgba(0,0,0,.5);z-index:80;opacity:0;transition:opacity .25s;pointer-events:none;border:1px solid rgba(198,166,100,.5)}
 .otoast.bad{background:#7d2620}
 @media (max-width:700px){.otools{padding:14px}.otr input{min-width:0;flex:1}.ocanvas{max-height:70vh}}
+/* performance report + compare periods */
+.drow2{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;margin:4px 0 6px}
+.dgrp{display:flex;align-items:center;gap:6px;flex-wrap:wrap}.dgrp small{width:100%;font-size:10.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+.dgrp input,.prow input,.stp input[type=date]{font:inherit;font-size:13px;border:1px solid var(--line);border-radius:10px;padding:7px 10px;background:var(--surface);color:var(--ink)}
+.vs{font-weight:700;color:var(--gold);padding-bottom:8px}
+.updet{margin-top:12px;border-top:1px solid var(--line);padding-top:10px}.updet summary{cursor:pointer;font-size:12.5px;font-weight:600;color:var(--s1)}
+.upl{margin-top:10px}.uplh b{font-size:13px;display:block}.uplh span{font-size:11.5px;color:var(--ink-3)}
+.drop{display:block;margin-top:8px;border:1.5px dashed var(--line);border-radius:14px;padding:22px;text-align:center;font-size:13px;color:var(--ink-2);cursor:pointer;background:var(--surface-2);transition:border-color .15s,background .15s}
+.drop:hover,.drop.on{border-color:var(--gold);background:#fdf8ec}
+.udet{margin-top:10px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--surface-2)}
+.uacc{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:6px;font-size:12px}.uacc label{display:flex;gap:5px;align-items:center}
+.uflist{margin-top:10px}.uf{display:flex;justify-content:space-between;gap:10px;font-size:12px;padding:4px 0;border-bottom:1px solid var(--grid)}
+.prog{font-size:12.5px;color:var(--ink-2);margin-top:8px;display:flex;align-items:center;gap:8px}
+.prog i,.psteps i{display:inline-block;width:12px;height:12px;border:2px solid var(--gold);border-right-color:transparent;border-radius:50%;animation:spin .8s linear infinite;vertical-align:-2px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.err{margin-top:8px;padding:10px 14px;border-radius:10px;background:var(--bad-bg);color:var(--bad-ink);font-size:12.5px}
+.mvg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-bottom:16px}
+.mvg h4{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);margin-bottom:6px}
+.mvr{display:flex;justify-content:space-between;font-size:13px;padding:5px 0;border-bottom:1px solid var(--grid)}
+.fndg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.fnd{border:1px solid var(--line);border-radius:14px;padding:14px 16px;background:var(--surface-2)}
+.fndh{display:flex;gap:8px;align-items:baseline;margin-bottom:8px}.fndh b{font-size:13.5px}
+.fnd dl{display:grid;grid-template-columns:110px 1fr;gap:4px 10px;font-size:12.5px}.fnd dt{color:var(--ink-3);font-weight:600}.fnd dd{color:var(--ink-2)}
+.cls{display:inline-block;font-size:9.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;border-radius:999px;padding:2px 8px;flex:none;margin-right:6px}
+.c-Confirmed{background:var(--good-bg);color:var(--good-ink)}.c-Likely{background:var(--warn-bg);color:var(--warn-ink)}.c-Hypothesis{background:#efe7fb;color:#5b3fa8}
+.rpwrap{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:22px;align-items:start}
+.rpside{position:sticky;top:16px}
+.steps2{display:grid;gap:14px}
+.stp{display:flex;gap:14px;align-items:flex-start;padding:14px 0;border-bottom:1px solid var(--grid)}
+.stp>div{flex:1;display:flex;flex-direction:column;gap:8px}.stp b{font-size:13px}
+.sn{width:26px;height:26px;border-radius:50%;background:var(--hdr);color:var(--gold-2);display:grid;place-items:center;font-size:12px;font-weight:700;flex:none}
+.prow{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.tgl{display:flex;gap:6px;align-items:center;font-size:12.5px;color:var(--ink-2)}
+.genrow{display:flex;gap:16px;align-items:center;margin-top:16px;flex-wrap:wrap}
+.pbtn.gold{background:linear-gradient(135deg,var(--gold-2),var(--gold));color:#0b1220}
+.psteps{display:flex;gap:12px;flex-wrap:wrap;font-size:12px;color:var(--ink-3)}.psteps .done{color:var(--good-ink)}.psteps .now{color:var(--ink);font-weight:600}
+.rpcard{padding:0;overflow:hidden}
+.rptool{position:sticky;top:0;z-index:3;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:14px 20px;background:var(--surface);border-bottom:1px solid var(--line)}
+.rp-doc{padding:28px 40px 40px;max-width:900px;margin:0 auto}
+.rp-cover{border-radius:16px;padding:28px 30px;background:radial-gradient(700px 260px at 95% -30%,rgba(198,166,100,.25),transparent 60%),linear-gradient(135deg,#0b1220,#17244a);color:#fff;margin-bottom:26px}
+.rp-cover h1{font-size:30px;font-weight:700;letter-spacing:-.02em;margin:6px 0 12px}
+.rp-meta{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:12px;color:rgba(255,255,255,.75)}.rp-meta b{color:var(--gold-2);font-weight:600;margin-right:4px}
+.rp-sec{padding:18px 0 8px;border-top:1px solid var(--line)}.rp-sec.off{opacity:.5}
+.rp-sh{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}.rp-sh h3{font-size:17px;font-weight:650;letter-spacing:-.01em;color:#0b1220}
+.rp-p{font-size:13.5px;line-height:1.65;color:var(--ink);margin-bottom:10px}
+.rp-h4{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);margin:14px 0 6px}
+.rp-ul{padding-left:18px;display:grid;gap:6px;font-size:13px;line-height:1.55;margin-bottom:10px}
+.rp-doc [contenteditable]{outline:none;border-radius:4px;transition:background .12s}.rp-doc [contenteditable]:hover{background:#fbf6ea}.rp-doc [contenteditable]:focus{background:#fff8e6;box-shadow:0 0 0 2px rgba(198,166,100,.4)}
+.rp-t{font-size:12.5px;margin-bottom:10px}.rp-t th{background:#0b1220;color:#fff}
+.rp-call{border-left:3px solid var(--gold);background:#faf6ec;border-radius:0 10px 10px 0;padding:10px 14px;font-size:12.5px;margin:8px 0 12px;color:var(--ink-2)}
+.rp-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin:6px 0 12px}
+.rp-kpis div{border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:var(--surface-2)}
+.rp-kpis small{display:block;font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}.rp-kpis b{display:block;font-size:19px;margin:4px 0 2px;letter-spacing:-.02em}.rp-kpis span{font-size:11.5px}
+.rp-rec{border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:12px}
+.rp-rech{display:flex;gap:10px;align-items:center;margin-bottom:8px}.rp-rech b{font-size:14px}
+.rp-rec dl{display:grid;grid-template-columns:120px 1fr;gap:5px 12px;font-size:12.5px}.rp-rec dt{color:var(--ink-3);font-weight:600}
+.libl{display:grid;gap:8px}
+.libi{display:flex;justify-content:space-between;gap:10px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--surface-2);font-size:12.5px}
+.libt{display:flex;gap:4px;margin-top:4px;flex-wrap:wrap}.liba{display:flex;flex-direction:column;gap:4px;align-items:flex-end}.liba .lnk{margin:0}
+table.mini td,table.mini th{padding:5px 6px;font-size:11.5px}
+.rti{display:flex;justify-content:space-between;gap:8px;align-items:center;padding:8px 0;border-bottom:1px solid var(--grid);font-size:12px}.rti select{font-size:11.5px;padding:4px 8px}
+@media (max-width:1100px){.rpwrap{grid-template-columns:1fr}.rpside{position:static}.fndg{grid-template-columns:1fr}.mvg{grid-template-columns:1fr}}
+@media (max-width:700px){.rp-doc{padding:16px}.fnd dl,.rp-rec dl{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -2123,16 +2186,787 @@ async function orgSave(){
   }catch(e){oToast(e.message||"Save failed",1);if(b){b.disabled=false;b.textContent="Save to website";}}
 }
 
+/* ================= performance reports & period comparison: analysis engine ================= */
+const RLIB={docx:"https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.umd.js",xlsx:"https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"};
+function loadLib(name,glob){
+  if(window[glob]) return Promise.resolve(window[glob]);
+  return new Promise((res,rej)=>{const s=document.createElement("script");s.src=RLIB[name];
+    s.onload=()=>window[glob]?res(window[glob]):rej(new Error(`The ${name} library did not load.`));
+    s.onerror=()=>rej(new Error(`Could not load the ${name} library. Check the internet connection and try again.`));document.head.appendChild(s);});
+}
+/* accounts: dashboard accounts (daily data built in) + accounts that only have uploaded data */
+const R_UPLOAD_ONLY=["Mossdoom Shopee Official","Bostanten Bag Shopee","Bostanten Shoes Shopee","Bostanten Men Shopee","Corolla Official Shopee","Corolla.indonesia","Westbronco Shopee","AG Shopee"];
+const R_FILE_ALIAS={ // how each account is named in TikTok / commission exports
+  "Mossdoom Official":["MOSSDOOM.OFFICIAL","MOSSDOOM OFFICIAL","MOSSDOOM TIKTOK OFFICIAL"],"Mossdoom ID":["MOSS.ID","MOSSDOOM ID"],"Mossdoom Premium":["MOSSDOOM PREMIUM"],
+  "Bostanten Bag":["BOSTANTEN_OFFICIAL","BOSTANTEN OFFICIAL","BOSTANTEN BAG TIKTOK"],"Bostanten Shoes":["BOSTANTEN.SHOES","BOSTANTEN SHOES TIKTOK"],"Bostanten Man":["BOSTANTEN.MENFASHION","BOSTANTEN MEN"],
+  "Corolla TK":["COROLLASHOES.OFFICIAL","COROLLA OFFICIAL TIKTOK"],"AG TK":["AGEFREE.ID","AG TIKTOK"],"WEST":["WESTBRONCO.OFFICIAL","WESTBRONCO TIKTOK"],
+  "Bostanten Outlet TK":["BOSTANTENOUTLET","BOSTANTEN OUTLET"],"Bostanten Fashion":["BOSTANTEN.FASHION2","BOSTANTEN FASHION"],
+  "Mossdoom Shopee Official":["MOSSDOOM OFFICIAL SP"],"Bostanten Bag Shopee":["BOSTANTEN BAG SP"],"Bostanten Shoes Shopee":["BOSTANTEN SHOES SP"],"Bostanten Men Shopee":["BOSTANTEN.FASHION.ID"],
+  "Corolla Official Shopee":["COROLLASHOES.OFFICIAL SP"],"Corolla.indonesia":["COROLLA INDONESIA"],"Westbronco Shopee":["WESTBRONCO SP"],"AG Shopee":["AGE FREE"]};
+function rAccounts(){return [...ACCTS,...R_UPLOAD_ONLY];}
+function rBrand(a){return Object.keys(BRANDS).find(b=>BRANDS[b].includes(a))||(a.match(/^(Mossdoom|Bostanten|Corolla|Westbronco|AG)/i)||[""])[0].toUpperCase().replace("WESTBRONCO","WESTBRONCO");}
+function rPlatform(a){return /shopee/i.test(a)?"Shopee":"TikTok";}
+function rPic(a){if(PIC[a]) return PIC[a];
+  if(OS&&OS.org&&OS.org.tree){let lo=null,hit=null;const w=(n,l)=>{if(n.t==="lo") l=n;if(n.t==="account"&&n.name.toLowerCase()===a.toLowerCase()) hit=l;(n.c||[]).forEach(c=>w(c,l));};w(OS.org.tree,null);if(hit) return hit.name.split(" ")[0];}
+  return "";}
+const rSlug=a=>a.toLowerCase().replace(/[^a-z0-9]+/g,"-");
+const addDays=(iso,n)=>{const d=new Date(iso+"T00:00:00");d.setDate(d.getDate()+n);return isoD(d);};
+const daysIn=(s,e)=>Math.round((new Date(e+"T00:00:00")-new Date(s+"T00:00:00"))/864e5)+1;
+const fmtDate=iso=>{const d=new Date(iso+"T00:00:00");return `${d.getDate()} ${MN3[d.getMonth()]} ${d.getFullYear()}`;};
+const fmtRange=r=>r.s===r.e?fmtDate(r.s):(r.s.slice(0,7)===r.e.slice(0,7)?`${+r.s.slice(8)}–${fmtDate(r.e)}`:`${fmtDate(r.s)} – ${fmtDate(r.e)}`);
+const DOWN=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+
+/* ---------- uploaded data store (per account, this browser) ---------- */
+const UPL_KEY=a=>"migo_upl_"+rSlug(a);
+function rUploads(a){try{return JSON.parse(localStorage.getItem(UPL_KEY(a))||"null")||{days:{},sessions:[],files:[]};}catch(e){return {days:{},sessions:[],files:[]};}}
+function rSaveUploads(a,u){try{localStorage.setItem(UPL_KEY(a),JSON.stringify(u));return true;}catch(e){return false;}}
+
+/* ---------- metric definitions ---------- */
+const RM=[
+  {k:"g",l:"GMV",kind:"sum",f:"rp",grp:"Sales"},
+  {k:"t",l:"Target",kind:"sum",f:"rp",info:1,grp:"Sales"},
+  {k:"ach",l:"Target achievement",kind:"ratio",num:"g",den:"t",f:"pct",pp:1,grp:"Sales",needBoth:1},
+  {k:"o",l:"Orders",kind:"sum",f:"int",grp:"Sales"},
+  {k:"items",l:"Units sold",kind:"sum",f:"int",grp:"Sales"},
+  {k:"aov",l:"AOV (GMV per order)",kind:"ratio",num:"g",den:"o",f:"rp",grp:"Basket"},
+  {k:"ipo",l:"Units per order",kind:"ratio",num:"items",den:"o",f:"num2",grp:"Basket"},
+  {k:"v",l:"Views",kind:"sum",f:"int",grp:"Traffic"},
+  {k:"viewers",l:"Viewers",kind:"sum",f:"int",grp:"Traffic"},
+  {k:"imp",l:"Product impressions",kind:"sum",f:"int",grp:"Traffic"},
+  {k:"clicks",l:"Product clicks",kind:"sum",f:"int",grp:"Funnel"},
+  {k:"ctr",l:"CTR",kind:"ratio",num:"clicks",den:"imp",alt:["ctr_w","wv"],f:"pct",pp:1,grp:"Funnel"},
+  {k:"ctor",l:"CTOR (click to order)",kind:"ratio",num:"o",den:"clicks",alt:["ctor_w","wv2"],f:"pct",pp:1,grp:"Funnel"},
+  {k:"cvr",l:"Conversion (orders per view)",kind:"ratio",num:"o",den:"v",f:"pct",pp:1,grp:"Funnel"},
+  {k:"gpv",l:"GMV per 1K views",kind:"ratio",num:"g",den:"v",mult:1000,f:"rp",grp:"Funnel"},
+  {k:"fol",l:"New followers",kind:"sum",f:"int",grp:"Audience"},
+  {k:"eng",l:"Engagement (likes + comments + shares)",kind:"sum",f:"int",grp:"Audience"},
+  {k:"hrs",l:"Live hours",kind:"sum",f:"num1",grp:"Live operations"},
+  {k:"sessions",l:"Live sessions",kind:"sum",f:"int",grp:"Live operations"},
+  {k:"gph",l:"GMV per live hour",kind:"ratio",num:"g",den:"hrs",f:"rp",grp:"Live operations"},
+];
+const RMK=Object.fromEntries(RM.map(m=>[m.k,m]));
+function rFmt(v,f){ if(v==null||!isFinite(v)) return "–";
+  if(f==="rp") return "Rp "+fmtC(v); if(f==="int") return Math.round(v).toLocaleString("en-US"); if(f==="pct") return (v*100).toFixed(2)+"%";
+  if(f==="num1") return v.toFixed(1); if(f==="num2") return v.toFixed(2); return String(v);}
+function rFmtAbs(v,m){ if(v==null||!isFinite(v)) return "–"; const s=v>=0?"+":"−";
+  if(m.pp) return s+Math.abs(v*100).toFixed(2)+" pp"; if(m.f==="rp") return s+"Rp "+fmtC(Math.abs(v)); if(m.f==="int") return s+Math.round(Math.abs(v)).toLocaleString("en-US"); return s+Math.abs(v).toFixed(m.f==="num2"?2:1);}
+
+/* ---------- daily rows for one account: dashboard data + uploads ---------- */
+const _rd={};
+function rDaily(a){
+  const u=rUploads(a), key=a+"|"+JSON.stringify(u.files||[]).length+"|"+Object.keys(u.days||{}).length;
+  if(_rd[a]&&_rd[a].key===key) return _rd[a].rows;
+  const out={};
+  if(ACCTS.includes(a)) ORDER.forEach(k=>{const md=model(k),m=md.m;for(let i=0;i<=md.last;i++){
+    const p=f=>(((m[f]||{})[a]||[])[i]); const g=p("g"); if(g==null) continue; const d=m.days[i], iso=isoD(dateOf(k,d.day));
+    const r={date:iso,dow:d.dow,ev:d.ev||"",g:g||0,src:"dashboard"};
+    const t=p("tgt"),v=p("views"),o=p("orders"),fo=p("fol");
+    if(t) r.t=t; if(v>0) r.v=v; if(o>0||(o===0&&!g)) r.o=o||0; if(fo!=null&&fo!=="") r.fol=fo||0;
+    out[iso]=r;}});
+  Object.entries(u.days||{}).forEach(([iso,x])=>{
+    const r=out[iso]||(out[iso]={date:iso,dow:DOWN[new Date(iso+"T00:00:00").getDay()],ev:"",src:"upload"});
+    Object.entries(x).forEach(([k,v])=>{ if(typeof v!=="number"||!isFinite(v)) return;
+      if(k==="g"){ if(r.src==="dashboard") r.g_up=v; else r.g=v; return; }
+      if(k==="o"&&r.o!=null&&r.src==="dashboard") { r.o_up=v; return; }
+      if(k==="v"&&r.v!=null&&r.src==="dashboard") { r.v_up=v; return; }
+      r[k]=v; });
+    if(r.src==="dashboard") r.src="dashboard+upload";
+  });
+  const rows=Object.values(out).sort((p,q)=>p.date.localeCompare(q.date));
+  _rd[a]={key,rows}; return rows;
+}
+function rRange(a){const d=rDaily(a);return d.length?{s:d[0].date,e:d[d.length-1].date}:null;}
+function rAgg(rows){const s={days:rows.length,_cnt:{}};rows.forEach(r=>{for(const k in r){if(typeof r[k]==="number"&&isFinite(r[k])){s[k]=(s[k]||0)+r[k];s._cnt[k]=(s._cnt[k]||0)+1;}}});return s;}
+function rVal(s,m){
+  if(m.kind==="sum") return s._cnt[m.k]?s[m.k]:null;
+  let n=m.num,d=m.den;
+  if(!(s._cnt[n]&&s._cnt[d])&&m.alt){n=m.alt[0];d=m.alt[1];}
+  if(!s._cnt[n]||!s._cnt[d]||!s[d]) return null;
+  if(m.needBoth&&s._cnt[d]<s.days*.8) return null; // target missing for many days → achievement not meaningful
+  return s[n]/s[d]*(m.mult||1);}
+function rPick(a,r){return rDaily(a).filter(x=>x.date>=r.s&&x.date<=r.e);}
+
+/* ---------- comparison engine ---------- */
+function rCompare(a,P,C){
+  const pr=rPick(a,P), cr=C?rPick(a,C):[], pa=rAgg(pr), ca=rAgg(cr);
+  const lenP=daysIn(P.s,P.e), lenC=C?daysIn(C.s,C.e):0;
+  const norm=!!C&&pa.days!==ca.days;
+  const rows=[];
+  RM.forEach(m=>{
+    const cur=rVal(pa,m), prev=C?rVal(ca,m):null;
+    if(cur==null&&prev==null) return;
+    const daily=m.kind==="sum"&&!m.info;
+    const curD=cur!=null&&daily&&pa.days?cur/pa.days:null, prevD=prev!=null&&daily&&ca.days?prev/ca.days:null;
+    let pct=null,note="",abs=null;
+    if(C){
+      if(cur==null) note="missing in primary period";
+      else if(prev==null) note="no data in comparison period";
+      else{
+        abs=cur-prev;
+        const a1=norm&&daily?curD:cur, a0=norm&&daily?prevD:prev;
+        if(a0===0) note=a1>0?"baseline is 0 — % not meaningful":"no change (both 0)";
+        else pct=(a1-a0)/Math.abs(a0)*100;
+        if(pct!=null&&daily&&a0>0&&a1/a0>3&&(ca._cnt[m.k]||0)<4) note="very small baseline — read with care";
+        if(m.pp) abs=cur-prev;
+      }
+    }
+    const status=m.info||pct==null?(C&&cur!=null&&prev!=null&&m.pp?(Math.abs(abs)<0.0005?"Unchanged":abs>0?"Improved":"Declined"):"—"):(Math.abs(pct)<1?"Unchanged":pct>0?"Improved":"Declined");
+    rows.push({m,cur,prev,curD,prevD,abs,pct,note,status,covP:pa._cnt[m.k]||pa._cnt[m.num]||0,covC:ca._cnt[m.k]||ca._cnt[m.num]||0});
+  });
+  const ev=rs=>[...new Set(rs.filter(x=>x.ev).map(x=>x.ev.replace(/^(Pre-|Post-)/,"").replace(" Eve","")))];
+  const flags=[];
+  if(pr.length<lenP) flags.push(`Primary period has data for ${pr.length} of ${lenP} days${pr.length?` (last data ${fmtDate(pr[pr.length-1].date)})`:""}.`);
+  if(C&&cr.length<lenC) flags.push(`Comparison period has data for ${cr.length} of ${lenC} days.`);
+  if(norm&&cr.length) flags.push(`Periods have different lengths (${pa.days} vs ${ca.days} days with data): totals are shown as-is, and % change for totals uses daily averages.`);
+  const eP=ev(pr),eC=ev(cr); if(C&&cr.length&&eP.join()!==eC.join()) flags.push(`Campaign days differ: primary has ${eP.length?eP.join(", "):"none"}, comparison has ${eC.length?eC.join(", "):"none"}. Part of the GMV change can come from the campaign calendar.`);
+  if(C&&!cr.length) flags.splice(0,flags.length,...flags.filter(f=>!f.startsWith("Comparison period has data")),"No data at all in the comparison period (e.g. last year is not in the dashboard yet), so no % changes can be calculated.");
+  const dr=C&&pa.v&&ca.v&&pa.o&&ca.o?splitDrivers({g:pa.g,v:pa.v,o:pa.o,d:pa.days},{g:ca.g,v:ca.v,o:ca.o,d:ca.days}):null;
+  return {a,P,C,pr,cr,pa,ca,lenP,lenC,norm,rows,flags,dr,evP:eP,evC:eC};
+}
+/* presets: anchor = end of primary period */
+function rPreset(kind,anchor,a){
+  const A=anchor, d=new Date(A+"T00:00:00");
+  if(kind==="dod") return {P:{s:A,e:A},C:{s:addDays(A,-1),e:addDays(A,-1)},label:"Day on day"};
+  if(kind==="wow") return {P:{s:addDays(A,-6),e:A},C:{s:addDays(A,-13),e:addDays(A,-7)},label:"Week on week (last 7 days vs the 7 before)"};
+  if(kind==="mom"){const s=isoD(new Date(d.getFullYear(),d.getMonth(),1)), me=isoD(new Date(d.getFullYear(),d.getMonth()+1,0));
+    const full=A===me||(()=>{const r=rRange(a);return r&&r.e>=me;})();
+    const pe=full?me:A, ps=isoD(new Date(d.getFullYear(),d.getMonth()-1,1)), pme=isoD(new Date(d.getFullYear(),d.getMonth(),0));
+    const ce=full?pme:(()=>{const x=new Date(d.getFullYear(),d.getMonth()-1,d.getDate());return isoD(x)>pme?pme:isoD(x);})();
+    return {P:{s,e:pe},C:{s:ps,e:ce},label:full?"Month on month (full months)":"Month on month (month to date vs same days last month)"};}
+  if(kind==="yoy"){const y=x=>x.replace(/^(\d{4})/,m=>String(+m-1));const P={s:addDays(A,-29),e:A};return {P,C:{s:y(P.s),e:y(P.e)},label:"Year on year (same dates last year)"};}
+  return null;
+}
+
+/* ---------- statistics helpers ---------- */
+const mean=a=>a.length?a.reduce((x,y)=>x+y,0)/a.length:0;
+const sd=a=>{const m=mean(a);return a.length>1?Math.sqrt(a.reduce((s,x)=>s+(x-m)**2,0)/(a.length-1)):0;};
+function slopePct(vals){ // linear trend, % of mean per day
+  const n=vals.length; if(n<5) return null; const xs=vals.map((_,i)=>i), mx=mean(xs), my=mean(vals); if(!my) return null;
+  let num=0,den=0; xs.forEach((x,i)=>{num+=(x-mx)*(vals[i]-my);den+=(x-mx)**2;}); return den?num/den/my*100:null;}
+
+/* ---------- insight engine (rule based, every finding labelled) ---------- */
+// cls: "Confirmed" = calculated from the data · "Likely" = strongly suggested by the data pattern · "Hypothesis" = possible explanation to verify
+function rInsights(cmp,opts={}){
+  const {a,P,C,pr,pa,ca,rows,dr}=cmp, R=k=>rows.find(r=>r.m.k===k), F=[], probs=[], wins=[];
+  const g=R("g"), gD=pa.days?pa.g/pa.days:0;
+  const val=k=>{const r=R(k);return r?r.cur:null;};
+  // 1. overall + drivers
+  if(C&&g&&g.pct!=null){
+    const md=dr?mainDriver(dr):null;
+    F.push({cls:"Confirmed",area:"Overall",title:`GMV per day ${g.pct>=0?"up":"down"} ${Math.abs(g.pct).toFixed(1)}%`,
+      what:`GMV per day moved from Rp ${fmtC(g.prevD)} to Rp ${fmtC(g.curD)}.`,how:`${g.pct>=0?"+":""}${g.pct.toFixed(1)}% (${rFmtAbs(g.curD-g.prevD,{f:"rp"})} per day).`,
+      why:dr?`Split of the change: traffic ${rFmtAbs(dr.cV,{f:"rp"})}, conversion ${rFmtAbs(dr.cC,{f:"rp"})}, AOV ${rFmtAbs(dr.cA,{f:"rp"})}. The biggest factor is ${md.name.toLowerCase()} (${pctS(md.pct)}).`:"Views or orders are missing, so the change cannot be split into traffic, conversion and AOV.",
+      impact:`${rFmtAbs((g.curD-g.prevD)*pa.days,{f:"rp"})} GMV over the ${pa.days} days of the primary period vs the comparison pace.`,
+      action:md?(md.up?`Keep what is driving ${md.name.toLowerCase()} and protect the other two levers.`:`Fix ${md.name.toLowerCase()} first: ${TIPS[md.name]}.`):"Upload view and order data to see the cause."});
+    if(cmp.evP.join()!==cmp.evC.join()) F.push({cls:"Likely",area:"Overall",title:"Campaign calendar affects the comparison",what:`Primary period campaign days: ${cmp.evP.join(", ")||"none"}; comparison: ${cmp.evC.join(", ")||"none"}.`,how:"",why:"Campaign days usually run several times a normal day's GMV, so the periods are not like-for-like.",impact:"Part of the GMV change is calendar-driven, not performance-driven.",action:"Read the change together with the normal-day comparison below."});
+  }
+  // 2. normal-day comparison (excluding campaign days)
+  if(C){const nP=pr.filter(x=>!x.ev),nC=cmp.cr.filter(x=>!x.ev);
+    if(nP.length>=3&&nC.length>=3&&(nP.length<pr.length||nC.length<cmp.cr.length)){const a1=mean(nP.map(x=>x.g)),a0=mean(nC.map(x=>x.g));if(a0){const p=(a1/a0-1)*100;
+      F.push({cls:"Confirmed",area:"Overall",title:`Normal-day GMV ${p>=0?"+":""}${p.toFixed(1)}% (campaign days excluded)`,what:`Average non-campaign day: Rp ${fmtC(a1)} vs Rp ${fmtC(a0)}.`,how:`${p>=0?"+":""}${p.toFixed(1)}%`,why:"This removes the campaign calendar effect and shows the underlying run-rate.",impact:p<-5?"The base business is weaker, not only the campaigns.":p>5?"The base business is stronger, not only the campaigns.":"Underlying run-rate is roughly flat.",action:p<-5?"Treat this as a real decline and act on the main driver.":"No extra action from this alone."});}}}
+  // 3. target
+  const ach=R("ach"); if(ach&&ach.cur!=null){const v=ach.cur*100;(v<90?probs:wins).push({key:"target",rp:Math.abs(pa.g-pa.t),text:`Target achievement ${v.toFixed(1)}% (Rp ${fmtC(pa.g)} vs Rp ${fmtC(pa.t)})`});}
+  // 4. improvements / declines / stagnant
+  const mv=rows.filter(r=>!r.m.info&&r.pct!=null&&!r.note&&r.m.k!=="ach"&&r.m.k!=="t");
+  const imp=mv.filter(r=>r.pct>=1).sort((x,y)=>y.pct-x.pct).slice(0,4), dec=mv.filter(r=>r.pct<=-1).sort((x,y)=>x.pct-y.pct).slice(0,4), stag=mv.filter(r=>Math.abs(r.pct)<2);
+  // 5. divergences
+  const p=k=>{const r=R(k);return r&&r.pct!=null?r.pct:null;};
+  const div=[];
+  const pv=p("v")??p("viewers"), pc=p("cvr"), pa_=p("aov"), po=p("o"), pctr=p("ctr"), pimp=p("imp"), pctor=p("ctor");
+  if(pv!=null&&pc!=null&&pv>5&&pc<-5) div.push({cls:"Hypothesis",area:"Traffic vs conversion",title:"More viewers, but fewer of them buy",what:`Views ${pctS(pv/100)}, conversion ${pctS(pc/100)}.`,how:"",why:"New traffic seems to be lower-intent (broad ads, recommendations to non-buyers) or the host/script is not converting the extra viewers. Not proven by the data alone.",impact:"Extra traffic adds less GMV than it could.",action:"Check where the new traffic comes from (ads vs organic) and tighten targeting; keep the strongest hosts on the busiest slots."});
+  if(pv!=null&&pc!=null&&pv<-5&&pc>5) div.push({cls:"Likely",area:"Traffic vs conversion",title:"Fewer viewers, but they buy more",what:`Views ${pctS(pv/100)}, conversion ${pctS(pc/100)}.`,how:"",why:"The audience is smaller but more qualified; the live itself is selling well.",impact:"GMV is now limited by traffic, not by the live.",action:"Add traffic (ads boost, short videos, more hours) without changing the live format."});
+  if(po!=null&&pa_!=null&&po>5&&pa_<-5) div.push({cls:"Hypothesis",area:"Basket",title:"Orders up, basket smaller",what:`Orders ${pctS(po/100)}, AOV ${pctS(pa_/100)}.`,how:"",why:"Growth may come from cheaper items, discounts or vouchers.",impact:"Margin per order may be lower.",action:"Check which SKUs grew; add bundles or a minimum-spend voucher just above the current AOV."});
+  if(pimp!=null&&pctr!=null&&pimp>5&&pctr<-5) div.push({cls:"Hypothesis",area:"Funnel",title:"More product impressions, lower click rate",what:`Impressions ${pctS(pimp/100)}, CTR ${pctS(pctr/100)}.`,how:"",why:"Products are shown more, but pinned products, thumbnails or prices attract fewer clicks.",impact:"Less traffic reaches the product page.",action:"Refresh pinned products and visuals; test price-led pins."});
+  // 6. anomalies (z-score on non-campaign days)
+  const base=pr.filter(x=>!x.ev).map(x=>x.g), m0=mean(base), s0=sd(base), anom=[];
+  if(base.length>=7&&s0>0) pr.forEach(x=>{const z=(x.g-m0)/s0;if(Math.abs(z)>=2) anom.push({date:x.date,g:x.g,z,ev:x.ev});});
+  // 7. trend inside period
+  const tr=slopePct(pr.map(x=>x.g));
+  const half=Math.floor(pr.length/2), h1=mean(pr.slice(0,half).filter(x=>!x.ev).map(x=>x.g)), h2=mean(pr.slice(half).filter(x=>!x.ev).map(x=>x.g));
+  // 8. weekday
+  let wd=null; if(pr.length>=14){const by={};pr.filter(x=>!x.ev).forEach(x=>{(by[x.dow]=by[x.dow]||[]).push(x.g);});const all=mean(base);
+    const l=Object.entries(by).filter(([,v])=>v.length>=2).map(([d,v])=>[d,mean(v)/all-1]).sort((x,y)=>y[1]-x[1]);if(l.length>=4) wd={best:l[0],worst:l[l.length-1]};}
+  // 9. funnel bottleneck
+  let funnel=null; if(pctr!=null&&pctor!=null){funnel=pctr<pctor?{stage:"Impression → click (CTR)",pct:pctr}:{stage:"Click → order (CTOR)",pct:pctor};}
+  // 10. sessions: hosts and slots
+  const ses=(opts.sessions||[]).filter(x=>x.d>=P.s&&x.d<=P.e);
+  let hosts=null,slots=null;
+  if(ses.length){const by={};ses.filter(x=>x.host&&!/^(back ?up|backup|-|tbd|n\/?a)$/i.test(x.host.trim())).forEach(x=>{const h=x.host;const o=by[h]||(by[h]={host:h,n:0,hrs:0,g:0,items:0});o.n++;o.hrs+=x.hrs||0;o.g+=x.g||0;o.items+=x.items||0;});
+    hosts=Object.values(by).filter(x=>x.n>=3&&x.hrs>0).map(x=>({...x,gph:x.g/x.hrs})).sort((x,y)=>y.gph-x.gph);
+    const bs={};ses.forEach(x=>{if(!x.slot) return;const sl=String(x.slot).split("-")[0].trim().replace(".",":");const o=bs[sl]||(bs[sl]={slot:sl,n:0,hrs:0,g:0});o.n++;o.hrs+=x.hrs||0;o.g+=x.g||0;});
+    slots=Object.values(bs).filter(x=>x.n>=3&&x.hrs>0).map(x=>({...x,gph:x.g/x.hrs})).sort((x,y)=>x.slot.localeCompare(y.slot));}
+  // 11. logged actions in period
+  const acts=(typeof allActs==="function"?allActs():[]).filter(x=>x.a===a&&x.date>=(C?C.s:P.s)&&x.date<=P.e).map(x=>({...x,im:actImpact(x)}));
+  // problems ranked by Rp
+  if(dr){[["Traffic",dr.cV,pv],["Conversion",dr.cC,pc],["AOV",dr.cA,pa_]].forEach(([n,rp,pp])=>{if(rp<0) probs.push({key:n.toLowerCase(),rp:-rp,text:`${n} cost Rp ${fmtC(-rp)} vs the comparison period (${pctS((pp||0)/100)})`});else if(rp>0) wins.push({key:n.toLowerCase(),rp,text:`${n} added Rp ${fmtC(rp)} vs the comparison period (${pctS((pp||0)/100)})`});});}
+  anom.filter(x=>x.z<0&&!x.ev).forEach(x=>probs.push({key:"lowday",rp:m0-x.g,text:`Unusually weak day ${fmtDate(x.date)} (Rp ${fmtC(x.g)}, ${((x.g/m0-1)*100).toFixed(0)}% vs a normal day)`}));
+  if(hosts&&hosts.length>=3){const med=hosts[Math.floor(hosts.length/2)].gph;hosts.filter(h=>h.gph<med*.7).forEach(h=>probs.push({key:"host",rp:(med-h.gph)*h.hrs,text:`${oTitle(h.host)} sells Rp ${fmtC(h.gph)}/hour vs Rp ${fmtC(med)} median (${h.n} sessions)`}));}
+  probs.sort((x,y)=>y.rp-x.rp); wins.sort((x,y)=>y.rp-x.rp);
+  return {F,div,imp,dec,stag,anom,m0,tr,h1,h2,wd,funnel,hosts,slots,acts,probs,wins,ses};
+}
+/* ---------- recommendations ---------- */
+function rRecs(cmp,ins,lo){
+  const {pa,ca,P,C,rows}=cmp, R=k=>rows.find(r=>r.m.k===k), recs=[], days=Math.max(7,Math.min(30,daysIn(P.s,P.e)));
+  const due=n=>fmtDate(addDays(P.e,n)), owner=lo||"LO specialist";
+  const gD=pa.days?pa.g/pa.days:0;
+  const pr=(rp)=>rp>gD*days*.1?"High":rp>gD*days*.03?"Medium":"Low";
+  if(cmp.dr){
+    const {cV,cC,cA}=cmp.dr;
+    if(cV<0){const vNow=pa.v/pa.days,vThen=ca.v/ca.days,gain=(vThen-vNow)*(pa.g/pa.v)*days;
+      const wdTxt=ins.wd?` Start with ${ins.wd.best[0]} (strongest day, +${(ins.wd.best[1]*100).toFixed(0)}% vs normal).`:"";
+      recs.push({id:"traffic",problem:"Traffic (views) is down",evidence:`Views/day ${fmtC(vNow)} vs ${fmtC(vThen)} (${pctS(vNow/vThen-1)}); traffic effect ${rFmtAbs(cV,{f:"rp"})}.`,
+        action:`Add 1–2 live hours in the best-converting slots, boost the top 3 SKUs with ads during peak hours, and post 2–3 short videos per day that point to the live.${wdTxt}`,
+        impact:`Getting views/day back to ${fmtC(vThen)} at the current conversion and AOV ≈ +Rp ${fmtC(gain)} over the next ${days} days (estimate).`,priority:pr(gain),timeline:`Start now, review ${due(7)}`,kpi:{k:"v",label:"Views per day",target:vThen,per:"day"},owner});}
+    if(cC<0){const c1=pa.o/pa.v,c0=ca.o/ca.v,gain=(c0-c1)*(pa.v/pa.days)*(pa.g/pa.o)*days;
+      const weak=ins.hosts&&ins.hosts.length>=3?` Coach or re-slot the hosts with the lowest GMV/hour: ${ins.hosts.slice(-2).map(h=>oTitle(h.host)).join(", ")}.`:"";
+      recs.push({id:"conversion",problem:"Fewer viewers are buying",evidence:`Conversion ${(c1*100).toFixed(2)}% vs ${(c0*100).toFixed(2)}%; conversion effect ${rFmtAbs(cC,{f:"rp"})}.`,
+        action:`Review the live script and product pins in the weakest slots, add a time-limited voucher in the first 15 minutes of each session, and check price vs competitors on the top SKUs.${weak}`,
+        impact:`Conversion back to ${(c0*100).toFixed(2)}% at current traffic ≈ +Rp ${fmtC(gain)} over ${days} days (estimate).`,priority:pr(gain),timeline:`Within 3 days, review ${due(7)}`,kpi:{k:"cvr",label:"Conversion",target:c0},owner});}
+    if(cA<0){const a1=pa.g/pa.o,a0=ca.g/ca.o,gain=(a0-a1)*(pa.o/pa.days)*days,th=Math.ceil(a1*1.2/5000)*5000;
+      recs.push({id:"aov",problem:"Basket size (AOV) is down",evidence:`AOV Rp ${fmtC(a1)} vs Rp ${fmtC(a0)}; AOV effect ${rFmtAbs(cA,{f:"rp"})}.`,
+        action:`Introduce bundles (2 items) and a minimum-spend voucher at about Rp ${fmtC(th)} (≈20% above the current AOV); have hosts pitch the bundle in every product rotation.`,
+        impact:`AOV back to Rp ${fmtC(a0)} at the current order volume ≈ +Rp ${fmtC(gain)} over ${days} days (estimate).`,priority:pr(gain),timeline:`Set up within 1 week, review ${due(14)}`,kpi:{k:"aov",label:"AOV",target:a0},owner});}
+  }
+  const ach=R("ach"); if(ach&&ach.cur!=null&&ach.cur<.95){const gap=pa.t-pa.g;
+    recs.push({id:"target",problem:"Behind target",evidence:`Achievement ${(ach.cur*100).toFixed(1)}%, gap Rp ${fmtC(gap)} in the period.`,action:"Agree a daily GMV floor with the hosts, move the strongest host to the slot with the most viewers, and plan an extra push (voucher + ads) on the next payday or double-date.",impact:`Closing the gap needs about +Rp ${fmtC(gap/Math.max(1,pa.days))} per day at the same pace (calculated).`,priority:ach.cur<.85?"High":"Medium",timeline:`Daily until ${due(14)}`,kpi:{k:"ach",label:"Target achievement",target:1},owner});}
+  if(ins.funnel&&ins.funnel.pct<-5) recs.push({id:"funnel",problem:`Funnel weakness at ${ins.funnel.stage}`,evidence:`${ins.funnel.stage} ${pctS(ins.funnel.pct/100)} vs the comparison period.`,action:ins.funnel.stage.startsWith("Impression")?"Refresh pinned products, thumbnails and price tags; pin the hero SKU at the start of each rotation.":"Make the checkout step easier: show the voucher on screen, explain shipping and payment, answer questions in chat faster.",impact:"Improves the share of viewers that reach checkout (not quantified).",priority:"Medium",timeline:`Within 1 week`,kpi:{k:ins.funnel.stage.startsWith("Impression")?"ctr":"ctor",label:ins.funnel.stage,target:null},owner});
+  const low=ins.anom.filter(x=>x.z<0&&!x.ev); if(low.length) recs.push({id:"lowdays",problem:"Unexplained weak days",evidence:low.map(x=>`${fmtDate(x.date)}: Rp ${fmtC(x.g)}`).join("; ")+".",action:"Check the session log for these dates (host absence, stream or stock problems, schedule gaps) and fix the cause so it does not repeat.",impact:`Each weak day cost about Rp ${fmtC(mean(low.map(x=>ins.m0-x.g)))} vs a normal day (calculated).`,priority:"Medium",timeline:"This week",kpi:{k:"g",label:"No day below 50% of a normal day",target:null},owner});
+  if(ins.hosts&&ins.hosts.length>=3){const best=ins.hosts[0];recs.push({id:"hosts",problem:"Best host is not used enough",evidence:`${oTitle(best.host)} sells Rp ${fmtC(best.gph)}/hour (top of ${ins.hosts.length} hosts, ${best.n} sessions).`,action:`Give ${oTitle(best.host).split(" ")[0]} the busiest slot${ins.slots&&ins.slots.length?` (best slot by GMV/hour: ${ins.slots.slice().sort((x,y)=>y.gph-x.gph)[0].slot})`:""} and use their sessions to train lower-performing hosts.`,impact:"Raises GMV per live hour; size depends on slot traffic (not quantified).",priority:"Medium",timeline:"Next schedule",kpi:{k:"gph",label:"GMV per live hour",target:null},owner});}
+  if(!recs.length) recs.push({id:"keep",problem:"No major weakness found",evidence:"All main drivers are flat or improving vs the comparison period.",action:"Keep the current plan; test one improvement at a time (new bundle, extra hour on the best weekday) and log it in the Action log so its effect can be measured.",impact:"Protects the current growth.",priority:"Low",timeline:"Ongoing",kpi:{k:"g",label:"GMV per day",target:null},owner});
+  const ord={High:0,Medium:1,Low:2}; recs.sort((x,y)=>ord[x.priority]-ord[y.priority]); return recs;
+}
+
+/* ---------- report model ---------- */
+const RPT_SECTIONS=[["exec","Executive Summary"],["overview","Account Overview"],["highlights","Overall Performance Highlights"],["kpi","KPI Performance Dashboard"],["pop","Period-over-Period Comparison"],["detail","Detailed Metrics Analysis"],["content","Content / Campaign Performance Analysis"],["root","Root Cause Analysis"],["problems","Key Problems and Challenges"],["learn","Key Learnings and Takeaways"],["recs","Strategic Recommendations"],["plan","Action Plan for the Next Reporting Period"],["concl","Conclusion"]];
+function rTrajectory(a,upTo){
+  const by={};rDaily(a).filter(x=>!x.ev&&x.date<=upTo).forEach(x=>{const k=x.date.slice(0,7);(by[k]=by[k]||[]).push(x.g);});
+  const ms=Object.keys(by).sort().filter(k=>by[k].length>=5).slice(-4).map(k=>({m:k,avg:mean(by[k])}));
+  if(ms.length<2) return {label:"not enough history",ms};
+  const first=ms[0].avg,last=ms[ms.length-1].avg,ch=last/first-1, ups=ms.slice(1).filter((x,i)=>x.avg>ms[i].avg).length;
+  const label=ch>.05&&ups>=ms.length-2?"progressing":ch<-.05&&ups<=1?"deteriorating":"stagnating";
+  return {label,ch,ms};
+}
+function rPrevReports(a,beforeIso){return rLibAll().filter(r=>r.account===a&&r.period.e<beforeIso).sort((x,y)=>x.period.e.localeCompare(y.period.e));}
+function rBuildReport(cfg){
+  const {a,P}=cfg, C=cfg.cmpOn?cfg.C:null;
+  const cmp=rCompare(a,P,C||cfg.C), ins=rInsights(cmp,{sessions:rUploads(a).sessions});
+  const lo=rPic(a), recs=rRecs(cmp,ins,lo), R=k=>cmp.rows.find(r=>r.m.k===k), pa=cmp.pa;
+  if(!cmp.pr.length) throw new Error(`No data for ${a} between ${fmtDate(P.s)} and ${fmtDate(P.e)}. Pick another period or upload data for it.`);
+  const prev=rPrevReports(a,P.s), last=prev[prev.length-1], traj=rTrajectory(a,P.e);
+  const S={}, gD=pa.g/pa.days, ach=R("ach"), gR=R("g"), md=cmp.dr?mainDriver(cmp.dr):null, has=k=>{const r=R(k);return r&&r.cur!=null;};
+  const chg=r=>r&&r.pct!=null?(r.m.pp?` (${rFmtAbs(r.abs,r.m)} vs comparison)`:` (${r.pct>=0?"+":""}${r.pct.toFixed(1)}% vs comparison)`):"";
+  // 1 executive summary
+  const ex=[`In ${fmtRange(P)}, ${a} generated Rp ${fmtC(pa.g)} GMV (Rp ${fmtC(gD)} per day over ${pa.days} days with data)${ach&&ach.cur!=null?`, reaching ${(ach.cur*100).toFixed(1)}% of target`:""}.`];
+  if(C&&gR&&gR.pct!=null) ex.push(`GMV per day is ${gR.pct>=0?"up":"down"} ${Math.abs(gR.pct).toFixed(1)}% vs ${fmtRange(C)}${md?`, driven mainly by ${md.name.toLowerCase()} (${pctS(md.pct)})`:""}.`);
+  if(ins.wins[0]) ex.push(`Strongest point: ${ins.wins[0].text.charAt(0).toLowerCase()+ins.wins[0].text.slice(1)}.`);
+  if(ins.probs[0]) ex.push(`Biggest issue: ${ins.probs[0].text.charAt(0).toLowerCase()+ins.probs[0].text.slice(1)}.`);
+  ex.push(`Top priority for the next period: ${recs[0].action.split(". ")[0].replace(/\.$/,"")}.`);
+  const kp=["g","ach","o","cvr","aov","v"].map(k=>R(k)).filter(r=>r&&r.cur!=null).slice(0,6).map(r=>({l:r.m.l,v:rFmt(r.cur,r.m.f),s:r.pct!=null?`${r.pct>=0?"▲":"▼"} ${Math.abs(r.pct).toFixed(1)}%${cmp.norm&&r.m.kind==="sum"?" /day":""}`:(r.m.kind==="sum"&&!r.m.info?rFmt(r.cur/pa.days,r.m.f)+" /day":""),tone:r.pct==null?"":r.pct>=0?"good":"bad"}));
+  S.exec=[{t:"p",text:ex.join(" ")},{t:"kpis",items:kp}];
+  // 2 overview
+  const avail=cmp.rows.filter(r=>r.cur!=null).map(r=>r.m.l), miss=RM.filter(m=>!avail.includes(m.l)).map(m=>m.l);
+  const srcs=[...new Set(cmp.pr.map(x=>x.src))].map(s=>s==="dashboard"?"Dashboard daily data":s==="upload"?"Uploaded file":"Dashboard + uploaded file").join(", ");
+  const files=(rUploads(a).files||[]).filter(f=>!(f.to<P.s||f.from>P.e)).map(f=>f.name);
+  S.overview=[{t:"table",head:["Item","Detail"],rows:[["Account",a],["Brand",rBrand(a)||"–"],["Platform",rPlatform(a)],["LO specialist (PIC)",lo||"–"],["Reporting period",`${fmtRange(P)} (${cfg.kindLabel||"custom"}, ${cmp.lenP} days)`],["Comparison period",C?`${fmtRange(C)} (${cmp.lenC} days)`:cfg.C?`${fmtRange(cfg.C)}: used as the baseline for analysis (comparison section switched off)`:"None"],["Days with data",`${pa.days} of ${cmp.lenP}`],["Data sources",srcs+(files.length?` · files: ${files.join(", ")}`:"")],["Metrics available",avail.join(", ")],["Metrics not available",miss.join(", ")||"none"],["Campaign days in period",cmp.evP.join(", ")||"none"]]}];
+  if(cmp.flags.length) S.overview.push({t:"callout",tone:"info",text:"Data notes: "+cmp.flags.join(" ")});
+  const recon=cmp.pr.filter(x=>x.g_up!=null); if(recon.length){const d=sum(recon.map(x=>x.g_up))/sum(recon.map(x=>x.g))-1;if(Math.abs(d)>.02) S.overview.push({t:"callout",tone:"info",text:`Uploaded GMV differs from the dashboard by ${pctS(d)} on ${recon.length} overlapping days (the file may count gross GMV before cancellations). Dashboard values are used for GMV; uploaded values are used for the extra metrics only.`});}
+  // 3 highlights
+  const hl=[...ins.wins.slice(0,3).map(w=>w.text+"."),...ins.imp.filter(r=>!["g"].includes(r.m.k)).slice(0,3).map(r=>`${r.m.l} improved ${r.pct.toFixed(1)}% (${rFmt(r.prev,r.m.f)} → ${rFmt(r.cur,r.m.f)}).`)];
+  if(ins.anom.filter(x=>x.z>0).length) hl.push(`Best day: ${fmtDate(ins.anom.filter(x=>x.z>0).sort((x,y)=>y.g-x.g)[0].date)} with Rp ${fmtC(ins.anom.filter(x=>x.z>0).sort((x,y)=>y.g-x.g)[0].g)}${ins.anom.filter(x=>x.z>0).sort((x,y)=>y.g-x.g)[0].ev?" ("+ins.anom.filter(x=>x.z>0).sort((x,y)=>y.g-x.g)[0].ev+")":""}.`);
+  S.highlights=[{t:"ul",items:hl.length?hl:["No metric improved meaningfully in this period."]}];
+  // 4 KPI dashboard
+  S.kpi=[{t:"table",head:["KPI","Value","Per day","Days with data"],align:["l","r","r","r"],rows:cmp.rows.filter(r=>r.cur!=null).map(r=>[r.m.l,rFmt(r.cur,r.m.f),r.m.kind==="sum"&&!r.m.info?rFmt(r.cur/pa.days,r.m.f):"–",`${r.covP}/${pa.days}`])},
+    {t:"chart",kind:"daily",title:"Daily GMV vs target",labels:cmp.pr.map(x=>x.date.slice(5)),g:cmp.pr.map(x=>x.g),t:cmp.pr.map(x=>x.t||null),ev:cmp.pr.map(x=>x.ev||"")}];
+  // 5 period over period
+  if(C){
+    const pr_=cmp.rows.filter(r=>!r.m.info||r.m.k==="t");
+    S.pop=[{t:"p",text:`Primary period: ${fmtRange(P)} (${cmp.pa.days} days with data). Comparison period: ${fmtRange(C)} (${cmp.ca.days} days with data).${cmp.norm?" The periods differ in length, so % change for totals is based on daily averages.":""}`},
+      {t:"table",head:["KPI","Comparison","Primary","Change","% change","Status"],align:["l","r","r","r","r","l"],rows:pr_.map(r=>[r.m.l,rFmt(r.prev,r.m.f),rFmt(r.cur,r.m.f),rFmtAbs(r.abs,r.m),r.pct!=null?`${r.pct>=0?"+":""}${r.pct.toFixed(1)}%`:(r.note||"–"),r.status])},
+      {t:"chart",kind:"change",title:"% change by KPI",labels:pr_.filter(r=>r.pct!=null&&!r.m.info).map(r=>r.m.l),vals:pr_.filter(r=>r.pct!=null&&!r.m.info).map(r=>+r.pct.toFixed(1))},
+      {t:"ul",title:"Biggest movements",items:[...ins.imp.slice(0,3).map(r=>`▲ ${r.m.l} +${r.pct.toFixed(1)}% (${rFmt(r.prev,r.m.f)} → ${rFmt(r.cur,r.m.f)})`),...ins.dec.slice(0,3).map(r=>`▼ ${r.m.l} ${r.pct.toFixed(1)}% (${rFmt(r.prev,r.m.f)} → ${rFmt(r.cur,r.m.f)})`),...(ins.stag.length?[`● Stable (within ±2%): ${ins.stag.map(r=>r.m.l).join(", ")}`]:[])]},
+      {t:"ul",title:"Comparative insights",items:[...ins.F,...ins.div].map(f=>rFindingText(f))}];
+    if(cmp.flags.length) S.pop.push({t:"callout",tone:"info",text:cmp.flags.join(" ")});
+  }
+  // 6 detailed metrics
+  const det=[];const grp=(g,txt)=>{const rs=cmp.rows.filter(r=>r.m.grp===g&&r.cur!=null&&!r.m.info);if(!rs.length) return;
+    det.push({t:"h",text:g});det.push({t:"p",text:rs.map(r=>`${r.m.l}: ${rFmt(r.cur,r.m.f)}${r.m.kind==="sum"?` (${rFmt(r.cur/pa.days,r.m.f)}/day)`:""}${chg(r)}`).join("; ")+"."+(txt?" "+txt:"")});};
+  grp("Sales",ins.tr!=null?`Inside the period, daily GMV trended ${ins.tr>=0?"up":"down"} about ${Math.abs(ins.tr).toFixed(1)}% of the average per day; normal-day GMV was Rp ${fmtC(ins.h1)} in the first half vs Rp ${fmtC(ins.h2)} in the second half.`:"");
+  grp("Traffic",""); grp("Funnel",ins.funnel?(ins.funnel.pct<0?`Funnel bottleneck vs comparison: ${ins.funnel.stage} fell ${pctS(ins.funnel.pct/100)}.`:"Both funnel stages (impression → click and click → order) held or improved vs the comparison period."):"");
+  grp("Basket",""); grp("Audience",""); grp("Live operations","");
+  if(ins.wd) det.push({t:"p",text:`Weekday pattern (normal days): strongest ${ins.wd.best[0]} (+${(ins.wd.best[1]*100).toFixed(0)}% vs average), weakest ${ins.wd.worst[0]} (${(ins.wd.worst[1]*100).toFixed(0)}%).`});
+  if(miss.length) det.push({t:"callout",tone:"info",text:`Not analysed because the data is not available: ${miss.join(", ")}. Upload a TikTok LIVE or session export to add them.`});
+  S.detail=det;
+  // 7 content / campaign
+  const ct=[];
+  const evd=cmp.pr.filter(x=>x.ev); if(evd.length) ct.push({t:"table",title:"Campaign days",head:["Date","Event","GMV","vs normal day"],align:["l","l","r","r"],rows:evd.map(x=>[fmtDate(x.date),x.ev,"Rp "+fmtC(x.g),ins.m0?`${(x.g/ins.m0).toFixed(1)}×`:"–"])});
+  if(ins.hosts&&ins.hosts.length){ct.push({t:"table",title:"Host performance (min. 3 sessions)",head:["Host","Sessions","Hours","GMV","GMV / hour"],align:["l","r","r","r","r"],rows:ins.hosts.slice(0,12).map(h=>[oTitle(h.host),h.n,h.hrs.toFixed(1),"Rp "+fmtC(h.g),"Rp "+fmtC(h.gph)])});
+    ct.push({t:"chart",kind:"hosts",title:"GMV per live hour by host",labels:ins.hosts.slice(0,12).map(h=>oTitle(h.host).split(" ").slice(0,2).join(" ")),vals:ins.hosts.slice(0,12).map(h=>Math.round(h.gph))});}
+  if(ins.slots&&ins.slots.length) ct.push({t:"table",title:"Time slot performance",head:["Slot start","Sessions","Hours","GMV / hour"],align:["l","r","r","r"],rows:ins.slots.map(s=>[s.slot,s.n,s.hrs.toFixed(1),"Rp "+fmtC(s.gph)])});
+  if(!ct.length) ct.push({t:"p",text:"No campaign days and no session-level data (hosts, time slots) in this period. Upload a session export (e.g. the Host-Brand commission sheet) to analyse hosts and time slots."});
+  S.content=ct;
+  // 8 root cause
+  const rc=[];
+  if(cmp.dr) rc.push({t:"table",title:"What moved GMV (vs comparison period)",head:["Driver","Change in driver","GMV effect"],align:["l","r","r"],rows:[["Traffic (views per day)",pctS(cmp.dr.vP),rFmtAbs(cmp.dr.cV,{f:"rp"})],["Conversion (orders per view)",pctS(cmp.dr.cP),rFmtAbs(cmp.dr.cC,{f:"rp"})],["AOV (GMV per order)",pctS(cmp.dr.aP),rFmtAbs(cmp.dr.cA,{f:"rp"})],["Total",pctS(cmp.dr.gP),rFmtAbs(cmp.dr.cTot,{f:"rp"})]]});
+  const rcF=[...ins.F.filter(f=>f.area!=="Overall"||f.title.startsWith("Campaign")),...ins.div];
+  ins.anom.forEach(x=>rcF.push({cls:x.ev?"Confirmed":"Hypothesis",title:`${x.z>0?"Unusually strong":"Unusually weak"} day: ${fmtDate(x.date)}`,what:`Rp ${fmtC(x.g)} vs Rp ${fmtC(ins.m0)} on a normal day.`,how:`${((x.g/ins.m0-1)*100).toFixed(0)}%`,why:x.ev?`Campaign day (${x.ev}) in the calendar.`:"Not explained by the campaign calendar; check the session log (host, schedule, stream or stock issues).",impact:`${rFmtAbs(x.g-ins.m0,{f:"rp"})} vs a normal day.`,action:x.ev?(x.z>0?"Expected campaign spike: plan the next campaign with the same setup and check what sold best.":"Campaign day underperformed: review the campaign setup (vouchers, stock, host) before the next one."):(x.z>0?"Find out what was different and repeat it.":"Find the cause and prevent it.")}));
+  if(ins.acts.length) ins.acts.forEach(x=>rcF.push({cls:"Hypothesis",title:`Logged action on ${fmtDate(x.date)}: ${x.cat}`,what:x.note,how:x.im.st==="ok"?`7 days after vs before: GMV/day ${pctS(x.im.gP)}${x.im.dA!=null?`, achievement ${(x.im.achB*100).toFixed(0)}→${(x.im.achA*100).toFixed(0)}%`:""}`:"Too early to measure.",why:"Timing matches, but other factors could also explain the change.",impact:x.im.st==="ok"?(x.im.verdict==="worked"?"Positive":x.im.verdict==="worse"?"Negative":"No clear change"):"–",action:"Keep logging actions so effects can be separated."}));
+  rc.push({t:"ul",items:rcF.length?rcF.map(rFindingText):["No unusual patterns found beyond the driver split above."]});
+  rc.push({t:"callout",tone:"info",text:"Labels: Confirmed = calculated directly from the data. Likely = strongly suggested by the pattern in the data. Hypothesis = a possible explanation that needs checking; the data alone does not prove the cause."});
+  S.root=rc;
+  // 9 problems
+  S.problems=[{t:"ul",items:ins.probs.length?ins.probs.slice(0,6).map((p,i)=>`${i+1}. ${p.text}.`):["No significant problems found in this period."]}];
+  // 10 learnings
+  const ln=[];
+  ins.wins.slice(0,2).forEach(w=>ln.push(`What worked: ${w.text.charAt(0).toLowerCase()+w.text.slice(1)}.`));
+  ins.div.forEach(d=>ln.push(`Lesson: ${d.title.toLowerCase()} → ${d.action.charAt(0).toLowerCase()+d.action.slice(1)}`));
+  ins.probs.slice(0,2).forEach(w=>ln.push(`What held the account back: ${w.text.charAt(0).toLowerCase()+w.text.slice(1)}.`));
+  if(last){
+    const st=rRecStatus();(last.recs||[]).forEach(rc_=>{const k=rc_.kpi&&rc_.kpi.k, m=k&&RMK[k], then=last.kpiSnap&&last.kpiSnap[k], now=R(k)&&R(k).cur, s=st[last.id+":"+rc_.id]||"not tracked";
+      if(m&&then!=null&&now!=null){const per=m.kind==="sum"?[then/(last.days||1),now/pa.days]:[then,now];
+        ln.push(`Previous report (${fmtRange(last.period)}) recommended: "${rc_.problem}" → status: ${s}. ${rc_.kpi.label}: ${rFmt(per[0],m.f)} → ${rFmt(per[1],m.f)} (${pctS(per[1]/per[0]-1)})${rc_.kpi.target!=null?`, target ${rFmt(rc_.kpi.target,m.f)} ${(m.k==="ach"?per[1]>=rc_.kpi.target:per[1]>=rc_.kpi.target)?"reached":"not reached yet"}`:""}. The change is measured; it is not proof the action caused it.`);}
+      else ln.push(`Previous report (${fmtRange(last.period)}) recommended: "${rc_.problem}" → status: ${s}.`);});
+    const rec=(last.probKeys||[]).filter(k=>ins.probs.some(p=>p.key===k));
+    if(rec.length) ln.push(`Recurring issue (also in the previous report): ${[...new Set(rec)].join(", ")}.`);
+  }
+  if(!ln.length) ln.push("First report for this account: learnings will build up as more periods are reported.");
+  S.learn=[{t:"ul",items:ln}];
+  // 11 recommendations
+  S.recs=recs.map(r=>({t:"rec",r}));
+  // 12 action plan
+  S.plan=[{t:"table",head:["#","Action","Owner","Timeline","KPI to watch","Priority"],align:["r","l","l","l","l","l"],rows:recs.map((r,i)=>[i+1,r.action.split(". ")[0].replace(/\.$/,""),r.owner,r.timeline,r.kpi.label+(r.kpi.target!=null?` → ${rFmt(r.kpi.target,RMK[r.kpi.k]?RMK[r.kpi.k].f:"num1")}${r.kpi.per?" /"+r.kpi.per:""}`:""),r.priority])}];
+  // 13 conclusion
+  S.concl=[{t:"p",text:`${a} ${traj.label==="not enough history"?"does not have enough history yet to judge the longer-term direction":`is ${traj.label} over the last ${traj.ms.length} months of normal-day GMV (${traj.ms.map(x=>MN3[+x.m.slice(5)-1]+" Rp "+fmtC(x.avg)).join(" → ")})`}. ${C&&gR&&gR.pct!=null?`Versus the comparison period, GMV per day is ${gR.pct>=0?"up":"down"} ${Math.abs(gR.pct).toFixed(1)}%. `:""}The next period should focus on ${recs.slice(0,2).map(r=>({traffic:"recovering traffic",conversion:"lifting conversion",aov:"growing basket size",target:"closing the target gap",funnel:"fixing the funnel bottleneck",lowdays:"preventing weak days",hosts:"better host scheduling",keep:"protecting current performance"}[r.id]||r.problem.toLowerCase())).join(" and ")}, measured by ${recs.slice(0,2).map(r=>r.kpi.label.toLowerCase()).join(" and ")}.`}];
+  const kpiSnap={};cmp.rows.forEach(r=>{if(r.cur!=null) kpiSnap[r.m.k]=r.cur;});
+  const sameP=rLibAll().filter(x=>x.account===a&&x.period.s===P.s&&x.period.e===P.e).length;
+  return {id:"r"+Date.now().toString(36),v:1,version:sameP+1,account:a,brand:rBrand(a),platform:rPlatform(a),lo,period:P,compare:C,kindLabel:cfg.kindLabel||"custom",
+    created:new Date().toISOString(),by:(()=>{try{return localStorage.getItem("migo_me")||"";}catch(e){return "";}})(),days:pa.days,
+    sections:RPT_SECTIONS.filter(([k])=>S[k]).map(([k,t],i)=>({k,title:t,on:true,blocks:S[k]})),recs,kpiSnap,probKeys:ins.probs.map(p=>p.key),traj:traj.label};
+}
+function rFindingText(f){return `[${f.cls}] ${f.title}. ${f.what||""}${f.how?" "+f.how:""} Why: ${f.why} Impact: ${f.impact} Action: ${f.action}`.replace(/\s+/g," ").trim();}
+
+/* ---------- report library (this device + team library in the repo) ---------- */
+const RLIB_KEY="migo_rpt_lib_v1", REC_KEY="migo_rec_status";
+let RTEAM=null;
+function rLibLocal(){try{return JSON.parse(localStorage.getItem(RLIB_KEY)||"{}");}catch(e){return {};}}
+function rLibAll(){const l=rLibLocal(), out={...(RTEAM||{})};Object.values(l).forEach(r=>{out[r.id]={...r,_local:1,_team:!!(RTEAM&&RTEAM[r.id])};});Object.values(out).forEach(r=>{if(RTEAM&&RTEAM[r.id]) r._team=1;});return Object.values(out);}
+function rRecStatus(){try{return JSON.parse(localStorage.getItem(REC_KEY)||"{}");}catch(e){return {};}}
+function rSaveLocal(rep){const l=rLibLocal();l[rep.id]=rep;try{localStorage.setItem(RLIB_KEY,JSON.stringify(l));return true;}catch(e){return false;}}
+function rDelLocal(id){const l=rLibLocal();delete l[id];try{localStorage.setItem(RLIB_KEY,JSON.stringify(l));}catch(e){}}
+function rLoadTeam(){
+  if(RTEAM||location.protocol==="file:") return Promise.resolve(RTEAM||{});
+  return fetch("report-history/index.json?t="+Date.now(),{cache:"no-store"}).then(r=>r.ok?r.json():{reports:[]}).catch(()=>({reports:[]})).then(ix=>{
+    const list=ix.reports||[];
+    return Promise.all(list.map(x=>fetch("report-history/"+x.file+"?t="+Date.now(),{cache:"no-store"}).then(r=>r.ok?r.json():null).catch(()=>null))).then(rs=>{
+      RTEAM={};rs.filter(Boolean).forEach(r=>{RTEAM[r.id]=r;});
+      if(ix.status){const st=rRecStatus();Object.entries(ix.status).forEach(([k,v])=>{if(!st[k]) st[k]=v;});try{localStorage.setItem(REC_KEY,JSON.stringify(st));}catch(e){}}
+      return RTEAM;});});
+}
+async function ghReq(path,method,body){
+  let tok="";try{tok=localStorage.getItem(GH_TOK_KEY)||"";}catch(e){}
+  if(!tok){tok=(prompt("One-time setup: paste a GitHub token that can write to the live-dashboard repo (fine-grained, Contents: Read and write). It is stored only in this browser.")||"").trim();if(!tok) throw new Error("No token, not saved to the team library.");try{localStorage.setItem(GH_TOK_KEY,tok);}catch(e){}}
+  const h={Authorization:"Bearer "+tok,Accept:"application/vnd.github+json"}, url=`https://api.github.com/repos/${GH_REPO}/contents/${path}`;
+  if(method==="GET"){const r=await fetch(url+"?ref=main",{headers:h,cache:"no-store"});if(r.status===401||r.status===403){try{localStorage.removeItem(GH_TOK_KEY);}catch(e){}throw new Error("GitHub rejected the token. Try again with a valid token.");}
+    if(r.status===404) return null; const j=await r.json(); return {sha:j.sha,json:JSON.parse(decodeURIComponent(escape(atob(j.content.replace(/\n/g,"")))))};}
+  const r=await fetch(url,{method:"PUT",headers:h,body:JSON.stringify(body)});
+  if(!r.ok){const j=await r.json().catch(()=>({}));if(r.status===401||r.status===403){try{localStorage.removeItem(GH_TOK_KEY);}catch(e){}}throw new Error(j.message||("GitHub error "+r.status));}
+  return r.json();
+}
+const b64=s=>btoa(unescape(encodeURIComponent(s)));
+async function rSaveTeam(rep){
+  const file=`${rSlug(rep.account)}/${rep.id}.json`;
+  const clean=JSON.parse(JSON.stringify(rep));delete clean._local;delete clean._team;
+  await ghReq("report-history/"+file,"PUT",{message:`Report: ${rep.account} ${rep.period.s}…${rep.period.e} v${rep.version}`,content:b64(JSON.stringify(clean))});
+  for(let i=0;i<3;i++){ // index update (retry on conflict)
+    const cur=await ghReq("report-history/index.json","GET");
+    const ix=cur?cur.json:{reports:[],status:{}};
+    ix.reports=(ix.reports||[]).filter(x=>x.id!==rep.id);ix.reports.push({id:rep.id,account:rep.account,period:rep.period,compare:rep.compare,created:rep.created,version:rep.version,by:rep.by,file});
+    ix.status={...(ix.status||{}),...rRecStatus()};
+    try{await ghReq("report-history/index.json","PUT",{message:"Report index update",content:b64(JSON.stringify(ix,null,1)),...(cur?{sha:cur.sha}:{})});RTEAM=RTEAM||{};RTEAM[rep.id]=clean;return;}catch(e){if(i===2) throw e;}
+  }
+}
+
+/* ---------- file import (TikTok LIVE exports, session / commission sheets, CSV) ---------- */
+const RCOL=[ // [key, test on lower-case header]
+  ["account",h=>/(^|\b)(account|akun|nama akun|shop name|toko)(\b|$)/.test(h)&&!/total account|account id/.test(h)],
+  ["date",h=>/date|tanggal|^tgl|日期|start time|waktu mulai|live time/.test(h)&&!/update|end/.test(h)],
+  ["slot",h=>/schedule|jadwal|slot|time slot/.test(h)],
+  ["cohost",h=>/co-?host/.test(h)],
+  ["host",h=>/host|streamer|kreator|creator/.test(h)&&!/co-?host/.test(h)],
+  ["hrs",h=>/duration|durasi|时长/.test(h)],
+  ["g",h=>/gmv|revenue|pendapatan|成交金额|sales amount|penjualan/.test(h)&&!/per |\/|rate|target|%/.test(h)],
+  ["items",h=>/items? sold|units? sold|produk terjual|件数|qty|quantity|items sold/.test(h)],
+  ["o",h=>/(^|\b)(orders?|pesanan|订单|sku orders|order count)(\b|$)/.test(h)&&!/rate|per|%/.test(h)],
+  ["ctr",h=>/(^|\b)ctr(\b|$)/.test(h)&&!/ctor/.test(h)],
+  ["ctor",h=>/ctor|click.?to.?order/.test(h)],
+  ["imp",h=>/impression|exposure|曝光|tayangan produk/.test(h)],
+  ["clicks",h=>/click|klik|点击/.test(h)&&!/ctr|rate|%/.test(h)],
+  ["viewers",h=>/viewers|penonton|观看人数|unique view/.test(h)],
+  ["v",h=>/(^|\b)(views|total views|live views|tayangan|观看次数)(\b|$)/.test(h)],
+  ["likes",h=>/likes|suka|点赞/.test(h)],["comments",h=>/comments|komentar|评论/.test(h)],["shares",h=>/shares|bagikan|分享/.test(h)],
+  ["fol",h=>/new follower|pengikut baru|followers gained|新增粉丝/.test(h)],
+];
+function rDetect(headers){const cols={};headers.forEach((raw,i)=>{const h=String(raw==null?"":raw).toLowerCase().replace(/\s+/g," ").trim();if(!h) return;
+  for(const [k,t] of RCOL){if(cols[k]==null&&t(h)){cols[k]=i;break;}}});return cols;}
+function rParseDate(v){
+  if(v==null||v==="") return null;
+  if(v instanceof Date&&!isNaN(v)) return isoD(new Date(v.getFullYear(),v.getMonth(),v.getDate()));
+  if(typeof v==="number"&&v>20000&&v<80000){const d=new Date(Math.round((v-25569)*864e5));return isoD(new Date(d.getUTCFullYear(),d.getUTCMonth(),d.getUTCDate()));}
+  const s=String(v).trim();let m;
+  if((m=s.match(/^(\d{4})[-/.](\d{1,2})[-/.](\d{1,2})/))) return `${m[1]}-${String(m[2]).padStart(2,"0")}-${String(m[3]).padStart(2,"0")}`;
+  if((m=s.match(/^(\d{1,2})[-/.](\d{1,2})[-/.](\d{4})/))) return `${m[3]}-${String(m[2]).padStart(2,"0")}-${String(m[1]).padStart(2,"0")}`;
+  const d=new Date(s);return isNaN(d)?null:isoD(d);}
+function rNum(v){if(v==null||v==="") return null;if(typeof v==="number") return v;let s=String(v).replace(/rp|idr|\s/gi,"");const pct=s.endsWith("%");s=s.replace("%","");
+  if(/^\d{1,3}(\.\d{3})+(,\d+)?$/.test(s)) s=s.replace(/\./g,"").replace(",","."); else s=s.replace(/,/g,"");const n=parseFloat(s);return isNaN(n)?null:(pct?n/100:n);}
+function rHours(v,head){if(v==null||v==="") return null;if(typeof v==="string"&&/\d+:\d+/.test(v)){const p=v.split(":").map(Number);return p.length===3?p[0]+p[1]/60+p[2]/3600:p[0]+p[1]/60;}
+  const n=rNum(v);if(n==null) return null;const h=String(head||"").toLowerCase();if(/sec|detik/.test(h)) return n/3600;if(/min|menit/.test(h)) return n/60;if(v instanceof Date) return null;return n>48?n/60:n;}
+async function rParseFile(file){
+  const X=await loadLib("xlsx","XLSX");
+  const buf=await file.arrayBuffer();
+  const wb=X.read(buf,{type:"array",cellDates:true});
+  const out=[];
+  wb.SheetNames.forEach(sn=>{const rows=X.utils.sheet_to_json(wb.Sheets[sn],{header:1,raw:true,defval:null,blankrows:false});
+    let best=null;for(let i=0;i<Math.min(25,rows.length);i++){const c=rDetect(rows[i]||[]);const sc=Object.keys(c).length;if(c.date!=null&&c.g!=null&&(!best||sc>best.sc)) best={i,c,sc};}
+    if(best&&best.sc>=3) out.push({name:sn,head:rows[best.i],cols:best.c,rows:rows.slice(best.i+1).filter(r=>r&&r[best.c.date]!=null)});});
+  if(!out.length) throw new Error("No sheet with a date column and a GMV column was found. Check that the file has headers like Date and GMV.");
+  return out;
+}
+function rFileAccounts(sheets){const c={};sheets.forEach(s=>{if(s.cols.account==null) return;s.rows.forEach(r=>{const v=String(r[s.cols.account]||"").trim();if(v) c[v]=(c[v]||0)+1;});});return Object.entries(c).sort((x,y)=>y[1]-x[1]);}
+function rGuessAccount(a,vals){const al=(R_FILE_ALIAS[a]||[a]).map(x=>x.toUpperCase());return vals.filter(([v])=>al.includes(v.toUpperCase())).map(([v])=>v);}
+function rExtract(sheets,accVals){
+  const days={},ses=[];let n=0;const set=new Set((accVals||[]).map(v=>v.toUpperCase()));
+  sheets.forEach(s=>{const C=s.cols;s.rows.forEach(r=>{
+    if(C.account!=null&&set.size&&!set.has(String(r[C.account]||"").trim().toUpperCase())) return;
+    const d=rParseDate(r[C.date]);if(!d) return;const x=days[d]||(days[d]={});n++;
+    const add=(k,v)=>{if(v!=null&&isFinite(v)) x[k]=(x[k]||0)+v;};
+    const g=rNum(r[C.g]);add("g",g);
+    ["o","items","v","viewers","imp","clicks","fol"].forEach(k=>{if(C[k]!=null) add(k,rNum(r[C[k]]));});
+    if(C.likes!=null||C.comments!=null||C.shares!=null) add("eng",(rNum(r[C.likes])||0)+(rNum(r[C.comments])||0)+(rNum(r[C.shares])||0));
+    const w=C.viewers!=null?(rNum(r[C.viewers])||0):1;
+    if(C.ctr!=null&&C.imp==null){let c=rNum(r[C.ctr]);if(c!=null){if(c>1) c/=100;add("ctr_w",c*w);add("wv",w);}}
+    if(C.ctor!=null&&C.clicks==null){let c=rNum(r[C.ctor]);if(c!=null){if(c>1) c/=100;add("ctor_w",c*w);add("wv2",w);}}
+    const hrs=C.hrs!=null?rHours(r[C.hrs],s.head[C.hrs]):null;
+    if(C.host!=null||C.slot!=null||hrs!=null){add("hrs",hrs);add("sessions",1);
+      ses.push({d,host:C.host!=null?String(r[C.host]||"").trim():"",co:C.cohost!=null?String(r[C.cohost]||"").trim():"",slot:C.slot!=null?String(r[C.slot]||"").trim():"",hrs:hrs||0,g:g||0,items:C.items!=null?(rNum(r[C.items])||0):0});}
+  });});
+  const ks=Object.keys(days).sort();return {days,ses,n,from:ks[0],to:ks[ks.length-1]};
+}
+function rImport(a,file,ex){
+  const u=rUploads(a);
+  Object.entries(ex.days).forEach(([d,x])=>{u.days[d]=x;}); // replace those dates with the new file's values
+  u.sessions=(u.sessions||[]).filter(s=>!(s.d>=ex.from&&s.d<=ex.to)).concat(ex.ses);
+  u.files=(u.files||[]).filter(f=>f.name!==file).concat([{name:file,from:ex.from,to:ex.to,rows:ex.n,at:new Date().toISOString()}]);
+  if(!rSaveUploads(a,u)){ // too big for browser storage → keep daily totals, drop the oldest sessions
+    u.sessions=u.sessions.slice(-3000);if(!rSaveUploads(a,u)) throw new Error("This browser's storage is full. Remove older uploads for other accounts first.");}
+  delete _rd[a];
+}
+function rUploadHtml(a){
+  const u=rUploads(a);
+  return `<div class="upl"><div class="uplh"><b>Import data for ${esc(a)}</b><span>TikTok LIVE export, session sheet (e.g. Host-Brand commission sheet) or CSV · .xlsx / .xls / .csv</span></div>
+    <label class="drop" id="uDrop"><input type="file" id="uFile" accept=".xlsx,.xls,.csv" hidden><span>⬆ Drop a file here or <u>choose a file</u></span></label>
+    <div id="uMsg"></div>
+    ${u.files&&u.files.length?`<div class="uflist"><div class="muted" style="font-size:11px;margin-bottom:4px">Imported for this account (saved in this browser):</div>${u.files.map(f=>`<div class="uf"><span>📄 ${esc(f.name)}</span><span class="muted">${fmtDate(f.from)} – ${fmtDate(f.to)} · ${f.rows} rows</span></div>`).join("")}<button class="lnk" id="uClear">Remove imported data for this account</button></div>`:""}</div>`;
+}
+function rBindUpload(a,done){
+  const inp=document.getElementById("uFile"),drop=document.getElementById("uDrop"),msg=document.getElementById("uMsg");if(!inp) return;
+  const go=async f=>{if(!f) return;msg.innerHTML=`<div class="prog"><i></i>Reading ${esc(f.name)}…</div>`;
+    try{const sh=await rParseFile(f), accs=rFileAccounts(sh);
+      const det=sh.map(s=>`<div class="muted" style="font-size:11.5px">Sheet <b>${esc(s.name)}</b>: ${s.rows.length} rows · columns found: ${Object.keys(s.cols).map(k=>({g:"GMV",o:"orders",v:"views",hrs:"duration",ctr:"CTR",ctor:"CTOR",imp:"impressions",fol:"new followers"}[k]||k)).join(", ")}</div>`).join("");
+      const pre=rGuessAccount(a,accs);
+      msg.innerHTML=`<div class="udet">${det}${accs.length?`<div style="margin-top:8px"><b style="font-size:12px">This file has ${accs.length} accounts. Import rows for:</b><div class="uacc">${accs.slice(0,30).map(([v,n])=>`<label><input type="checkbox" value="${esc(v)}" ${pre.includes(v)?"checked":""}> ${esc(v)} <span class="muted">(${n})</span></label>`).join("")}</div>${pre.length?"":`<div class="neg" style="font-size:12px">No account name matched ${esc(a)} automatically. Tick the right one.</div>`}</div>`:""}
+        <button class="pbtn sm" id="uGo" style="margin-top:10px">Import into ${esc(a)}</button></div>`;
+      document.getElementById("uGo").onclick=()=>{const sel=[...msg.querySelectorAll(".uacc input:checked")].map(x=>x.value);
+        if(accs.length&&!sel.length){oToast("Tick at least one account",1);return;}
+        const ex=rExtract(sh,sel);if(!ex.n){oToast("No rows matched",1);return;}
+        try{rImport(a,f.name,ex);oToast(`Imported ${ex.n} rows (${fmtDate(ex.from)} – ${fmtDate(ex.to)})`);done&&done();}catch(e){msg.innerHTML=`<div class="err">${esc(e.message)}</div>`;}};
+    }catch(e){msg.innerHTML=`<div class="err">${esc(e.message)}</div>`;}};
+  inp.onchange=()=>go(inp.files[0]);
+  drop.addEventListener("dragover",e=>{e.preventDefault();drop.classList.add("on");});drop.addEventListener("dragleave",()=>drop.classList.remove("on"));
+  drop.addEventListener("drop",e=>{e.preventDefault();drop.classList.remove("on");go(e.dataTransfer.files[0]);});
+  const cl=document.getElementById("uClear");if(cl) cl.onclick=()=>{if(!confirm(`Remove all imported data for ${a} from this browser?`)) return;try{localStorage.removeItem(UPL_KEY(a));}catch(e){}delete _rd[a];done&&done();};
+}
+
+/* ---------- shared chart drawing (preview + DOCX) ---------- */
+function rChartCfg(b){
+  const o=baseOpts();o.animation=false;o.plugins.legend={display:b.kind==="daily",position:"bottom",labels:{boxWidth:10,font:{size:11}}};
+  if(b.kind==="daily"){o.scales.y.ticks.callback=v=>fmtC(v);
+    return {type:"bar",data:{labels:b.labels,datasets:[{label:"GMV",data:b.g,backgroundColor:b.ev.map(e=>e?"#c6a664":"#2f5aa8"),maxBarThickness:18,order:2},{label:"Target",data:b.t,type:"line",borderColor:"#0e1320",borderWidth:1.5,pointRadius:0,borderDash:[4,3],order:1}]},options:o};}
+  if(b.kind==="change"){o.indexAxis="y";o.scales.x={grid:{color:"#efede7"},ticks:{callback:v=>v+"%",font:{size:10}}};o.scales.y={grid:{display:false},ticks:{font:{size:10.5}}};
+    return {type:"bar",data:{labels:b.labels,datasets:[{data:b.vals,backgroundColor:b.vals.map(v=>v>=0?"#1f8a5b":"#b9443c"),maxBarThickness:14}]},options:o};}
+  if(b.kind==="hosts"){o.indexAxis="y";o.scales.x={ticks:{callback:v=>fmtC(v),font:{size:10}},grid:{color:"#efede7"}};o.scales.y={grid:{display:false},ticks:{font:{size:10.5}}};
+    return {type:"bar",data:{labels:b.labels,datasets:[{data:b.vals,backgroundColor:"#2f5aa8",maxBarThickness:14}]},options:o};}
+  if(b.kind==="trend"){o.plugins.legend={display:true,position:"bottom",labels:{boxWidth:10,font:{size:11}}};o.scales.y.ticks.callback=v=>fmtC(v);
+    return {type:"line",data:{labels:b.labels,datasets:[{label:b.l1,data:b.a,borderColor:"#2f5aa8",backgroundColor:"#2f5aa8",tension:.25,pointRadius:2},{label:b.l2,data:b.b,borderColor:"#c6a664",backgroundColor:"#c6a664",borderDash:[5,4],tension:.25,pointRadius:2}]},options:o};}
+}
+async function rChartPng(b,w=1000,h=420){
+  const c=document.createElement("canvas");c.width=w;c.height=h;c.style.cssText=`position:fixed;left:-9999px;width:${w}px;height:${h}px`;document.body.appendChild(c);
+  const cfg=rChartCfg(b);cfg.options.responsive=false;cfg.options.devicePixelRatio=1;cfg.options.maintainAspectRatio=false;
+  const ch=new Chart(c.getContext("2d"),cfg);await new Promise(r=>setTimeout(r,30));
+  const ctx=c.getContext("2d");ctx.globalCompositeOperation="destination-over";ctx.fillStyle="#fff";ctx.fillRect(0,0,w,h);
+  const url=c.toDataURL("image/png");ch.destroy();c.remove();
+  const bin=atob(url.split(",")[1]),u8=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++) u8[i]=bin.charCodeAt(i);return u8;
+}
+
+/* ---------- report preview (editable) ---------- */
+function rPreviewHtml(rep){
+  let n=0;
+  const ed=(path,txt,tag="div",cls="")=>`<${tag} class="${cls}" contenteditable="true" spellcheck="false" data-p="${path}">${esc(txt)}</${tag}>`;
+  const blk=(b,si,bi)=>{const P=`${si}.${bi}`;
+    if(b.t==="p") return ed(P+".text",b.text,"p","rp-p");
+    if(b.t==="h") return `<h4 class="rp-h4">${esc(b.text)}</h4>`;
+    if(b.t==="ul") return `${b.title?`<h4 class="rp-h4">${esc(b.title)}</h4>`:""}<ul class="rp-ul">${b.items.map((x,j)=>{const m=String(x).match(/^\[(Confirmed|Likely|Hypothesis)\]\s*/);return `<li>${m?`<span class="cls c-${m[1]}">${m[1]}</span>`:""}${ed(P+".items."+j,m?x.slice(m[0].length):x,"span")}</li>`;}).join("")}</ul>`;
+    if(b.t==="table") return `${b.title?`<h4 class="rp-h4">${esc(b.title)}</h4>`:""}<div class="scroll"><table class="rp-t"><thead><tr>${b.head.map((h,j)=>`<th class="${(b.align||[])[j]==="r"?"":"l"}">${esc(h)}</th>`).join("")}</tr></thead><tbody>${b.rows.map(r=>`<tr>${r.map((c,j)=>`<td class="${(b.align||[])[j]==="r"?"num":"l"}${/^(Improved)$/.test(c)?" pos":/^(Declined)$/.test(c)?" neg":""}">${esc(c)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+    if(b.t==="chart"){n++;return `<h4 class="rp-h4">${esc(b.title)}</h4><div class="chartbox" style="height:${b.kind==="change"?Math.max(220,b.labels.length*22+40):b.kind==="hosts"?Math.max(200,b.labels.length*24+40):260}px"><canvas id="rpc_${si}_${bi}"></canvas></div>`;}
+    if(b.t==="callout") return `<div class="rp-call ${b.tone}">${ed(P+".text",b.text,"div")}</div>`;
+    if(b.t==="kpis") return `<div class="rp-kpis">${b.items.map(k=>`<div><small>${esc(k.l)}</small><b>${esc(k.v)}</b><span class="${k.tone==="good"?"pos":k.tone==="bad"?"neg":"muted"}">${esc(k.s||"")}</span></div>`).join("")}</div>`;
+    if(b.t==="rec"){const r=b.r;return `<div class="rp-rec"><div class="rp-rech"><span class="pill ${r.priority==="High"?"bad":r.priority==="Medium"?"warn":"flat"}">${r.priority}</span>${ed(P+".r.problem",r.problem,"b")}</div>
+      <dl><dt>Evidence</dt>${ed(P+".r.evidence",r.evidence,"dd")}<dt>Action</dt>${ed(P+".r.action",r.action,"dd")}<dt>Expected impact</dt>${ed(P+".r.impact",r.impact,"dd")}<dt>Timeline</dt>${ed(P+".r.timeline",r.timeline,"dd")}<dt>KPI</dt><dd>${esc(r.kpi.label)}${r.kpi.target!=null?` → ${esc(rFmt(r.kpi.target,RMK[r.kpi.k]?RMK[r.kpi.k].f:"num1"))}${r.kpi.per?" /"+r.kpi.per:""}`:""}</dd><dt>Owner</dt>${ed(P+".r.owner",r.owner,"dd")}</dl></div>`;}
+    return "";};
+  return `<div class="rp-doc"><div class="rp-cover"><div class="eyebrow">Account performance report</div><h1>${esc(rep.account)}</h1>
+    <div class="rp-meta"><span><b>Period</b> ${esc(fmtRange(rep.period))}</span>${rep.compare?`<span><b>Compared with</b> ${esc(fmtRange(rep.compare))}</span>`:""}<span><b>Brand</b> ${esc(rep.brand||"–")} · ${esc(rep.platform)}</span><span><b>PIC</b> ${esc(rep.lo||"–")}</span><span><b>Generated</b> ${esc(new Date(rep.created).toLocaleString("en-GB",{dateStyle:"medium",timeStyle:"short"}))}</span><span><b>Version</b> v${rep.version}</span></div></div>`+
+    rep.sections.map((s,si)=>`<section class="rp-sec${s.on?"":" off"}" data-si="${si}"><div class="rp-sh"><h3>${si+1}. ${esc(s.title)}</h3><label class="tgl"><input type="checkbox" data-on="${si}" ${s.on?"checked":""}> include</label></div>${s.on?s.blocks.map((b,bi)=>blk(b,si,bi)).join(""):`<div class="muted" style="font-size:12px">Left out of the export.</div>`}</section>`).join("")+`</div>`;
+}
+function rDrawPreviewCharts(rep){rep.sections.forEach((s,si)=>{if(!s.on) return;s.blocks.forEach((b,bi)=>{if(b.t!=="chart") return;const el=document.getElementById(`rpc_${si}_${bi}`);if(!el) return;const cfg=rChartCfg(b);charts.push(new Chart(el.getContext("2d"),cfg));});});}
+function rBindPreview(rep,onChange){
+  document.querySelectorAll(".rp-doc [data-p]").forEach(el=>el.addEventListener("input",()=>{const p=el.dataset.p.split(".");let o=rep.sections[+p[0]].blocks[+p[1]];
+    for(let i=2;i<p.length-1;i++) o=o[p[i]]; o[p[p.length-1]]=el.innerText.trim(); onChange&&onChange();}));
+  document.querySelectorAll(".rp-doc [data-on]").forEach(el=>el.onchange=()=>{rep.sections[+el.dataset.on].on=el.checked;onChange&&onChange(true);});
+}
+
+/* ---------- DOCX export ---------- */
+async function rDocx(rep){
+  const D=await loadLib("docx","docx");
+  const {Document,Packer,Paragraph,TextRun,Table,TableRow,TableCell,WidthType,AlignmentType,HeadingLevel,ImageRun,Header,Footer,PageNumber,ShadingType,BorderStyle,PageBreak,TabStopType}=D;
+  const NAVY="0B1220",GOLD="C6A664",INK="0E1320",GREY="6B7080",LINE="E8E5DD";
+  const P=(text,o={})=>new Paragraph({spacing:{after:o.after??120,line:276},alignment:o.align,children:[].concat(text).map(t=>typeof t==="string"?new TextRun({text:t,size:o.size||21,color:o.color||INK,bold:o.bold,italics:o.it}):t)});
+  const H=(text,lvl=1)=>new Paragraph({heading:lvl===1?HeadingLevel.HEADING_1:HeadingLevel.HEADING_2,spacing:{before:lvl===1?120:200,after:lvl===1?160:80},keepNext:true,
+    children:[new TextRun({text,bold:true,size:lvl===1?30:23,color:lvl===1?NAVY:INK})],border:lvl===1?{bottom:{style:BorderStyle.SINGLE,size:8,color:GOLD,space:4}}:undefined});
+  const cell=(t,o={})=>new TableCell({shading:o.fill?{type:ShadingType.CLEAR,color:"auto",fill:o.fill}:undefined,margins:{top:60,bottom:60,left:100,right:100},width:o.w?{size:o.w,type:WidthType.PERCENTAGE}:undefined,
+    children:[new Paragraph({alignment:o.r?AlignmentType.RIGHT:AlignmentType.LEFT,children:[new TextRun({text:String(t),size:o.size||18,bold:o.b,color:o.color||INK})]})]});
+  const border={top:{style:BorderStyle.SINGLE,size:4,color:LINE},bottom:{style:BorderStyle.SINGLE,size:4,color:LINE},left:{style:BorderStyle.NONE,size:0,color:"FFFFFF"},right:{style:BorderStyle.NONE,size:0,color:"FFFFFF"},insideHorizontal:{style:BorderStyle.SINGLE,size:4,color:LINE},insideVertical:{style:BorderStyle.NONE,size:0,color:"FFFFFF"}};
+  const T=(head,rows,align=[])=>new Table({width:{size:100,type:WidthType.PERCENTAGE},borders:border,rows:[new TableRow({tableHeader:true,children:head.map((h,j)=>cell(h,{fill:NAVY,b:true,color:"FFFFFF",r:align[j]==="r"}))}),
+    ...rows.map((r,i)=>new TableRow({cantSplit:true,children:r.map((c,j)=>cell(c,{fill:i%2?"FAF9F6":undefined,r:align[j]==="r",color:c==="Improved"?"17694A":c==="Declined"?"9A3530":INK,b:c==="Improved"||c==="Declined"}))}))]});
+  const callout=(text,tone)=>new Table({width:{size:100,type:WidthType.PERCENTAGE},borders:{top:{style:BorderStyle.NONE,size:0,color:"FFFFFF"},bottom:{style:BorderStyle.NONE,size:0,color:"FFFFFF"},right:{style:BorderStyle.NONE,size:0,color:"FFFFFF"},left:{style:BorderStyle.SINGLE,size:24,color:tone==="bad"?"B9443C":tone==="good"?"1F8A5B":GOLD},insideHorizontal:{style:BorderStyle.NONE,size:0,color:"FFFFFF"},insideVertical:{style:BorderStyle.NONE,size:0,color:"FFFFFF"}},
+    rows:[new TableRow({children:[new TableCell({shading:{type:ShadingType.CLEAR,color:"auto",fill:"FAF6EC"},margins:{top:100,bottom:100,left:160,right:160},children:[new Paragraph({children:[new TextRun({text,size:19,color:INK})]})]})]})]});
+  const kids=[];
+  // cover
+  kids.push(new Paragraph({spacing:{before:1800,after:120},children:[new TextRun({text:"ACCOUNT PERFORMANCE REPORT",bold:true,size:20,color:GOLD,characterSpacing:60})]}));
+  kids.push(new Paragraph({spacing:{after:200},children:[new TextRun({text:rep.account,bold:true,size:64,color:NAVY})]}));
+  kids.push(P(fmtRange(rep.period),{size:30,color:INK,after:80}));
+  if(rep.compare) kids.push(P(`Compared with ${fmtRange(rep.compare)}`,{size:22,color:GREY,after:600}));
+  kids.push(T(["Report detail",""],[["Brand / platform",`${rep.brand||"–"} · ${rep.platform}`],["LO specialist (PIC)",rep.lo||"–"],["Report period type",rep.kindLabel],["Generated",new Date(rep.created).toLocaleString("en-GB",{dateStyle:"long",timeStyle:"short"})],["Version",`v${rep.version}${rep.by?` · prepared by ${rep.by}`:""}`],["Prepared with","MIGO Live dashboard (automated analysis, reviewed by the team)"]]));
+  kids.push(new Paragraph({children:[new PageBreak()]}));
+  kids.push(H("Contents"));
+  rep.sections.filter(s=>s.on).forEach((s,i)=>kids.push(P(`${i+1}.  ${s.title}`,{after:60,size:21})));
+  let num=0;
+  for(const s of rep.sections){ if(!s.on) continue; num++;
+    if(["exec","kpi","pop","detail","content","root","recs"].includes(s.k)||num===1) kids.push(new Paragraph({children:[new PageBreak()]}));
+    kids.push(H(`${num}. ${s.title}`));
+    for(const b of s.blocks){
+      if(b.t==="p") kids.push(P(b.text));
+      else if(b.t==="h") kids.push(H(b.text,2));
+      else if(b.t==="ul"){if(b.title) kids.push(H(b.title,2));b.items.forEach(x=>{const m=String(x).match(/^\[(Confirmed|Likely|Hypothesis)\]\s*/);
+        kids.push(new Paragraph({bullet:{level:0},spacing:{after:80,line:264},children:[...(m?[new TextRun({text:m[1].toUpperCase()+"  ",bold:true,size:16,color:m[1]==="Confirmed"?"17694A":m[1]==="Likely"?"8A6516":"5B3FA8"})]:[]),new TextRun({text:m?x.slice(m[0].length):String(x),size:20,color:INK})]}));});}
+      else if(b.t==="table"){if(b.title) kids.push(H(b.title,2));kids.push(T(b.head,b.rows,b.align));kids.push(P("",{after:120}));}
+      else if(b.t==="callout"){kids.push(callout(b.text,b.tone));kids.push(P("",{after:120}));}
+      else if(b.t==="kpis"){const it=b.items;kids.push(new Table({width:{size:100,type:WidthType.PERCENTAGE},borders:border,rows:[new TableRow({children:it.map(k=>new TableCell({margins:{top:120,bottom:120,left:120,right:120},shading:{type:ShadingType.CLEAR,color:"auto",fill:"F5F4F0"},children:[
+          new Paragraph({children:[new TextRun({text:k.l.toUpperCase(),size:14,bold:true,color:GREY})]}),new Paragraph({spacing:{before:60},children:[new TextRun({text:k.v,size:28,bold:true,color:NAVY})]}),new Paragraph({children:[new TextRun({text:k.s||"",size:16,color:k.tone==="good"?"17694A":k.tone==="bad"?"9A3530":GREY})]})]}))})]}));kids.push(P("",{after:120}));}
+      else if(b.t==="chart"){const w=b.kind==="change"||b.kind==="hosts"?1000:1100,h=b.kind==="change"?Math.max(300,b.labels.length*30+60):b.kind==="hosts"?Math.max(280,b.labels.length*32+60):440;
+        const png=await rChartPng(b,w,h);kids.push(H(b.title,2));kids.push(new Paragraph({alignment:AlignmentType.CENTER,children:[new ImageRun({data:png,transformation:{width:600,height:Math.round(600*h/w)}})]}));}
+      else if(b.t==="rec"){const r=b.r;kids.push(new Paragraph({keepNext:true,spacing:{before:160,after:60},children:[new TextRun({text:`[${r.priority.toUpperCase()}]  `,bold:true,size:18,color:r.priority==="High"?"9A3530":r.priority==="Medium"?"8A6516":GREY}),new TextRun({text:r.problem,bold:true,size:23,color:NAVY})]}));
+        kids.push(T(["Item","Detail"],[["Evidence",r.evidence],["Recommended action",r.action],["Expected impact",r.impact],["Priority",r.priority],["Timeline",r.timeline],["KPI to measure",r.kpi.label+(r.kpi.target!=null?` → ${rFmt(r.kpi.target,RMK[r.kpi.k]?RMK[r.kpi.k].f:"num1")}${r.kpi.per?" /"+r.kpi.per:""}`:"")],["Owner",r.owner]]));kids.push(P("",{after:80}));}
+    }
+  }
+  const doc=new Document({creator:"MIGO Live dashboard",title:`${rep.account} performance report ${fmtRange(rep.period)}`,
+    styles:{default:{document:{run:{font:"Calibri",size:21,color:INK}}}},
+    sections:[{properties:{page:{margin:{top:1100,bottom:1000,left:1100,right:1100}},titlePage:true},
+      headers:{default:new Header({children:[new Paragraph({tabStops:[{type:TabStopType.RIGHT,position:9700}],children:[new TextRun({text:`${rep.account} · Performance report`,size:16,color:GREY}),new TextRun({text:`\t${fmtRange(rep.period)}`,size:16,color:GREY})]})]}),first:new Header({children:[new Paragraph("")]})},
+      footers:{default:new Footer({children:[new Paragraph({tabStops:[{type:TabStopType.RIGHT,position:9700}],children:[new TextRun({text:`MIGO Live · v${rep.version} · generated ${new Date(rep.created).toLocaleDateString("en-GB")}`,size:16,color:GREY}),new TextRun({children:["\tPage ",PageNumber.CURRENT," of ",PageNumber.TOTAL_PAGES],size:16,color:GREY})]})]}),first:new Footer({children:[new Paragraph("")]})},
+      children:kids}]});
+  const blob=await Packer.toBlob(doc);
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=`${rep.account.replace(/[^\w.-]+/g,"_")}_report_${rep.period.s}_${rep.period.e}_v${rep.version}.docx`;document.body.appendChild(a);a.click();a.remove();
+  return blob;
+}
+
+/* ---------- shared period helpers ---------- */
+function rShiftMonth(iso,n){const d=new Date(iso+"T00:00:00"),t=new Date(d.getFullYear(),d.getMonth()+n,1),last=new Date(t.getFullYear(),t.getMonth()+1,0).getDate();return isoD(new Date(t.getFullYear(),t.getMonth(),Math.min(d.getDate(),last)));}
+function rCompareFor(P,mode,custom){
+  const len=daysIn(P.s,P.e);
+  const fullMonth=P.s.slice(8)==="01"&&addDays(P.e,1).slice(8)==="01";
+  if(mode==="prev"&&fullMonth) return {s:rShiftMonth(P.s,-1),e:addDays(P.s,-1)};
+  if(mode==="prev") return {s:addDays(P.s,-len),e:addDays(P.s,-1)};
+  if(mode==="mom"){
+    if(fullMonth){const s=rShiftMonth(P.s,-1);return {s,e:addDays(P.s,-1)};} return {s:rShiftMonth(P.s,-1),e:rShiftMonth(P.e,-1)};}
+  if(mode==="yoy"){const y=x=>x.replace(/^(\d{4})/,m=>String(+m-1));return {s:y(P.s),e:y(P.e)};}
+  return custom&&custom.s&&custom.e?custom:null;
+}
+function rMonthsOf(a){return [...new Set(rDaily(a).map(x=>x.date.slice(0,7)))].sort().reverse();}
+const mLabel=ym=>new Date(+ym.slice(0,4),+ym.slice(5)-1,1).toLocaleString("en-US",{month:"long",year:"numeric"});
+function rAcctSelect(id,cur){return `<select id="${id}" class="sel"><optgroup label="TikTok (dashboard data built in)">${ACCTS.map(a=>`<option ${a===cur?"selected":""}>${esc(a)}</option>`).join("")}</optgroup><optgroup label="Upload-only (import a file first)">${R_UPLOAD_ONLY.map(a=>`<option ${a===cur?"selected":""}>${esc(a)}</option>`).join("")}</optgroup></select>`;}
+function rFindingCard(f){return `<div class="fnd"><div class="fndh"><span class="cls c-${f.cls}">${f.cls}</span><b>${esc(f.title)}</b></div><dl>${f.what?`<dt>What changed</dt><dd>${esc(f.what)}</dd>`:""}${f.how?`<dt>By how much</dt><dd>${esc(f.how)}</dd>`:""}<dt>Why</dt><dd>${esc(f.why)}</dd><dt>Business impact</dt><dd>${esc(f.impact)}</dd><dt>Action</dt><dd>${esc(f.action)}</dd></dl></div>`;}
+
+/* ---------- Compare periods tab ---------- */
+function renderPCmp(){
+  const st=state.pc||(state.pc={a:ACCTS[0],preset:"mom",view:"table"});
+  if(!rAccounts().includes(st.a)) st.a=ACCTS[0];
+  const a=st.a, rg=rRange(a);
+  let html=`<section class="card"><div class="chead"><div><h2>Compare periods</h2><div class="hint">Pick an account and any two date ranges. Totals of different-length periods are compared per day, and missing or unequal data is flagged.</div></div>
+      <div class="otr">${rAcctSelect("pcA",a)}<div class="seg" id="pcPre">${[["dod","DoD"],["wow","WoW"],["mom","MoM"],["yoy","YoY"],["custom","Custom"]].map(([k,l])=>`<button data-v="${k}">${l}</button>`).join("")}</div><div class="seg" id="pcView"><button data-v="table">Table</button><button data-v="chart">Charts</button></div></div></div>`;
+  if(!rg){html+=`<div class="empty">No data for ${esc(a)} yet. Import a file below.</div>${rUploadHtml(a)}</section>`;document.getElementById("main").innerHTML=html;bindTop();rBindUpload(a,()=>rerender());return;}
+  if(st.preset!=="custom"||!st.P){const pr=rPreset(st.preset==="custom"?"mom":st.preset,rg.e,a);st.P=pr.P;st.C=pr.C;st.label=pr.label;}
+  html+=`<div class="drow2"><div class="dgrp"><small>Primary period</small><input type="date" id="pcPs" value="${st.P.s}"><span>→</span><input type="date" id="pcPe" value="${st.P.e}"></div><div class="vs">vs</div>
+      <div class="dgrp"><small>Comparison period</small><input type="date" id="pcCs" value="${st.C.s}"><span>→</span><input type="date" id="pcCe" value="${st.C.e}"></div><button class="pbtn sm" id="pcGo">Compare</button>
+      <span class="muted" style="font-size:12px">${esc(st.preset==="custom"?"Custom periods":st.label)} · data available ${fmtDate(rg.s)} – ${fmtDate(rg.e)}</span></div>
+    <details class="updet"><summary>＋ Add data for this account (import a file)</summary>${rUploadHtml(a)}</details></section>`;
+  const cmp=rCompare(a,st.P,st.C), ins=rInsights(cmp,{sessions:rUploads(a).sessions}), R=k=>cmp.rows.find(r=>r.m.k===k);
+  if(cmp.flags.length) html+=`<div class="note">⚠️ ${cmp.flags.map(esc).join("<br>⚠️ ")}</div>`;
+  const card=k=>{const r=R(k);if(!r) return "";const sumd=r.m.kind==="sum"&&!r.m.info;return `<div class="kpi"><div class="l">${esc(r.m.l)}${sumd&&cmp.norm?" / day":""}</div><div class="v">${rFmt(sumd&&cmp.norm?r.curD:r.cur,r.m.f)}</div><div class="s">${r.pct!=null?`<span class="${r.status==="Improved"?"pos":r.status==="Declined"?"neg":""}">${r.pct>=0?"▲":"▼"} ${Math.abs(r.pct).toFixed(1)}%</span> vs ${rFmt(sumd&&cmp.norm?r.prevD:r.prev,r.m.f)}`:esc(r.note||"–")}</div></div>`;};
+  html+=`<section class="kpis">${["g","o","cvr","aov","ach"].map(card).join("")}</section>`;
+  if(st.view==="table"){
+    html+=`<section class="card"><div class="chead"><div><h2>KPI comparison · ${esc(a)}</h2><div class="hint">${fmtRange(st.C)} → ${fmtRange(st.P)} · % change = (primary − comparison) ÷ comparison × 100${cmp.norm?" · totals compared per day":""}</div></div></div>
+      <div class="scroll"><table><thead><tr><th class="l">KPI</th><th>Comparison</th><th>Primary</th><th>Absolute change</th><th>% change</th><th class="l">Status</th><th class="l">Note</th></tr></thead><tbody>${cmp.rows.map(r=>`<tr><td>${esc(r.m.l)}</td><td class="num">${rFmt(r.prev,r.m.f)}</td><td class="num">${rFmt(r.cur,r.m.f)}</td><td class="num">${rFmtAbs(r.abs,r.m)}</td>
+        <td class="num ${r.status==="Improved"?"pos":r.status==="Declined"?"neg":""}">${r.pct!=null?(r.pct>=0?"+":"")+r.pct.toFixed(1)+"%":"–"}</td><td class="l"><span class="pill ${r.status==="Improved"?"good":r.status==="Declined"?"bad":"flat"}">${r.status}</span></td><td class="l muted" style="font-size:11.5px">${esc(r.note||(r.covP<cmp.pa.days?`data on ${r.covP}/${cmp.pa.days} days`:""))}</td></tr>`).join("")}</tbody></table></div></section>`;
+  } else {
+    html+=`<div class="grid2 eq sec"><section class="card"><div class="chead"><div><h2>% change by KPI</h2><div class="hint">Green = improved, red = declined</div></div></div><div class="chartbox" style="height:${Math.max(240,cmp.rows.filter(r=>r.pct!=null&&!r.m.info).length*24+40)}px"><canvas id="pcChg"></canvas></div></section>
+      <section class="card"><div class="chead"><div><h2>Daily GMV, side by side</h2><div class="hint">Day 1 = first day of each period</div></div></div><div class="chartbox"><canvas id="pcTr"></canvas></div></section></div>
+      <section class="card"><div class="chead"><div><h2>Daily breakdown</h2><div class="hint">Primary vs comparison, day by day</div></div></div><div class="scroll"><table><thead><tr><th class="l">Day</th><th class="l">Primary date</th><th>GMV</th><th>Views</th><th>Orders</th><th>CVR</th><th class="l">Comparison date</th><th>GMV</th><th>Views</th><th>Orders</th><th>CVR</th><th>GMV change</th></tr></thead><tbody>${
+        Array.from({length:Math.max(cmp.pr.length,cmp.cr.length)}).map((_,i)=>{const p=cmp.pr[i],c=cmp.cr[i],cv=x=>x&&x.v&&x.o!=null?(x.o/x.v*100).toFixed(2)+"%":"–";
+          return `<tr><td>${i+1}</td><td class="l">${p?fmtDate(p.date)+(p.ev?` <span class="chn">${esc(p.ev)}</span>`:""):"–"}</td><td class="num">${p?fmtC(p.g):"–"}</td><td class="num">${p&&p.v?fmtC(p.v):"–"}</td><td class="num">${p&&p.o!=null?p.o:"–"}</td><td class="num">${cv(p)}</td>
+          <td class="l">${c?fmtDate(c.date)+(c.ev?` <span class="chn">${esc(c.ev)}</span>`:""):"–"}</td><td class="num">${c?fmtC(c.g):"–"}</td><td class="num">${c&&c.v?fmtC(c.v):"–"}</td><td class="num">${c&&c.o!=null?c.o:"–"}</td><td class="num">${cv(c)}</td><td class="num ${p&&c&&p.g>=c.g?"pos":"neg"}">${p&&c&&c.g?pctS(p.g/c.g-1):"–"}</td></tr>`;}).join("")}</tbody></table></div></section>`;
+  }
+  const finds=[...ins.F,...ins.div];
+  html+=`<section class="card"><div class="chead"><div><h2>What the comparison says</h2><div class="hint">Confirmed = calculated from the data · Likely = strongly suggested by the data · Hypothesis = possible reason to check</div></div></div>
+    <div class="mvg"><div><h4>▲ Biggest improvements</h4>${ins.imp.length?ins.imp.map(r=>`<div class="mvr"><span>${esc(r.m.l)}</span><b class="pos">+${r.pct.toFixed(1)}%</b></div>`).join(""):`<div class="muted">None</div>`}</div>
+      <div><h4>▼ Biggest declines</h4>${ins.dec.length?ins.dec.map(r=>`<div class="mvr"><span>${esc(r.m.l)}</span><b class="neg">${r.pct.toFixed(1)}%</b></div>`).join(""):`<div class="muted">None</div>`}</div>
+      <div><h4>● Stable (±2%)</h4>${ins.stag.length?ins.stag.map(r=>`<div class="mvr"><span>${esc(r.m.l)}</span><b>${r.pct>=0?"+":""}${r.pct.toFixed(1)}%</b></div>`).join(""):`<div class="muted">None</div>`}</div></div>
+    <div class="fndg">${finds.length?finds.map(rFindingCard).join(""):`<div class="muted">No comparison insights (comparison period has no data).</div>`}
+    ${ins.anom.length?rFindingCard({cls:"Confirmed",title:"Unusual days in the primary period",what:ins.anom.map(x=>`${fmtDate(x.date)} Rp ${fmtC(x.g)}${x.ev?` (${x.ev})`:""}`).join("; "),how:`vs Rp ${fmtC(ins.m0)} on a normal day`,why:ins.anom.every(x=>x.ev)?"All are campaign days in the calendar.":"Days without a campaign need checking in the session log.",impact:"These days distort period totals.",action:"Compare normal days only (shown above when campaign days differ)."}):""}
+    ${ins.acts.length?rFindingCard({cls:"Hypothesis",title:"Logged actions in these periods",what:ins.acts.map(x=>`${fmtDate(x.date)}: ${x.cat}: ${x.note}`).join("; "),how:ins.acts.map(x=>x.im.st==="ok"?`${x.cat} → ${x.im.verdict}`:`${x.cat} → too early`).join("; "),why:"Measured 7 days after vs 7 days before each action. Timing matches, but other factors may also explain the change.",impact:"Shows which actions are worth repeating.",action:"Keep logging actions in Team → Action log."}):""}</div>
+    <div style="margin-top:14px"><button class="pbtn sm gold" id="pcRep">Create a report with these periods →</button></div></section>`;
+  // history tracking
+  const tj=rTrajectory(a,rg.e);
+  const months=rMonthsOf(a).slice(0,6).reverse().map(ym=>{const rows=rDaily(a).filter(x=>x.date.startsWith(ym)),ag=rAgg(rows),nd=rows.filter(x=>!x.ev);return {ym,ag,nd:mean(nd.map(x=>x.g)),cvr:rVal(ag,RMK.cvr),aov:rVal(ag,RMK.aov),ach:rVal(ag,RMK.ach)};});
+  const port=ACCTS.map(x=>({a:x,t:rTrajectory(x,rg.e)})).sort((p,q)=>(q.t.ch||0)-(p.t.ch||0));
+  html+=`<div class="grid2 eq sec"><section class="card"><div class="chead"><div><h2>${esc(a)} over time</h2><div class="hint">Normal-day GMV (campaign days excluded) · direction: <b>${tj.label}</b>${tj.ch!=null?` (${pctS(tj.ch)} over ${tj.ms.length} months)`:""}</div></div></div>
+      <table><thead><tr><th class="l">Month</th><th>Days</th><th>GMV</th><th>Normal day</th><th>CVR</th><th>AOV</th><th>Achievement</th></tr></thead><tbody>${months.map(m=>`<tr><td>${mLabel(m.ym)}</td><td class="num">${m.ag.days}</td><td class="num">${fmtC(m.ag.g||0)}</td><td class="num">${fmtC(m.nd)}</td><td class="num">${m.cvr!=null?(m.cvr*100).toFixed(2)+"%":"–"}</td><td class="num">${m.aov?fmtC(m.aov):"–"}</td><td class="num">${m.ach!=null?(m.ach*100).toFixed(1)+"%":"–"}</td></tr>`).join("")}</tbody></table></section>
+    <section class="card"><div class="chead"><div><h2>Which accounts are growing or declining</h2><div class="hint">Normal-day GMV trend over the last months, all dashboard accounts</div></div></div>
+      <table><tbody>${port.map(x=>`<tr><td>${esc(x.a)}</td><td class="l"><span class="pill ${x.t.label==="progressing"?"good":x.t.label==="deteriorating"?"bad":"flat"}">${x.t.label}</span></td><td class="num">${x.t.ch!=null?pctS(x.t.ch):"–"}</td><td class="num muted" style="font-size:11.5px">${x.t.ms.map(m=>fmtC(m.avg)).join(" → ")}</td></tr>`).join("")}</tbody></table></section></div>`;
+  document.getElementById("main").innerHTML=html;
+  bindTop();rBindUpload(a,()=>rerender());
+  if(st.view==="chart"){const ch=cmp.rows.filter(r=>r.pct!=null&&!r.m.info);charts.push(new Chart(document.getElementById("pcChg"),rChartCfg({kind:"change",labels:ch.map(r=>r.m.l),vals:ch.map(r=>+r.pct.toFixed(1))})));
+    const n=Math.max(cmp.pr.length,cmp.cr.length);charts.push(new Chart(document.getElementById("pcTr"),rChartCfg({kind:"trend",labels:Array.from({length:n},(_,i)=>"Day "+(i+1)),a:cmp.pr.map(x=>x.g),b:cmp.cr.map(x=>x.g),l1:fmtRange(st.P),l2:fmtRange(st.C)})));}
+  document.getElementById("pcRep").onclick=()=>{state.rp={...(state.rp||{}),a,kind:"custom",s:st.P.s,e:st.P.e,cmpOn:true,cmpMode:"custom",Cs:st.C.s,Ce:st.C.e,rep:null};state.month="rpt";rerender();window.scrollTo(0,0);};
+  function bindTop(){
+    document.getElementById("pcA").onchange=e=>{st.a=e.target.value;if(st.preset==="custom") st.preset="mom";st.P=null;rerender();};
+    document.querySelectorAll("#pcPre button").forEach(b=>{b.setAttribute("aria-pressed",b.dataset.v===st.preset);b.onclick=()=>{st.preset=b.dataset.v;if(st.preset!=="custom") st.P=null;rerender();};});
+    document.querySelectorAll("#pcView button").forEach(b=>{b.setAttribute("aria-pressed",b.dataset.v===st.view);b.onclick=()=>{st.view=b.dataset.v;rerender();};});
+    const go=document.getElementById("pcGo");if(go) go.onclick=()=>{const v=id=>document.getElementById(id).value;const P={s:v("pcPs"),e:v("pcPe")},C={s:v("pcCs"),e:v("pcCe")};
+      if(!P.s||!P.e||!C.s||!C.e){oToast("Fill in all four dates",1);return;} if(P.s>P.e||C.s>C.e){oToast("Start date must be before end date",1);return;}
+      st.P=P;st.C=C;st.preset="custom";rerender();};
+  }
+}
+
+/* ---------- Performance report tab ---------- */
+function renderRpt(){
+  const st=state.rp||(state.rp={a:ACCTS[0],kind:"monthly",cmpOn:true,cmpMode:"prev"});
+  if(!rAccounts().includes(st.a)) st.a=ACCTS[0];
+  if(RTEAM==null&&!st._loading){st._loading=1;rLoadTeam().then(()=>{st._loading=0;if(state.month==="rpt") rerender();});}
+  const a=st.a, rg=rRange(a), months=rMonthsOf(a);
+  // resolve primary period
+  let P=null;
+  if(rg){
+    if(st.kind==="daily"){st.day=st.day&&st.day<=rg.e?st.day:rg.e;P={s:st.day,e:st.day};}
+    if(st.kind==="weekly"){const end=new Date(rg.e+"T00:00:00");const mon=isoD(new Date(end.getFullYear(),end.getMonth(),end.getDate()-((end.getDay()+6)%7)));
+      st.wk=st.wk||(addDays(mon,6)>rg.e?addDays(mon,-7):mon);P={s:st.wk,e:addDays(st.wk,6)};}
+    if(st.kind==="monthly"){st.mon=months.includes(st.mon)?st.mon:months[0];const [y,m]=st.mon.split("-").map(Number);P={s:`${st.mon}-01`,e:isoD(new Date(y,m,0))};}
+    if(st.kind==="custom"){st.s=st.s||addDays(rg.e,-13);st.e=st.e||rg.e;P={s:st.s,e:st.e};}
+  }
+  const C=P?rCompareFor(P,st.cmpMode,{s:st.Cs,e:st.Ce}):null;
+  const weeks=[];if(rg){let w=new Date(rg.e+"T00:00:00");w.setDate(w.getDate()-((w.getDay()+6)%7));for(let i=0;i<16;i++){const s=isoD(w);if(s<addDays(rg.s,-6)) break;weeks.push(s);w.setDate(w.getDate()-7);}}
+  const cov=r=>{if(!r) return "";const rows=rPick(a,r),n=daysIn(r.s,r.e);return `${rows.length}/${n} days with data${rows.length?` · ${[...new Set(rows.map(x=>x.src))].join(", ")}`:""}`;};
+  let html=`<div class="rpwrap"><div class="rpmain">
+    <section class="card"><div class="chead"><div><h2>Performance report</h2><div class="hint">Select account → period → comparison → (optional) import data → generate → review and edit → download Word → save to history</div></div></div>
+      <div class="steps2">
+        <div class="stp"><span class="sn">1</span><div><b>Account</b>${rAcctSelect("rA",a)}<div class="muted" style="font-size:11.5px">${esc(rBrand(a)||"")} · ${rPlatform(a)} · PIC ${esc(rPic(a)||"–")}${rg?` · data ${fmtDate(rg.s)} – ${fmtDate(rg.e)}`:" · no data yet"}</div></div></div>
+        <div class="stp"><span class="sn">2</span><div><b>Reporting period</b><div class="seg" id="rK">${[["daily","Daily"],["weekly","Weekly"],["monthly","Monthly"],["custom","Custom"]].map(([k,l])=>`<button data-v="${k}">${l}</button>`).join("")}</div>
+          <div class="prow">${!rg?"":st.kind==="daily"?`<input type="date" id="rD" value="${st.day}" max="${rg.e}">`:st.kind==="weekly"?`<select id="rW" class="sel">${weeks.map(w=>`<option value="${w}" ${w===st.wk?"selected":""}>${fmtRange({s:w,e:addDays(w,6)})}${addDays(w,6)>rg.e?" (in progress)":""}</option>`).join("")}</select>`
+            :st.kind==="monthly"?`<select id="rM" class="sel">${months.map(m=>`<option value="${m}" ${m===st.mon?"selected":""}>${mLabel(m)}</option>`).join("")}</select>`:`<input type="date" id="rS" value="${st.s}"><span>→</span><input type="date" id="rE" value="${st.e}">`}
+            ${P?`<span class="muted" style="font-size:12px">${fmtRange(P)} · ${cov(P)}</span>`:""}</div></div></div>
+        <div class="stp"><span class="sn">3</span><div><b>Comparison</b><label class="tgl"><input type="checkbox" id="rCo" ${st.cmpOn?"checked":""}> include a period-over-period section</label>
+          <div class="prow"><select id="rCm" class="sel">${[["prev","Previous period (previous month for a full month)"],["mom","Same dates, previous month"],["yoy","Same dates, last year"],["custom","Custom dates"]].map(([k,l])=>`<option value="${k}" ${k===st.cmpMode?"selected":""}>${l}</option>`).join("")}</select>
+          ${st.cmpMode==="custom"?`<input type="date" id="rCs" value="${st.Cs||""}"><span>→</span><input type="date" id="rCe" value="${st.Ce||""}">`:""}
+          ${C?`<span class="muted" style="font-size:12px">${fmtRange(C)} · ${cov(C)}</span>`:""}</div>
+          <div class="muted" style="font-size:11.5px">The comparison period is also the baseline for the root-cause analysis, even when the section is switched off.</div></div></div>
+        <div class="stp"><span class="sn">4</span><div><b>Data</b><details class="updet" ${rg?"":"open"}><summary>Import extra data (TikTok LIVE export, session sheet) for more metrics: items, viewers, CTR, CTOR, hosts, time slots</summary>${rUploadHtml(a)}</details></div></div>
+      </div>
+      <div class="genrow"><button class="pbtn gold" id="rGen" ${P?"":"disabled"}>Generate report</button><div id="rProg"></div></div></section>
+    <div id="rOut"></div></div>
+    <aside class="rpside"><section class="card"><div class="chead"><div><h2>Report history</h2><div class="hint">${esc(a)} · this device and team library</div></div></div><div id="rLib"></div></section></aside></div>`;
+  document.getElementById("main").innerHTML=html;
+  // bind controls
+  const $=id=>document.getElementById(id);
+  $("rA").onchange=e=>{st.a=e.target.value;st.rep=null;st.mon=null;st.wk=null;st.day=null;rerender();};
+  document.querySelectorAll("#rK button").forEach(b=>{b.setAttribute("aria-pressed",b.dataset.v===st.kind);b.onclick=()=>{st.kind=b.dataset.v;rerender();};});
+  if($("rD")) $("rD").onchange=e=>{st.day=e.target.value;rerender();};
+  if($("rW")) $("rW").onchange=e=>{st.wk=e.target.value;rerender();};
+  if($("rM")) $("rM").onchange=e=>{st.mon=e.target.value;rerender();};
+  if($("rS")) {$("rS").onchange=e=>{st.s=e.target.value;rerender();};$("rE").onchange=e=>{st.e=e.target.value;rerender();};}
+  $("rCo").onchange=e=>{st.cmpOn=e.target.checked;rerender();};
+  $("rCm").onchange=e=>{st.cmpMode=e.target.value;if(st.cmpMode==="custom"&&C){st.Cs=st.Cs||C.s;st.Ce=st.Ce||C.e;}rerender();};
+  if($("rCs")){$("rCs").onchange=e=>{st.Cs=e.target.value;rerender();};$("rCe").onchange=e=>{st.Ce=e.target.value;rerender();};}
+  rBindUpload(a,()=>{st.rep=null;rerender();});
+  $("rGen").onclick=async()=>{
+    if(!P) return; if(P.s>P.e){oToast("Start date must be before end date",1);return;}
+    const steps=["Loading data","Comparing periods","Finding causes and patterns","Writing recommendations","Building report"];
+    const prog=$("rProg"), show=i=>{prog.innerHTML=`<div class="psteps">${steps.map((s,j)=>`<span class="${j<i?"done":j===i?"now":""}">${j<i?"✓":j===i?"<i></i>":"·"} ${s}</span>`).join("")}</div>`;};
+    $("rGen").disabled=true;
+    try{for(let i=0;i<steps.length;i++){show(i);await new Promise(r=>setTimeout(r,140));}
+      const kindLabel={daily:"Daily",weekly:"Weekly",monthly:"Monthly",custom:"Custom range"}[st.kind];
+      st.rep=rBuildReport({a,P,C,cmpOn:st.cmpOn&&!!C,kindLabel});st.saved=false;
+      prog.innerHTML=`<span class="pos" style="font-size:12.5px">✓ Report ready. Review and edit it below.</span>`;drawOut();$("rOut").scrollIntoView({behavior:"smooth",block:"start"});
+    }catch(e){prog.innerHTML=`<div class="err">${esc(e.message)}</div>`;}
+    $("rGen").disabled=false;};
+  drawOut(); drawLib();
+  function drawOut(){
+    const out=$("rOut");if(!out) return; const rep=st.rep; if(!rep){out.innerHTML="";return;}
+    out.innerHTML=`<section class="card rpcard"><div class="rptool"><div><b>Preview</b> <span class="muted" style="font-size:12px">Click any text to edit it · untick a section to leave it out${st.saved?"":` · <span class="neg">not saved yet</span>`}</span></div>
+      <div class="otr"><button class="pbtn sm gold" id="rDoc">⬇ Download Word (.docx)</button><button class="pbtn sm" id="rSave">Save to history</button><button class="pbtn sm ghost" id="rTeam">Save to team library</button><button class="pbtn sm ghost" id="rClose">Close</button></div></div>${rPreviewHtml(rep)}</section>`;
+    killCharts();rDrawPreviewCharts(rep);
+    rBindPreview(rep,(redraw)=>{st.saved=false;const n=document.querySelector(".rptool .muted");if(n&&!n.innerHTML.includes("not saved")) n.innerHTML+=` · <span class="neg">not saved yet</span>`;if(redraw) drawOut();});
+    $("rDoc").onclick=async()=>{const b=$("rDoc");b.disabled=true;b.textContent="Building document…";try{await rDocx(rep);oToast("Word report downloaded ✓");}catch(e){oToast(e.message||"Export failed",1);}b.disabled=false;b.textContent="⬇ Download Word (.docx)";};
+    $("rSave").onclick=()=>{if(rSaveLocal(rep)){st.saved=true;oToast("Saved to report history on this device ✓");drawOut();drawLib();}else oToast("This browser's storage is full",1);};
+    $("rTeam").onclick=async()=>{const b=$("rTeam");b.disabled=true;b.textContent="Saving…";try{rSaveLocal(rep);await rSaveTeam(rep);st.saved=true;oToast("Saved to the team library ✓ visible to everyone in about a minute");drawOut();drawLib();}catch(e){oToast(e.message,1);}b.disabled=false;b.textContent="Save to team library";};
+    $("rClose").onclick=()=>{if(!st.saved&&!confirm("Close without saving this report?")) return;st.rep=null;drawOut();};
+  }
+  function drawLib(){
+    const el=$("rLib");if(!el) return;
+    const list=rLibAll().filter(r=>r.account===a).sort((x,y)=>y.created.localeCompare(x.created)), rs=rRecStatus();
+    let h=list.length?`<div class="libl">${list.map(r=>`<div class="libi"><div><b>${esc(fmtRange(r.period))}</b> <span class="muted">v${r.version}</span><div class="muted" style="font-size:11px">${esc(r.kindLabel)}${r.compare?` · vs ${esc(fmtRange(r.compare))}`:""} · ${new Date(r.created).toLocaleDateString("en-GB")}${r.by?` · ${esc(r.by)}`:""}</div>
+      <div class="libt">${r._team?`<span class="chn">Team</span>`:""}${r._local?`<span class="chn" style="background:#f1efe9;color:#4a4f5c">This device</span>`:""}<span class="pill ${r.traj==="progressing"?"good":r.traj==="deteriorating"?"bad":"flat"}" style="font-size:10px">${esc(r.traj||"")}</span></div></div>
+      <div class="liba"><button class="lnk" data-open="${r.id}">Open</button><button class="lnk" data-dl="${r.id}">.docx</button>${r._local&&!r._team?`<button class="lnk" data-del="${r.id}" style="color:var(--bad)">Delete</button>`:""}</div></div>`).join("")}</div>`:`<div class="muted" style="font-size:12.5px">No reports yet for this account.</div>`;
+    // KPI history across saved reports
+    if(list.length>1){h+=`<h4 class="rp-h4">KPI history (saved reports)</h4><table class="mini"><thead><tr><th class="l">Period</th><th>GMV/day</th><th>CVR</th><th>AOV</th><th>Ach.</th></tr></thead><tbody>${list.slice().reverse().map(r=>{const k=r.kpiSnap||{};return `<tr><td class="l">${esc(fmtRange(r.period))}</td><td class="num">${k.g!=null?fmtC(k.g/(r.days||1)):"–"}</td><td class="num">${k.cvr!=null?(k.cvr*100).toFixed(2)+"%":"–"}</td><td class="num">${k.aov?fmtC(k.aov):"–"}</td><td class="num">${k.ach!=null?(k.ach*100).toFixed(0)+"%":"–"}</td></tr>`;}).join("")}</tbody></table>`;}
+    // recommendation tracker
+    const recRows=list.slice(0,3).flatMap(r=>(r.recs||[]).map(x=>({r,x})));
+    if(recRows.length){h+=`<h4 class="rp-h4">Recommendation tracker</h4><div class="hint" style="margin-bottom:6px">Set the status; the next report checks whether the KPI moved.</div>${recRows.map(({r,x})=>{const key=r.id+":"+x.id,s=rs[key]||"Planned";
+      return `<div class="rti"><div><b>${esc(x.problem)}</b><div class="muted" style="font-size:11px">${esc(fmtRange(r.period))} · KPI ${esc(x.kpi.label)} · ${esc(x.priority)}</div></div><select class="sel" data-rs="${esc(key)}">${["Planned","In progress","Implemented","Dropped"].map(o=>`<option ${o===s?"selected":""}>${o}</option>`).join("")}</select></div>`;}).join("")}`;}
+    el.innerHTML=h;
+    el.querySelectorAll("[data-open]").forEach(b=>b.onclick=()=>{const r=rLibAll().find(x=>x.id===b.dataset.open);if(!r) return;st.rep=JSON.parse(JSON.stringify(r));delete st.rep._local;delete st.rep._team;st.saved=true;drawOut();$("rOut").scrollIntoView({behavior:"smooth"});});
+    el.querySelectorAll("[data-dl]").forEach(b=>b.onclick=async()=>{const r=rLibAll().find(x=>x.id===b.dataset.dl);if(!r) return;b.textContent="…";try{await rDocx(r);}catch(e){oToast(e.message,1);}b.textContent=".docx";});
+    el.querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>{if(!confirm("Delete this report from this device?")) return;rDelLocal(b.dataset.del);drawLib();});
+    el.querySelectorAll("[data-rs]").forEach(s=>s.onchange=()=>{const m=rRecStatus();m[s.dataset.rs]=s.value;try{localStorage.setItem(REC_KEY,JSON.stringify(m));}catch(e){}oToast("Status saved");});
+  }
+}
+
 /* ---------- navigation ---------- */
 const NAV=[
   {g:"Monthly",keys:()=>ORDER.filter(k=>model(k).last>=0)},
   {g:"My view",keys:()=>["me"]},
-  {g:"Analysis",keys:()=>["acc","whatif","cmp","hist"]},
+  {g:"Analysis",keys:()=>["acc","pcmp","rpt","whatif","cmp","hist"]},
   {g:"Team",keys:()=>["org","weekly","team","act"]},
   {g:"Planning",keys:()=>["camp","plan"]},
   {g:"Files",keys:()=>["files","rep"]}];
-const NAMES={me:"My view",acc:"Account analysis",whatif:"What-if",cmp:"Compare months",hist:"2026 history",weekly:"Weekly review",team:"Team & patterns",act:"Action log",camp:"Campaigns",plan:"Target planner",rep:"Reports",files:"Master files",org:"Team Organization"};
-const VIEWS={me:renderMe,acc:()=>renderAccounts(),whatif:renderWhatIf,cmp:()=>renderCompare(),hist:()=>renderHistory(),weekly:renderWeekly,team:renderTeam,act:renderActions,camp:renderCampaigns,plan:renderPlanner,rep:renderReports,files:renderFiles,org:renderOrg};
+const NAMES={me:"My view",acc:"Account analysis",whatif:"What-if",cmp:"Compare months",hist:"2026 history",weekly:"Weekly review",team:"Team & patterns",act:"Action log",camp:"Campaigns",plan:"Target planner",rep:"Reports",files:"Master files",org:"Team Organization",pcmp:"Compare periods",rpt:"Performance report"};
+const VIEWS={me:renderMe,acc:()=>renderAccounts(),whatif:renderWhatIf,cmp:()=>renderCompare(),hist:()=>renderHistory(),weekly:renderWeekly,team:renderTeam,act:renderActions,camp:renderCampaigns,plan:renderPlanner,rep:renderReports,files:renderFiles,org:renderOrg,pcmp:renderPCmp,rpt:renderRpt};
 
 /* ---------- shell ---------- */
 function buildTabs(){
