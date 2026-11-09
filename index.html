@@ -1629,6 +1629,11 @@ function loadActions(){
 }
 function sharedActs(){return ACT_LIVE?ACT_LIVE.actions:((typeof ACTIONS_SHARED!=="undefined"&&Array.isArray(ACTIONS_SHARED))?ACTIONS_SHARED:[]);}
 const actSig=x=>[x.date,String(x.a||"").toLowerCase(),String(x.note||"").replace(/\s+/g," ").trim().toLowerCase().slice(0,80)].join("|");
+let ACT_POLL=null,ACT_POLL_END=0;
+function actFastPoll(){ // while an action is waiting to appear, check every 20 s (for up to 15 min)
+  ACT_POLL_END=Date.now()+15*60e3; if(ACT_POLL) return;
+  ACT_POLL=setInterval(()=>{if(Date.now()>ACT_POLL_END||!localActs().length){clearInterval(ACT_POLL);ACT_POLL=null;return;}loadActions();},20000);
+}
 function actDedupe(){ // local entries that are now in the team log are removed from this device
   const sh=new Set(sharedActs().map(actSig)), l=localActs(), keep=l.filter(x=>!sh.has(actSig(x)));
   if(keep.length!==l.length) saveLocalActs(keep);
@@ -1733,9 +1738,10 @@ function renderActions(){
       <label>Type<select id="fC">${cats.map(c=>`<option>${c}</option>`).join("")}</select></label>
       <label class="wide">What did you do?<textarea id="fN" rows="3" placeholder="e.g. Added 2 extra hours 19:00–21:00 with host Dita. Why: views dropped after 21:00. Expected: +20% views on weekdays. Write as much detail as you need."></textarea></label>
       <label>By<input id="fB" type="text" maxlength="40" value="${esc(by)}" placeholder="Your name"></label>
-      <button class="pbtn" id="fAdd">Add action → team log</button></div><div class="muted" id="fMsg" style="font-size:12px;margin-top:8px">${ACT_LIVE&&ACT_LIVE.form_url?"Opens the Feishu form with everything filled in. Press <b>Submit</b> there and the action appears here for the whole team within about 10 minutes.":"Loading the team log…"}</div></section>`;
+      <button class="pbtn" id="fAdd">Add action → team log</button></div><div class="muted" id="fMsg" style="font-size:12px;margin-top:8px">${ACT_LIVE&&ACT_LIVE.form_url?"Opens the Feishu form with everything filled in. Press <b>Submit</b> there and the action appears here for the whole team, usually within 1–5 minutes.":"Loading the team log…"}</div></section>`;
   const pending=localActs();
-  if(pending.length) html+=`<section class="card pendc"><div class="chead"><div><h2>⚠ ${pending.length} action${pending.length>1?"s are":" is"} only on this device</h2><div class="hint">Not in the team log yet, so nobody else can see ${pending.length>1?"them":"it"}. Press <b>Send</b>, then <b>Submit</b> in the Feishu form. ${pending.length>1?"They disappear":"It disappears"} from this list once the team log has ${pending.length>1?"them":"it"} (about 10 minutes).</div></div></div>
+  if(pending.length) actFastPoll();
+  if(pending.length) html+=`<section class="card pendc"><div class="chead"><div><h2>⚠ ${pending.length} action${pending.length>1?"s are":" is"} only on this device</h2><div class="hint">Not in the team log yet, so nobody else can see ${pending.length>1?"them":"it"}. Press <b>Send</b>, then <b>Submit</b> in the Feishu form. ${pending.length>1?"They disappear":"It disappears"} from this list once the team log has ${pending.length>1?"them":"it"} (usually 1–5 minutes; this page checks every 20 seconds).</div></div></div>
     ${pending.map(x=>`<div class="pend"><div><b>${esc(x.a)}</b> · ${fmtD(new Date(x.date+"T00:00:00"))} · <span class="atag">${esc(x.cat)}</span> <span class="lnote">${esc(x.note.length>160?x.note.slice(0,160)+"…":x.note)}</span></div><div style="display:flex;gap:6px">${ACT_LIVE&&ACT_LIVE.form_url?`<a class="pbtn sm gold" href="${esc(actFormUrl(x))}" target="_blank" rel="noopener">Send to team log ↗</a>`:""}<button class="xbtn sm" data-del="${esc(x.id)}" title="Delete">✕</button></div></div>`).join("")}</section>`;
   const list=allActs(), pics=PICS();
   const shown=state.actFilter==="all"?list:list.filter(x=>PIC[x.a]===state.actFilter);
@@ -1752,7 +1758,7 @@ function renderActions(){
     imps.map(({x,im})=>`<tr><td class="l">${fmtD(new Date(x.date+"T00:00:00"))}</td><td class="l"><b>${esc(x.a)}</b><div class="muted" style="font-size:11px">${esc(PIC[x.a]||"")}</div></td><td class="l">${esc(x.by||"–")}</td>
       <td class="l wrapc"><span class="atag">${esc(x.cat)}</span> <span class="lnote">${esc(x.note)}</span></td><td class="l">${impactHtml(im)}</td>
       <td>${x.shared?`<span class="muted" style="font-size:11px">Team log</span>`:`<span class="neg" style="font-size:11px;white-space:nowrap">Not sent</span>`}</td></tr>`).join("")+`</tbody></table></div>`:`<div class="muted" style="font-size:13px">No actions yet.</div>`}
-    <div class="hint" style="margin-top:12px">All actions live in the <b>ACTION LOG</b> table in Feishu Base and sync to this page every 10 minutes (08:00–22:50). Edit or delete an action in Feishu.</div></section>`;
+    <div class="hint" style="margin-top:12px">All actions live in the <b>ACTION LOG</b> table in Feishu Base and sync to this page within minutes of being submitted (08:00–23:00). Edit or delete an action in Feishu.</div></section>`;
   document.getElementById("main").innerHTML=html;
   const msg=t=>{const el=document.getElementById("fMsg");if(el) el.textContent=t;};
   const fN=document.getElementById("fN");fN.addEventListener("input",()=>{fN.style.height="auto";fN.style.height=fN.scrollHeight+2+"px";});
