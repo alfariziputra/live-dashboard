@@ -563,6 +563,15 @@ table.mini td,table.mini th{padding:5px 6px;font-size:11.5px}
 .rti{display:flex;justify-content:space-between;gap:8px;align-items:center;padding:8px 0;border-bottom:1px solid var(--grid);font-size:12px}.rti select{font-size:11.5px;padding:4px 8px}
 @media (max-width:1100px){.rpwrap{grid-template-columns:1fr}.rpside{position:static}.fndg{grid-template-columns:1fr}.mvg{grid-template-columns:1fr}}
 @media (max-width:700px){.rp-doc{padding:16px}.fnd dl,.rp-rec dl{grid-template-columns:1fr}}
+.pipe{display:grid;grid-template-columns:repeat(9,minmax(0,1fr));gap:8px;margin-top:6px}
+.pst{border:1px solid var(--line);border-radius:12px;padding:10px 10px 12px;background:var(--surface-2);display:flex;flex-direction:column;gap:4px;position:relative;border-top:3px solid var(--line)}
+.pst span{font-size:10px;font-weight:700;color:var(--ink-3)}.pst b{font-size:11.5px;line-height:1.25}.pst small{font-size:11px;color:var(--ink-2);line-height:1.3}
+.pst.good{border-top-color:var(--good)}.pst.warn{border-top-color:var(--warn)}.pst.bad{border-top-color:var(--bad)}.pst.flat{border-top-color:#c9ccd3}
+.dmini{font:inherit;font-size:11px;border:1px solid var(--line);border-radius:6px;padding:2px 4px}
+.orow{display:flex;flex-direction:column;gap:2px;padding:9px 0;border-bottom:1px solid var(--grid);font-size:12.5px}.orow span{color:var(--ink-2)}
+tr.clk{cursor:pointer}tr.clk:hover td{background:#fbf6ea}
+@media (max-width:1300px){.pipe{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:700px){.pipe{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
@@ -2317,9 +2326,9 @@ function rCompare(a,P,C){
   const flags=[];
   if(pr.length<lenP) flags.push(`Primary period has data for ${pr.length} of ${lenP} days${pr.length?` (last data ${fmtDate(pr[pr.length-1].date)})`:""}.`);
   if(C&&cr.length<lenC) flags.push(`Comparison period has data for ${cr.length} of ${lenC} days.`);
-  if(norm&&cr.length) flags.push(`Periods have different lengths (${pa.days} vs ${ca.days} days with data): totals are shown as-is, and % change for totals uses daily averages.`);
-  const eP=ev(pr),eC=ev(cr); if(C&&cr.length&&eP.join()!==eC.join()) flags.push(`Campaign days differ: primary has ${eP.length?eP.join(", "):"none"}, comparison has ${eC.length?eC.join(", "):"none"}. Part of the GMV change can come from the campaign calendar.`);
-  if(C&&!cr.length) flags.splice(0,flags.length,...flags.filter(f=>!f.startsWith("Comparison period has data")),"No data at all in the comparison period (e.g. last year is not in the dashboard yet), so no % changes can be calculated.");
+  if(norm) flags.push(`Periods have different lengths (${pa.days} vs ${ca.days} days with data): totals are shown as-is, and % change for totals uses daily averages.`);
+  const eP=ev(pr),eC=ev(cr); if(C&&eP.join()!==eC.join()) flags.push(`Campaign days differ: primary has ${eP.length?eP.join(", "):"none"}, comparison has ${eC.length?eC.join(", "):"none"}. Part of the GMV change can come from the campaign calendar.`);
+  if(C&&!cr.length) flags.push("No data at all in the comparison period (e.g. last year is not in the dashboard yet).");
   const dr=C&&pa.v&&ca.v&&pa.o&&ca.o?splitDrivers({g:pa.g,v:pa.v,o:pa.o,d:pa.days},{g:ca.g,v:ca.v,o:ca.o,d:ca.days}):null;
   return {a,P,C,pr,cr,pa,ca,lenP,lenC,norm,rows,flags,dr,evP:eP,evC:eC};
 }
@@ -2391,7 +2400,7 @@ function rInsights(cmp,opts={}){
   // 10. sessions: hosts and slots
   const ses=(opts.sessions||[]).filter(x=>x.d>=P.s&&x.d<=P.e);
   let hosts=null,slots=null;
-  if(ses.length){const by={};ses.filter(x=>x.host&&!/^(back ?up|backup|-|tbd|n\/?a)$/i.test(x.host.trim())).forEach(x=>{const h=x.host;const o=by[h]||(by[h]={host:h,n:0,hrs:0,g:0,items:0});o.n++;o.hrs+=x.hrs||0;o.g+=x.g||0;o.items+=x.items||0;});
+  if(ses.length){const by={};ses.forEach(x=>{const h=x.host||"(unknown)";const o=by[h]||(by[h]={host:h,n:0,hrs:0,g:0,items:0});o.n++;o.hrs+=x.hrs||0;o.g+=x.g||0;o.items+=x.items||0;});
     hosts=Object.values(by).filter(x=>x.n>=3&&x.hrs>0).map(x=>({...x,gph:x.g/x.hrs})).sort((x,y)=>y.gph-x.gph);
     const bs={};ses.forEach(x=>{if(!x.slot) return;const sl=String(x.slot).split("-")[0].trim().replace(".",":");const o=bs[sl]||(bs[sl]={slot:sl,n:0,hrs:0,g:0});o.n++;o.hrs+=x.hrs||0;o.g+=x.g||0;});
     slots=Object.values(bs).filter(x=>x.n>=3&&x.hrs>0).map(x=>({...x,gph:x.g/x.hrs})).sort((x,y)=>x.slot.localeCompare(y.slot));}
@@ -2437,7 +2446,7 @@ function rRecs(cmp,ins,lo){
 }
 
 /* ---------- report model ---------- */
-const RPT_SECTIONS=[["exec","Executive Summary"],["overview","Account Overview"],["highlights","Overall Performance Highlights"],["kpi","KPI Performance Dashboard"],["pop","Period-over-Period Comparison"],["detail","Detailed Metrics Analysis"],["content","Content / Campaign Performance Analysis"],["root","Root Cause Analysis"],["problems","Key Problems and Challenges"],["learn","Key Learnings and Takeaways"],["recs","Strategic Recommendations"],["plan","Action Plan for the Next Reporting Period"],["concl","Conclusion"]];
+const RPT_SECTIONS=[["exec","Executive Summary"],["overview","Account Overview"],["highlights","Overall Performance Highlights"],["kpi","KPI Performance Dashboard"],["pop","Period-over-Period Comparison"],["detail","Detailed Metrics Analysis"],["content","Content / Campaign Performance Analysis"],["root","Root Cause Analysis"],["problems","Key Problems and Challenges"],["opp","Opportunities and Risks"],["learn","Account Knowledge: Learnings and Strategy Review"],["recs","Strategic Recommendations"],["plan","Action Plan for the Next Reporting Period"],["concl","Conclusion"]];
 function rTrajectory(a,upTo){
   const by={};rDaily(a).filter(x=>!x.ev&&x.date<=upTo).forEach(x=>{const k=x.date.slice(0,7);(by[k]=by[k]||[]).push(x.g);});
   const ms=Object.keys(by).sort().filter(k=>by[k].length>=5).slice(-4).map(k=>({m:k,avg:mean(by[k])}));
@@ -2450,16 +2459,23 @@ function rPrevReports(a,beforeIso){return rLibAll().filter(r=>r.account===a&&r.p
 function rBuildReport(cfg){
   const {a,P}=cfg, C=cfg.cmpOn?cfg.C:null;
   const cmp=rCompare(a,P,C||cfg.C), ins=rInsights(cmp,{sessions:rUploads(a).sessions});
-  const lo=rPic(a), recs=rRecs(cmp,ins,lo), R=k=>cmp.rows.find(r=>r.m.k===k), pa=cmp.pa;
   if(!cmp.pr.length) throw new Error(`No data for ${a} between ${fmtDate(P.s)} and ${fmtDate(P.e)}. Pick another period or upload data for it.`);
+  const lo=rPic(a), R=k=>cmp.rows.find(r=>r.m.k===k), pa=cmp.pa;
+  const K=rKnowledge(a,P,cmp,ins), recs=rOptimizeRecs(rRecs(cmp,ins,lo),a,cmp,ins,K.issues,K.strats,P), V=rValidate(a,P);
   const prev=rPrevReports(a,P.s), last=prev[prev.length-1], traj=rTrajectory(a,P.e);
+  const stOf=key=>{const i=K.issues.find(x=>x.k===key);return i?i.status:"New";};
+  const evald=K.strats.filter(s=>s.done&&s.status!=="Dropped");
   const S={}, gD=pa.g/pa.days, ach=R("ach"), gR=R("g"), md=cmp.dr?mainDriver(cmp.dr):null, has=k=>{const r=R(k);return r&&r.cur!=null;};
-  const chg=r=>r&&r.pct!=null?(r.m.pp?` (${rFmtAbs(r.abs,r.m)} vs comparison)`:` (${r.pct>=0?"+":""}${r.pct.toFixed(1)}% vs comparison)`):"";
+  const chg=r=>r&&r.pct!=null?` (${r.pct>=0?"+":""}${r.pct.toFixed(1)}% vs comparison)`:"";
   // 1 executive summary
   const ex=[`In ${fmtRange(P)}, ${a} generated Rp ${fmtC(pa.g)} GMV (Rp ${fmtC(gD)} per day over ${pa.days} days with data)${ach&&ach.cur!=null?`, reaching ${(ach.cur*100).toFixed(1)}% of target`:""}.`];
   if(C&&gR&&gR.pct!=null) ex.push(`GMV per day is ${gR.pct>=0?"up":"down"} ${Math.abs(gR.pct).toFixed(1)}% vs ${fmtRange(C)}${md?`, driven mainly by ${md.name.toLowerCase()} (${pctS(md.pct)})`:""}.`);
-  if(ins.wins[0]) ex.push(`Strongest point: ${ins.wins[0].text.charAt(0).toLowerCase()+ins.wins[0].text.slice(1)}.`);
-  if(ins.probs[0]) ex.push(`Biggest issue: ${ins.probs[0].text.charAt(0).toLowerCase()+ins.probs[0].text.slice(1)}.`);
+  if(ins.wins[0]) ex.push(`Strongest point: ${/^[A-Z]{2}/.test(ins.wins[0].text)?ins.wins[0].text:ins.wins[0].text.charAt(0).toLowerCase()+ins.wins[0].text.slice(1)}.`);
+  if(ins.probs[0]) ex.push(`Biggest issue: ${/^[A-Z]{2}/.test(ins.probs[0].text)?ins.probs[0].text:ins.probs[0].text.charAt(0).toLowerCase()+ins.probs[0].text.slice(1)}.`);
+  {const rc=K.issues.filter(i=>i.now&&(i.status==="Recurring"||i.status==="Chronic")),rs=K.issues.filter(i=>i.status==="Resolved"),nw=K.issues.filter(i=>i.now&&i.status==="New");
+    const parts=[];if(rc.length) parts.push(`${rc.length} recurring issue${rc.length>1?"s":""} (${rc.map(i=>i.name.toLowerCase()).join(", ")})`);if(nw.length) parts.push(`${nw.length} new`);if(rs.length) parts.push(`${rs.length} resolved since the previous period (${rs.map(i=>i.name.toLowerCase()).join(", ")})`);
+    if(parts.length) ex.push(`Account history: ${parts.join("; ")}.`);
+    if(evald.length) ex.push(`${evald.length} earlier recommendation${evald.length>1?"s were":" was"} evaluated: ${evald.filter(s=>s.outcome==="Successful").length} successful, ${evald.filter(s=>s.outcome==="Unsuccessful").length} unsuccessful, ${evald.filter(s=>s.outcome==="Not implemented").length} not implemented.`);}
   ex.push(`Top priority for the next period: ${recs[0].action.split(". ")[0].replace(/\.$/,"")}.`);
   const kp=["g","ach","o","cvr","aov","v"].map(k=>R(k)).filter(r=>r&&r.cur!=null).slice(0,6).map(r=>({l:r.m.l,v:rFmt(r.cur,r.m.f),s:r.pct!=null?`${r.pct>=0?"▲":"▼"} ${Math.abs(r.pct).toFixed(1)}%${cmp.norm&&r.m.kind==="sum"?" /day":""}`:(r.m.kind==="sum"&&!r.m.info?rFmt(r.cur/pa.days,r.m.f)+" /day":""),tone:r.pct==null?"":r.pct>=0?"good":"bad"}));
   S.exec=[{t:"p",text:ex.join(" ")},{t:"kpis",items:kp}];
@@ -2468,6 +2484,7 @@ function rBuildReport(cfg){
   const srcs=[...new Set(cmp.pr.map(x=>x.src))].map(s=>s==="dashboard"?"Dashboard daily data":s==="upload"?"Uploaded file":"Dashboard + uploaded file").join(", ");
   const files=(rUploads(a).files||[]).filter(f=>!(f.to<P.s||f.from>P.e)).map(f=>f.name);
   S.overview=[{t:"table",head:["Item","Detail"],rows:[["Account",a],["Brand",rBrand(a)||"–"],["Platform",rPlatform(a)],["LO specialist (PIC)",lo||"–"],["Reporting period",`${fmtRange(P)} (${cfg.kindLabel||"custom"}, ${cmp.lenP} days)`],["Comparison period",C?`${fmtRange(C)} (${cmp.lenC} days)`:cfg.C?`${fmtRange(cfg.C)}: used as the baseline for analysis (comparison section switched off)`:"None"],["Days with data",`${pa.days} of ${cmp.lenP}`],["Data sources",srcs+(files.length?` · files: ${files.join(", ")}`:"")],["Metrics available",avail.join(", ")],["Metrics not available",miss.join(", ")||"none"],["Campaign days in period",cmp.evP.join(", ")||"none"]]}];
+  S.overview.push({t:"table",title:`Data validation: ${V.score}/100 (${V.grade})`,head:["Check","Result","Detail"],rows:V.checks.map(c=>[c.label,c.info?"Info":c.ok?"OK":"Check",c.detail])});
   if(cmp.flags.length) S.overview.push({t:"callout",tone:"info",text:"Data notes: "+cmp.flags.join(" ")});
   const recon=cmp.pr.filter(x=>x.g_up!=null); if(recon.length){const d=sum(recon.map(x=>x.g_up))/sum(recon.map(x=>x.g))-1;if(Math.abs(d)>.02) S.overview.push({t:"callout",tone:"info",text:`Uploaded GMV differs from the dashboard by ${pctS(d)} on ${recon.length} overlapping days (the file may count gross GMV before cancellations). Dashboard values are used for GMV; uploaded values are used for the extra metrics only.`});}
   // 3 highlights
@@ -2491,7 +2508,7 @@ function rBuildReport(cfg){
   const det=[];const grp=(g,txt)=>{const rs=cmp.rows.filter(r=>r.m.grp===g&&r.cur!=null&&!r.m.info);if(!rs.length) return;
     det.push({t:"h",text:g});det.push({t:"p",text:rs.map(r=>`${r.m.l}: ${rFmt(r.cur,r.m.f)}${r.m.kind==="sum"?` (${rFmt(r.cur/pa.days,r.m.f)}/day)`:""}${chg(r)}`).join("; ")+"."+(txt?" "+txt:"")});};
   grp("Sales",ins.tr!=null?`Inside the period, daily GMV trended ${ins.tr>=0?"up":"down"} about ${Math.abs(ins.tr).toFixed(1)}% of the average per day; normal-day GMV was Rp ${fmtC(ins.h1)} in the first half vs Rp ${fmtC(ins.h2)} in the second half.`:"");
-  grp("Traffic",""); grp("Funnel",ins.funnel?(ins.funnel.pct<0?`Funnel bottleneck vs comparison: ${ins.funnel.stage} fell ${pctS(ins.funnel.pct/100)}.`:"Both funnel stages (impression → click and click → order) held or improved vs the comparison period."):"");
+  grp("Traffic",""); grp("Funnel",ins.funnel?`Weakest funnel stage vs comparison: ${ins.funnel.stage} (${pctS(ins.funnel.pct/100)}).`:"");
   grp("Basket",""); grp("Audience",""); grp("Live operations","");
   if(ins.wd) det.push({t:"p",text:`Weekday pattern (normal days): strongest ${ins.wd.best[0]} (+${(ins.wd.best[1]*100).toFixed(0)}% vs average), weakest ${ins.wd.worst[0]} (${(ins.wd.worst[1]*100).toFixed(0)}%).`});
   if(miss.length) det.push({t:"callout",tone:"info",text:`Not analysed because the data is not available: ${miss.join(", ")}. Upload a TikTok LIVE or session export to add them.`});
@@ -2508,39 +2525,47 @@ function rBuildReport(cfg){
   const rc=[];
   if(cmp.dr) rc.push({t:"table",title:"What moved GMV (vs comparison period)",head:["Driver","Change in driver","GMV effect"],align:["l","r","r"],rows:[["Traffic (views per day)",pctS(cmp.dr.vP),rFmtAbs(cmp.dr.cV,{f:"rp"})],["Conversion (orders per view)",pctS(cmp.dr.cP),rFmtAbs(cmp.dr.cC,{f:"rp"})],["AOV (GMV per order)",pctS(cmp.dr.aP),rFmtAbs(cmp.dr.cA,{f:"rp"})],["Total",pctS(cmp.dr.gP),rFmtAbs(cmp.dr.cTot,{f:"rp"})]]});
   const rcF=[...ins.F.filter(f=>f.area!=="Overall"||f.title.startsWith("Campaign")),...ins.div];
-  ins.anom.forEach(x=>rcF.push({cls:x.ev?"Confirmed":"Hypothesis",title:`${x.z>0?"Unusually strong":"Unusually weak"} day: ${fmtDate(x.date)}`,what:`Rp ${fmtC(x.g)} vs Rp ${fmtC(ins.m0)} on a normal day.`,how:`${((x.g/ins.m0-1)*100).toFixed(0)}%`,why:x.ev?`Campaign day (${x.ev}) in the calendar.`:"Not explained by the campaign calendar; check the session log (host, schedule, stream or stock issues).",impact:`${rFmtAbs(x.g-ins.m0,{f:"rp"})} vs a normal day.`,action:x.ev?(x.z>0?"Expected campaign spike: plan the next campaign with the same setup and check what sold best.":"Campaign day underperformed: review the campaign setup (vouchers, stock, host) before the next one."):(x.z>0?"Find out what was different and repeat it.":"Find the cause and prevent it.")}));
+  ins.anom.forEach(x=>rcF.push({cls:x.ev?"Confirmed":"Hypothesis",title:`${x.z>0?"Unusually strong":"Unusually weak"} day: ${fmtDate(x.date)}`,what:`Rp ${fmtC(x.g)} vs Rp ${fmtC(ins.m0)} on a normal day.`,how:`${((x.g/ins.m0-1)*100).toFixed(0)}%`,why:x.ev?`Campaign day (${x.ev}) in the calendar.`:"Not explained by the campaign calendar; check the session log (host, schedule, stream or stock issues).",impact:`${rFmtAbs(x.g-ins.m0,{f:"rp"})} vs a normal day.`,action:x.z>0?"Find out what was different and repeat it.":"Find the cause and prevent it."}));
   if(ins.acts.length) ins.acts.forEach(x=>rcF.push({cls:"Hypothesis",title:`Logged action on ${fmtDate(x.date)}: ${x.cat}`,what:x.note,how:x.im.st==="ok"?`7 days after vs before: GMV/day ${pctS(x.im.gP)}${x.im.dA!=null?`, achievement ${(x.im.achB*100).toFixed(0)}→${(x.im.achA*100).toFixed(0)}%`:""}`:"Too early to measure.",why:"Timing matches, but other factors could also explain the change.",impact:x.im.st==="ok"?(x.im.verdict==="worked"?"Positive":x.im.verdict==="worse"?"Negative":"No clear change"):"–",action:"Keep logging actions so effects can be separated."}));
   rc.push({t:"ul",items:rcF.length?rcF.map(rFindingText):["No unusual patterns found beyond the driver split above."]});
   rc.push({t:"callout",tone:"info",text:"Labels: Confirmed = calculated directly from the data. Likely = strongly suggested by the pattern in the data. Hypothesis = a possible explanation that needs checking; the data alone does not prove the cause."});
   S.root=rc;
   // 9 problems
-  S.problems=[{t:"ul",items:ins.probs.length?ins.probs.slice(0,6).map((p,i)=>`${i+1}. ${p.text}.`):["No significant problems found in this period."]}];
-  // 10 learnings
+  S.problems=ins.probs.length?[{t:"table",head:["#","Problem","Status","Cost / gap"],align:["r","l","l","r"],rows:ins.probs.slice(0,7).map((p,i)=>{const kk=p.key==="host"?"host:"+(p.text.split(" sells")[0]).toUpperCase():p.key;const is=K.issues.find(x=>x.k===kk);return [i+1,p.text,is?`${is.status}${is.status==="Chronic"||is.status==="Recurring"?` (${is.streak} periods)`:""}`:"New","Rp "+fmtC(p.rp)];})},
+    {t:"p",text:"Status: New = first time seen · Recurring = also in the previous period · Chronic = 3 or more periods in a row · Returned = seen before, then gone, now back."}]:[{t:"p",text:"No significant problems found in this period."}];
+  const resolved=K.issues.filter(i=>i.status==="Resolved");
+  if(resolved.length) S.problems.push({t:"ul",title:"Resolved since the previous period",items:resolved.map(i=>`✓ ${i.name} (last seen ${i.last})`)});
+  // opportunities and risks
+  S.opp=[{t:"table",title:"Opportunities",head:["Opportunity","How to use it","KPI"],rows:K.or.O.length?K.or.O.map(o=>[o.t,o.d,o.kpi]):[["None identified","–","–"]]},
+    {t:"table",title:"Risks",head:["Risk","Why it matters","Level"],rows:K.or.R.length?K.or.R.map(r=>[r.t,r.d,r.lvl]):[["None identified","–","–"]]}];
+  // 10 knowledge: issue register + strategy review + lessons
   const ln=[];
-  ins.wins.slice(0,2).forEach(w=>ln.push(`What worked: ${w.text.charAt(0).toLowerCase()+w.text.slice(1)}.`));
-  ins.div.forEach(d=>ln.push(`Lesson: ${d.title.toLowerCase()} → ${d.action.charAt(0).toLowerCase()+d.action.slice(1)}`));
-  ins.probs.slice(0,2).forEach(w=>ln.push(`What held the account back: ${w.text.charAt(0).toLowerCase()+w.text.slice(1)}.`));
-  if(last){
-    const st=rRecStatus();(last.recs||[]).forEach(rc_=>{const k=rc_.kpi&&rc_.kpi.k, m=k&&RMK[k], then=last.kpiSnap&&last.kpiSnap[k], now=R(k)&&R(k).cur, s=st[last.id+":"+rc_.id]||"not tracked";
-      if(m&&then!=null&&now!=null){const per=m.kind==="sum"?[then/(last.days||1),now/pa.days]:[then,now];
-        ln.push(`Previous report (${fmtRange(last.period)}) recommended: "${rc_.problem}" → status: ${s}. ${rc_.kpi.label}: ${rFmt(per[0],m.f)} → ${rFmt(per[1],m.f)} (${pctS(per[1]/per[0]-1)})${rc_.kpi.target!=null?`, target ${rFmt(rc_.kpi.target,m.f)} ${(m.k==="ach"?per[1]>=rc_.kpi.target:per[1]>=rc_.kpi.target)?"reached":"not reached yet"}`:""}. The change is measured; it is not proof the action caused it.`);}
-      else ln.push(`Previous report (${fmtRange(last.period)}) recommended: "${rc_.problem}" → status: ${s}.`);});
-    const rec=(last.probKeys||[]).filter(k=>ins.probs.some(p=>p.key===k));
-    if(rec.length) ln.push(`Recurring issue (also in the previous report): ${[...new Set(rec)].join(", ")}.`);
-  }
-  if(!ln.length) ln.push("First report for this account: learnings will build up as more periods are reported.");
-  S.learn=[{t:"ul",items:ln}];
+  ln.push({t:"table",title:"Issue register (all periods)",head:["Issue","Status now","First seen","Last seen","Periods seen"],align:["l","l","l","l","r"],rows:K.issues.length?K.issues.map(i=>[i.name,i.status,i.first,i.last,i.count]):[["No issues recorded yet","–","–","–","–"]]});
+  if(K.strats.length) ln.push({t:"table",title:"Strategy review: earlier recommendations",head:["Recommendation","From report","Status","Evaluation window","KPI: baseline → result","Outcome"],rows:K.strats.map(s_=>[s_.rec.problem,fmtRange(s_.rep.period),s_.status,`${fmtDate(s_.win.s)} – ${fmtDate(s_.win.e)}`,s_.m&&s_.base!=null?`${s_.rec.kpi.label}: ${rFmt(s_.base,s_.m.f)} → ${s_.value!=null?rFmt(s_.value,s_.m.f):"–"}${s_.change!=null?` (${pctS(s_.change)})`:""}`:"–",s_.outcome])});
+  else ln.push({t:"p",text:"No earlier recommendations saved for this account yet. Save this report to history so the next report can evaluate its recommendations."});
+  const L=[];
+  const lc1=x=>/^[A-Z]{2}/.test(x)?x:x.charAt(0).toLowerCase()+x.slice(1);
+  ins.wins.slice(0,2).forEach(w=>L.push(`What worked: ${lc1(w.text)}.`));
+  ins.div.forEach(d=>L.push(`Lesson: ${d.title.toLowerCase()} → ${d.action.charAt(0).toLowerCase()+d.action.slice(1)}`));
+  K.strats.filter(s_=>s_.outcome==="Successful").forEach(s_=>L.push(`Proven strategy: "${s_.rec.problem}" (${fmtRange(s_.rep.period)}) met its target; ${s_.rec.kpi.label} ${pctS(s_.change)}. Reuse it when the issue returns.`));
+  K.strats.filter(s_=>s_.outcome==="Unsuccessful").forEach(s_=>L.push(`Unsuccessful strategy: "${s_.rec.problem}" (${fmtRange(s_.rep.period)}) was implemented but ${s_.rec.kpi.label} moved ${pctS(s_.change)}. This report recommends a different approach.`));
+  K.strats.filter(s_=>s_.outcome==="Not implemented").forEach(s_=>L.push(`Not implemented: "${s_.rec.problem}" (${fmtRange(s_.rep.period)}); ${s_.rec.kpi.label} ${s_.change!=null?pctS(s_.change):"–"} without it.`));
+  K.issues.filter(i_=>i_.status==="Chronic").forEach(i_=>L.push(`Chronic: ${i_.name} has appeared ${i_.streak} periods in a row; daily fixes are not enough.`));
+  ln.push({t:"ul",title:"Key learnings",items:L.length?L:["First period with enough data: learnings will build up as more periods are analysed and saved."]});
+  ln.push({t:"callout",tone:"info",text:"Outcomes are measured on the KPI over each recommendation's evaluation window. A measured improvement shows the KPI moved; it does not prove the action caused it."});
+  S.learn=ln;
   // 11 recommendations
   S.recs=recs.map(r=>({t:"rec",r}));
   // 12 action plan
-  S.plan=[{t:"table",head:["#","Action","Owner","Timeline","KPI to watch","Priority"],align:["r","l","l","l","l","l"],rows:recs.map((r,i)=>[i+1,r.action.split(". ")[0].replace(/\.$/,""),r.owner,r.timeline,r.kpi.label+(r.kpi.target!=null?` → ${rFmt(r.kpi.target,RMK[r.kpi.k]?RMK[r.kpi.k].f:"num1")}${r.kpi.per?" /"+r.kpi.per:""}`:""),r.priority])}];
+  S.plan=[{t:"table",head:["#","Action","Owner","Priority","KPI: baseline → target","Evaluate on"],align:["r","l","l","l","l","l"],rows:recs.map((r,i)=>{const m=RMK[r.kpi.k]||{f:"num1"};return [i+1,r.action.split(". ")[0].replace(/\.$/,""),r.owner,r.priority,`${r.kpi.label}: ${r.kpi.baseline!=null?rFmt(r.kpi.baseline,m.f):"–"} → ${r.kpi.target!=null?rFmt(r.kpi.target,m.f):"+5%"}${r.kpi.per?" /"+r.kpi.per:""}`,`${fmtDate(r.eval.s)} – ${fmtDate(r.eval.e)}`];})},
+    {t:"p",text:"Set each action's status in the report history (Planned → In progress → Implemented). After its evaluation window, the next report scores it automatically as successful, partly successful, unsuccessful or not implemented."}];
   // 13 conclusion
-  S.concl=[{t:"p",text:`${a} ${traj.label==="not enough history"?"does not have enough history yet to judge the longer-term direction":`is ${traj.label} over the last ${traj.ms.length} months of normal-day GMV (${traj.ms.map(x=>MN3[+x.m.slice(5)-1]+" Rp "+fmtC(x.avg)).join(" → ")})`}. ${C&&gR&&gR.pct!=null?`Versus the comparison period, GMV per day is ${gR.pct>=0?"up":"down"} ${Math.abs(gR.pct).toFixed(1)}%. `:""}The next period should focus on ${recs.slice(0,2).map(r=>({traffic:"recovering traffic",conversion:"lifting conversion",aov:"growing basket size",target:"closing the target gap",funnel:"fixing the funnel bottleneck",lowdays:"preventing weak days",hosts:"better host scheduling",keep:"protecting current performance"}[r.id]||r.problem.toLowerCase())).join(" and ")}, measured by ${recs.slice(0,2).map(r=>r.kpi.label.toLowerCase()).join(" and ")}.`}];
+  S.concl=[{t:"p",text:`${a} ${traj.label==="not enough history"?"does not have enough history yet to judge the longer-term direction":`is ${traj.label} over the last ${traj.ms.length} months of normal-day GMV (${traj.ms.map(x=>MN3[+x.m.slice(5)-1]+" Rp "+fmtC(x.avg)).join(" → ")})`}. ${C&&gR&&gR.pct!=null?`Versus the comparison period, GMV per day is ${gR.pct>=0?"up":"down"} ${Math.abs(gR.pct).toFixed(1)}%. `:""}The next period should focus on ${recs.slice(0,2).map(r=>r.problem.toLowerCase()).join(" and ")}, measured by ${recs.slice(0,2).map(r=>r.kpi.label.toLowerCase()).join(" and ")}.`}];
   const kpiSnap={};cmp.rows.forEach(r=>{if(r.cur!=null) kpiSnap[r.m.k]=r.cur;});
   const sameP=rLibAll().filter(x=>x.account===a&&x.period.s===P.s&&x.period.e===P.e).length;
   return {id:"r"+Date.now().toString(36),v:1,version:sameP+1,account:a,brand:rBrand(a),platform:rPlatform(a),lo,period:P,compare:C,kindLabel:cfg.kindLabel||"custom",
     created:new Date().toISOString(),by:(()=>{try{return localStorage.getItem("migo_me")||"";}catch(e){return "";}})(),days:pa.days,
-    sections:RPT_SECTIONS.filter(([k])=>S[k]).map(([k,t],i)=>({k,title:t,on:true,blocks:S[k]})),recs,kpiSnap,probKeys:ins.probs.map(p=>p.key),traj:traj.label};
+    sections:RPT_SECTIONS.filter(([k])=>S[k]).map(([k,t],i)=>({k,title:t,on:true,blocks:S[k]})),recs,kpiSnap,probKeys:K.curKeys,traj:traj.label,validation:{score:V.score,grade:V.grade},issues:K.issues.map(i=>({k:i.k,status:i.status}))};
 }
 function rFindingText(f){return `[${f.cls}] ${f.title}. ${f.what||""}${f.how?" "+f.how:""} Why: ${f.why} Impact: ${f.impact} Action: ${f.action}`.replace(/\s+/g," ").trim();}
 
@@ -2559,6 +2584,7 @@ function rLoadTeam(){
     return Promise.all(list.map(x=>fetch("report-history/"+x.file+"?t="+Date.now(),{cache:"no-store"}).then(r=>r.ok?r.json():null).catch(()=>null))).then(rs=>{
       RTEAM={};rs.filter(Boolean).forEach(r=>{RTEAM[r.id]=r;});
       if(ix.status){const st=rRecStatus();Object.entries(ix.status).forEach(([k,v])=>{if(!st[k]) st[k]=v;});try{localStorage.setItem(REC_KEY,JSON.stringify(st));}catch(e){}}
+      if(ix.dates){let d={};try{d=JSON.parse(localStorage.getItem("migo_rec_dates")||"{}");}catch(e){}Object.entries(ix.dates).forEach(([k,v])=>{if(!d[k]) d[k]=v;});try{localStorage.setItem("migo_rec_dates",JSON.stringify(d));}catch(e){}}
       return RTEAM;});});
 }
 async function ghReq(path,method,body){
@@ -2580,9 +2606,155 @@ async function rSaveTeam(rep){
     const cur=await ghReq("report-history/index.json","GET");
     const ix=cur?cur.json:{reports:[],status:{}};
     ix.reports=(ix.reports||[]).filter(x=>x.id!==rep.id);ix.reports.push({id:rep.id,account:rep.account,period:rep.period,compare:rep.compare,created:rep.created,version:rep.version,by:rep.by,file});
-    ix.status={...(ix.status||{}),...rRecStatus()};
+    ix.status={...(ix.status||{}),...rRecStatus()};ix.dates={...(ix.dates||{}),...rRecDates()};
     try{await ghReq("report-history/index.json","PUT",{message:"Report index update",content:b64(JSON.stringify(ix,null,1)),...(cur?{sha:cur.sha}:{})});RTEAM=RTEAM||{};RTEAM[rep.id]=clean;return;}catch(e){if(i===2) throw e;}
   }
+}
+
+/* ================= account intelligence: knowledge base, validation, strategy evaluation ================= */
+const ISSUE_LABEL={target:"Behind target",traffic:"Traffic decline",conversion:"Conversion decline",aov:"Basket size (AOV) decline",lowday:"Unexplained weak days",host:"Low-performing host"};
+const issueName=k=>k.startsWith("host:")?`Low-performing host: ${oTitle(k.slice(5))}`:(ISSUE_LABEL[k]||k);
+const REC_ISSUE={traffic:"traffic",conversion:"conversion",aov:"aov",target:"target",lowdays:"lowday",hosts:"host",funnel:"conversion"};
+const EVAL_DAYS={traffic:14,conversion:14,aov:21,target:14,funnel:14,hosts:14,lowdays:14,keep:14};
+const REC_ALT={
+  traffic:"Previous traffic plan did not move views enough. Change approach: shift ads from broad audiences to retargeting past viewers and buyers, bring in 2–3 affiliates/KOLs to co-live or share the live link, and test one new time slot where competing lives are weaker.",
+  conversion:"Previous conversion plan did not work. Change approach: rebuild the first 30 minutes of each live around one hero SKU plus one entry-price item, run a flash deal every 20 minutes, and A/B test two scripts across hosts for one week.",
+  aov:"Previous basket plan did not work. Change approach: set a free-shipping threshold just above the current AOV, add a gift with purchase above that level, and pin bundles only during peak viewer minutes.",
+  target:"Previous target push did not close the gap. Change approach: re-forecast with the brand team, move hours from the weakest to the strongest slots, and request extra campaign budget or a revised target.",
+  funnel:"Previous funnel fix did not work. Change approach: replace pinned products with best-sellers by click rate, use price-led thumbnails, and show the voucher on screen at all times.",
+  hosts:"Previous host change did not raise GMV per hour. Change approach: pair the weaker host with the best host as co-host for one week, then review recordings together.",
+  lowdays:"Weak days keep happening. Change approach: add a backup host on the schedule for every slot and a pre-live checklist (stock, vouchers, stream test).",
+  keep:"Keep the plan, test one new lever at a time."};
+const REC_DATE_KEY="migo_rec_dates";
+function rRecDates(){try{return JSON.parse(localStorage.getItem(REC_DATE_KEY)||"{}");}catch(e){return {};}}
+function rSetRecStatus(key,val){const m=rRecStatus();m[key]=val;const d=rRecDates();if((val==="Implemented"||val==="In progress")&&!d[key]) d[key]=isoD(new Date());
+  try{localStorage.setItem(REC_KEY,JSON.stringify(m));localStorage.setItem(REC_DATE_KEY,JSON.stringify(d));}catch(e){}}
+function rLatestDate(a){const r=rRange(a);return r?r.e:null;}
+function rKpiOver(a,k,s,e){const m=RMK[k];if(!m) return null;const rows=rPick(a,{s,e});if(!rows.length) return {v:null,days:0};const ag=rAgg(rows),v=rVal(ag,m);return {v:v==null?null:(m.kind==="sum"?v/ag.days:v),days:ag.days};}
+
+/* ---------- 1. data collection & validation ---------- */
+function rValidate(a,P){
+  const rows=rPick(a,P), n=daysIn(P.s,P.e), checks=[];let score=100;
+  const add=(ok,label,detail,pen)=>{checks.push({ok,label,detail});if(!ok) score-=pen;};
+  add(rows.length===n,"Coverage",`${rows.length} of ${n} days have data${rows.length<n?` (missing: ${(()=>{const have=new Set(rows.map(r=>r.date));const miss=[];for(let d=P.s;d<=P.e&&miss.length<6;d=addDays(d,1)) if(!have.has(d)) miss.push(fmtDate(d).slice(0,-5));return miss.join(", ")+(n-rows.length>6?"…":"");})()})`:""}`,Math.min(30,Math.round((1-rows.length/n)*40)));
+  const noV=rows.filter(r=>r.g>0&&r.v==null).length; add(!noV,"Views recorded",noV?`${noV} days with GMV but no views`:"Views present on all days with sales",Math.min(15,noV*2));
+  const noT=rows.filter(r=>r.t==null&&r.src!=="upload").length; add(!noT||rPlatform(a)==="Shopee","Targets set",noT?`${noT} days without a daily target`:"Daily target on every day",Math.min(10,noT));
+  const bad=rows.filter(r=>(r.o!=null&&r.v!=null&&r.o>r.v)||r.g<0||(r.o===0&&r.g>0));
+  add(!bad.length,"Consistency",bad.length?`${bad.length} days with impossible values (orders > views, negative GMV, or GMV without orders): ${bad.slice(0,4).map(r=>fmtDate(r.date).slice(0,-5)).join(", ")}`:"No impossible values found",Math.min(20,bad.length*5));
+  const zero=rows.filter(r=>!r.g).length; add(!zero,"Zero-GMV days",zero?`${zero} days with zero GMV (no live, or data missing?)`:"No zero days",Math.min(10,zero*3));
+  const rec=rows.filter(r=>r.g_up!=null);if(rec.length){const d=sum(rec.map(r=>r.g_up))/sum(rec.map(r=>r.g))-1;add(Math.abs(d)<=.05,"Upload vs dashboard GMV",`${pctS(d)} difference on ${rec.length} overlapping days${Math.abs(d)>.05?" (dashboard values used)":""}`,Math.abs(d)>.05?5:0);}
+  const ext=["items","viewers","ctr_w","hrs"].filter(k=>rows.some(r=>r[k]!=null));
+  checks.push({ok:ext.length>0,label:"Extra metrics (uploads)",detail:ext.length?`Available: ${ext.map(k=>({items:"units",viewers:"viewers",ctr_w:"CTR/CTOR",hrs:"live hours & hosts"}[k])).join(", ")}`:"Not uploaded: no units, CTR/CTOR, hosts or live hours for this period",info:1});
+  score=Math.max(0,Math.min(100,score));
+  return {score,grade:score>=90?"Good":score>=70?"Fair":"Poor",checks};
+}
+
+/* ---------- 2. account knowledge: monthly issue history (auto) + saved reports ---------- */
+const _kc={};
+function rMonthHistory(a){
+  const key=a+"|"+(rRange(a)||{}).e+"|"+Object.keys(rUploads(a).days||{}).length; if(_kc[a]&&_kc[a].key===key) return _kc[a].v;
+  const ms=rMonthsOf(a).slice().reverse(), out=[];
+  ms.forEach((ym,i)=>{ if(i===0) return; const [y,m]=ym.split("-").map(Number);
+    const P={s:`${ym}-01`,e:isoD(new Date(y,m,0))}, pv=ms[i-1], [py,pm]=pv.split("-").map(Number), C={s:`${pv}-01`,e:isoD(new Date(py,pm,0))};
+    const lat=rLatestDate(a); const Pc={s:P.s,e:P.e>lat?lat:P.e}; const partial=Pc.e<P.e;
+    const Cc=partial?{s:C.s,e:(()=>{const x=addDays(C.s,daysIn(Pc.s,Pc.e)-1);return x>C.e?C.e:x;})()}:C;
+    const cmp=rCompare(a,Pc,Cc); if(!cmp.pr.length||!cmp.cr.length) return;
+    const ins=rInsights(cmp,{sessions:rUploads(a).sessions});
+    const keys=[...new Set(ins.probs.map(p=>p.key==="host"?"host:"+(p.text.split(" sells")[0]).toUpperCase():p.key))];
+    const snap={};cmp.rows.forEach(r=>{if(r.cur!=null) snap[r.m.k]=r.m.kind==="sum"?r.cur/cmp.pa.days:r.cur;});
+    out.push({ym,label:mLabel(ym)+(partial?" (to date)":""),P:Pc,C:Cc,keys,probs:ins.probs,dr:cmp.dr,snap,partial,g:cmp.pa.g,ach:snap.ach});});
+  _kc[a]={key,v:out};return out;
+}
+function rIssueRegister(a,curKeys,curLabel,beforeIso){
+  const hist=rMonthHistory(a).filter(h=>h.P.e<beforeIso);
+  const byRange={}; // same date range from monthly history and a saved report = one period
+  [...hist.map(h=>({label:h.label,keys:h.keys,e:h.P.e,s:h.P.s})),...rLibAll().filter(r=>r.account===a&&r.period.e<beforeIso&&r.probKeys).map(r=>({label:fmtRange(r.period),keys:r.probKeys,e:r.period.e,s:r.period.s}))]
+    .forEach(p=>{const k=p.s+"|"+p.e;if(byRange[k]) byRange[k].keys=[...new Set([...byRange[k].keys,...p.keys])];else byRange[k]={...p};});
+  // overlapping periods (e.g. a weekly report inside a month): keep the longer one so nothing is counted twice
+  const periods=Object.values(byRange).sort((x,y)=>x.e.localeCompare(y.e)||x.s.localeCompare(y.s)).filter((p,i,arr)=>!arr.some(q=>q!==p&&q.s<=p.s&&q.e>=p.e&&(q.s!==p.s||q.e!==p.e)));
+  const all=new Set([...curKeys,...periods.flatMap(p=>p.keys)]);
+  const prev=periods[periods.length-1];
+  return [...all].map(k=>{
+    const seen=periods.filter(p=>p.keys.includes(k)), now=curKeys.includes(k), inPrev=prev&&prev.keys.includes(k);
+    let streak=0;for(let i=periods.length-1;i>=0&&periods[i].keys.includes(k);i--) streak++;
+    const status=now?(inPrev?(streak+1>=3?"Chronic":"Recurring"):seen.length?"Returned":"New"):(inPrev?"Resolved":"Inactive");
+    return {k,name:issueName(k),status,now,first:seen[0]?seen[0].label:curLabel,last:now?curLabel:(seen.length?seen[seen.length-1].label:"–"),count:seen.length+(now?1:0),streak:now?streak+1:0};
+  }).filter(x=>x.status!=="Inactive").sort((x,y)=>["Chronic","Recurring","Returned","New","Resolved"].indexOf(x.status)-["Chronic","Recurring","Returned","New","Resolved"].indexOf(y.status));
+}
+
+/* ---------- 3. strategy evaluation (post-implementation) ---------- */
+function rEvalRec(a,rep,rec){
+  const key=rep.id+":"+rec.id, st=rRecStatus()[key]||"Planned", d0=rRecDates()[key];
+  const days=(rec.eval&&rec.eval.days)||EVAL_DAYS[rec.id]||14;
+  const s=d0||((rec.eval&&rec.eval.s)||addDays(rep.period.e,1)), e=addDays(s,days-1), lat=rLatestDate(a);
+  const k=rec.kpi&&rec.kpi.k, m=k&&RMK[k];
+  const base=rec.kpi&&rec.kpi.baseline!=null?rec.kpi.baseline:(m&&rep.kpiSnap&&rep.kpiSnap[k]!=null?(m.kind==="sum"?rep.kpiSnap[k]/(rep.days||1):rep.kpiSnap[k]):null);
+  const target=rec.kpi?rec.kpi.target:null;
+  const res={key,rep,rec,status:st,win:{s,e},base,target,k,m,value:null,change:null,outcome:"",done:false};
+  if(st==="Dropped"){res.outcome="Dropped";return res;}
+  if(!m||base==null){res.outcome="No KPI baseline";return res;}
+  if(!lat||lat<s){res.outcome=st==="Planned"?"Not started":"Waiting for data";return res;}
+  const r=rKpiOver(a,k,s,e<lat?e:lat); res.value=r.v; res.change=r.v!=null&&base?(r.v/base-1):null; res.done=e<=lat&&r.days>=Math.min(days,5);
+  if(!res.done){res.outcome=`In evaluation until ${fmtDate(e)}`;return res;}
+  const hit=target!=null?r.v>=target:res.change>=.05;
+  if(st==="Planned") res.outcome=hit?"Improved without the action":"Not implemented";
+  else res.outcome=hit?"Successful":res.change>0?"Partly successful":"Unsuccessful";
+  return res;
+}
+function rStrategyRegister(a,beforeIso){
+  const reps=rLibAll().filter(r=>r.account===a&&(!beforeIso||r.period.e<beforeIso)).sort((x,y)=>x.period.e.localeCompare(y.period.e));
+  return reps.flatMap(rep=>(rep.recs||[]).map(rec=>rEvalRec(a,rep,rec)));
+}
+
+/* ---------- 4. opportunities & risks ---------- */
+function rOppRisk(a,cmp,ins,issues,strats){
+  const O=[],R=[],pa=cmp.pa;
+  if(ins.wd&&ins.wd.best[1]>.08) O.push({t:`${ins.wd.best[0]} is the strongest day (+${(ins.wd.best[1]*100).toFixed(0)}% vs normal)`,d:"Add live hours or the best host on this day.",kpi:"GMV on "+ins.wd.best[0]});
+  if(ins.slots&&ins.slots.length>=3){const s=ins.slots.slice().sort((x,y)=>y.gph-x.gph);if(s[0].gph>s[s.length-1].gph*1.5) O.push({t:`Slot ${s[0].slot} earns Rp ${fmtC(s[0].gph)}/hour vs Rp ${fmtC(s[s.length-1].gph)} in slot ${s[s.length-1].slot}`,d:"Move hours from the weakest slot to the strongest.",kpi:"GMV per live hour"});}
+  const pv=cmp.rows.find(r=>r.m.k==="v"),pc=cmp.rows.find(r=>r.m.k==="cvr");
+  if(pc&&pc.pct!=null&&pc.pct>5&&pv&&pv.pct!=null&&pv.pct<0) O.push({t:"Conversion is strong while traffic is down",d:`Every extra 1,000 views is worth about Rp ${fmtC(pa.g/pa.v*1000)} at the current conversion, so buying traffic has a high return now.`,kpi:"Views per day"});
+  if(ins.tr!=null&&ins.tr>1) O.push({t:`Momentum inside the period: +${ins.tr.toFixed(1)}% of average per day`,d:"Keep the current setup and push volume while the trend is up.",kpi:"GMV per day"});
+  const nx=nextCampaign(campaignList());if(nx&&ACCTS.includes(a)&&nx.acc[a]) O.push({t:`Next campaign: ${nx.label} (${nx.status==="live"?"live now":`starts ${fmtDate(isoD(nx.date))}`})`,d:`Campaign target Rp ${fmtC(nx.acc[a].tAll)}. Prepare stock, vouchers and ads in advance.`,kpi:"Campaign achievement"});
+  const traj=rTrajectory(a,cmp.P.e);if(traj.label==="deteriorating") R.push({t:`Account is deteriorating (${pctS(traj.ch)} normal-day GMV over ${traj.ms.length} months)`,d:"Decline is structural, not a one-off; needs a plan beyond daily fixes.",lvl:"High"});
+  const evG=sum(cmp.pr.filter(x=>x.ev).map(x=>x.g));if(pa.g&&evG/pa.g>.35) R.push({t:`${(evG/pa.g*100).toFixed(0)}% of GMV came from campaign days`,d:"High dependence on campaigns; normal days are not carrying the account.",lvl:"Medium"});
+  if(ins.hosts&&ins.hosts.length>=3){const tot=sum(ins.hosts.map(h=>h.hrs)),top=ins.hosts.slice().sort((x,y)=>y.hrs-x.hrs)[0];if(top.hrs/tot>.4) R.push({t:`${oTitle(top.host)} runs ${(top.hrs/tot*100).toFixed(0)}% of live hours`,d:"Key-person risk if this host is absent; train a backup.",lvl:"Medium"});}
+  const ach=cmp.rows.find(r=>r.m.k==="ach");if(ach&&ach.cur!=null&&ach.cur<.85) R.push({t:`Target achievement only ${(ach.cur*100).toFixed(1)}%`,d:"At risk of missing the month; see the action plan.",lvl:"High"});
+  issues.filter(i=>i.status==="Chronic").forEach(i=>R.push({t:`Chronic issue: ${i.name} (${i.streak} periods in a row)`,d:"Daily fixes are not solving it; escalate to the brand team.",lvl:"High"}));
+  strats.filter(s=>s.outcome==="Unsuccessful").forEach(s=>R.push({t:`Strategy did not work: ${s.rec.problem} (${fmtRange(s.rep.period)})`,d:`${s.rec.kpi.label} ${s.change!=null?pctS(s.change):"–"} after implementation; a different approach is recommended.`,lvl:"Medium"}));
+  return {O,R};
+}
+
+/* ---------- 5. continuous optimisation of recommendations ---------- */
+function rOptimizeRecs(recs,a,cmp,ins,issues,strats,P){
+  const pa=cmp.pa, R=k=>cmp.rows.find(r=>r.m.k===k);
+  recs.forEach(rec=>{
+    const k=rec.kpi.k, m=RMK[k], cur=R(k);
+    rec.kpi.baseline=cur&&cur.cur!=null?(m.kind==="sum"?cur.cur/pa.days:cur.cur):null;
+    if(rec.kpi.target==null&&rec.kpi.baseline!=null) rec.kpi.target=rec.kpi.baseline*(m.pp?1.05:1.1);
+    if(m.kind==="sum") rec.kpi.per="day";
+    const days=EVAL_DAYS[rec.id]||14, s=addDays(P.e,1); rec.eval={s,days,e:addDays(s,days-1)};
+    rec.success=`${rec.kpi.label} ${rec.kpi.target!=null?"≥ "+rFmt(rec.kpi.target,m.f)+(m.kind==="sum"?" per day":""):"improves ≥5%"} on average between ${fmtDate(rec.eval.s)} and ${fmtDate(rec.eval.e)}`;
+    const iss=issues.find(i=>i.k===REC_ISSUE[rec.id]); rec.issueStatus=iss?iss.status:"New";
+    const past=strats.filter(s=>s.rec.id===rec.id&&s.done);
+    const failed=past.filter(s=>s.outcome==="Unsuccessful"||s.outcome==="Partly successful"&&s.status==="Implemented");
+    const worked=past.filter(s=>s.outcome==="Successful");
+    rec.history=past.map(s=>`${fmtRange(s.rep.period)}: ${s.status.toLowerCase()} → ${s.outcome.toLowerCase()}${s.change!=null?` (${s.rec.kpi.label} ${pctS(s.change)})`:""}`);
+    if(failed.length&&failed[failed.length-1]===past[past.length-1]){rec.adapt="Changed approach";rec.action=REC_ALT[rec.id]+" (Original plan: "+rec.action.split(". ")[0]+".)";if(rec.priority!=="High") rec.priority="High";}
+    else if(worked.length&&worked[worked.length-1]===past[past.length-1]){rec.adapt="Proven approach";rec.action=`Re-apply what worked in ${fmtRange(worked[worked.length-1].rep.period)}: ${worked[worked.length-1].rec.action}`;}
+    if(iss&&iss.status==="Chronic"){rec.priority="High";rec.adapt=(rec.adapt?rec.adapt+" · ":"")+"Escalate";rec.action+=` Chronic issue (${iss.streak} periods in a row): escalate to the brand team with this report.`;}
+    const pend=strats.filter(s=>s.rec.id===rec.id&&!s.done&&s.status!=="Dropped"&&s.outcome.startsWith("In evaluation"));
+    if(pend.length) rec.note=`A similar action from ${fmtRange(pend[pend.length-1].rep.period)} is still being evaluated (until ${fmtDate(pend[pend.length-1].win.e)}); avoid changing two things at once.`;
+  });
+  const ord={High:0,Medium:1,Low:2};recs.sort((x,y)=>ord[x.priority]-ord[y.priority]);
+  return recs;
+}
+
+/* ---------- 6. knowledge summary for the intelligence page and reports ---------- */
+function rKnowledge(a,P,cmp,ins){
+  const label=fmtRange(P), curKeys=[...new Set(ins.probs.map(p=>p.key==="host"?"host:"+(p.text.split(" sells")[0]).toUpperCase():p.key))];
+  const issues=rIssueRegister(a,curKeys,label,P.s), strats=rStrategyRegister(a,P.s);
+  const or=rOppRisk(a,cmp,ins,issues,strats);
+  return {issues,strats,or,curKeys};
 }
 
 /* ---------- file import (TikTok LIVE exports, session / commission sheets, CSV) ---------- */
@@ -2718,8 +2890,8 @@ function rPreviewHtml(rep){
     if(b.t==="chart"){n++;return `<h4 class="rp-h4">${esc(b.title)}</h4><div class="chartbox" style="height:${b.kind==="change"?Math.max(220,b.labels.length*22+40):b.kind==="hosts"?Math.max(200,b.labels.length*24+40):260}px"><canvas id="rpc_${si}_${bi}"></canvas></div>`;}
     if(b.t==="callout") return `<div class="rp-call ${b.tone}">${ed(P+".text",b.text,"div")}</div>`;
     if(b.t==="kpis") return `<div class="rp-kpis">${b.items.map(k=>`<div><small>${esc(k.l)}</small><b>${esc(k.v)}</b><span class="${k.tone==="good"?"pos":k.tone==="bad"?"neg":"muted"}">${esc(k.s||"")}</span></div>`).join("")}</div>`;
-    if(b.t==="rec"){const r=b.r;return `<div class="rp-rec"><div class="rp-rech"><span class="pill ${r.priority==="High"?"bad":r.priority==="Medium"?"warn":"flat"}">${r.priority}</span>${ed(P+".r.problem",r.problem,"b")}</div>
-      <dl><dt>Evidence</dt>${ed(P+".r.evidence",r.evidence,"dd")}<dt>Action</dt>${ed(P+".r.action",r.action,"dd")}<dt>Expected impact</dt>${ed(P+".r.impact",r.impact,"dd")}<dt>Timeline</dt>${ed(P+".r.timeline",r.timeline,"dd")}<dt>KPI</dt><dd>${esc(r.kpi.label)}${r.kpi.target!=null?` → ${esc(rFmt(r.kpi.target,RMK[r.kpi.k]?RMK[r.kpi.k].f:"num1"))}${r.kpi.per?" /"+r.kpi.per:""}`:""}</dd><dt>Owner</dt>${ed(P+".r.owner",r.owner,"dd")}</dl></div>`;}
+    if(b.t==="rec"){const r=b.r;return `<div class="rp-rec"><div class="rp-rech"><span class="pill ${r.priority==="High"?"bad":r.priority==="Medium"?"warn":"flat"}">${r.priority}</span>${ed(P+".r.problem",r.problem,"b")}${r.issueStatus?`<span class="chn">${esc(r.issueStatus)}</span>`:""}${r.adapt?`<span class="chn" style="background:#fde7c2;color:#8a5a08">${esc(r.adapt)}</span>`:""}</div>
+      <dl><dt>Evidence</dt>${ed(P+".r.evidence",r.evidence,"dd")}<dt>Action</dt>${ed(P+".r.action",r.action,"dd")}<dt>Expected impact</dt>${ed(P+".r.impact",r.impact,"dd")}<dt>Timeline</dt>${ed(P+".r.timeline",r.timeline,"dd")}<dt>KPI</dt><dd>${esc(r.kpi.label)}: ${r.kpi.baseline!=null?esc(rFmt(r.kpi.baseline,RMK[r.kpi.k].f)):"–"} → ${r.kpi.target!=null?esc(rFmt(r.kpi.target,RMK[r.kpi.k]?RMK[r.kpi.k].f:"num1")):"+5%"}${r.kpi.per?" /"+r.kpi.per:""}</dd><dt>Success if</dt><dd>${esc(r.success||"")}</dd><dt>Owner</dt>${ed(P+".r.owner",r.owner,"dd")}${r.history&&r.history.length?`<dt>History</dt><dd>${esc(r.history.join(" · "))}</dd>`:""}${r.note?`<dt>Note</dt><dd>${esc(r.note)}</dd>`:""}</dl></div>`;}
     return "";};
   return `<div class="rp-doc"><div class="rp-cover"><div class="eyebrow">Account performance report</div><h1>${esc(rep.account)}</h1>
     <div class="rp-meta"><span><b>Period</b> ${esc(fmtRange(rep.period))}</span>${rep.compare?`<span><b>Compared with</b> ${esc(fmtRange(rep.compare))}</span>`:""}<span><b>Brand</b> ${esc(rep.brand||"–")} · ${esc(rep.platform)}</span><span><b>PIC</b> ${esc(rep.lo||"–")}</span><span><b>Generated</b> ${esc(new Date(rep.created).toLocaleString("en-GB",{dateStyle:"medium",timeStyle:"short"}))}</span><span><b>Version</b> v${rep.version}</span></div></div>`+
@@ -2759,7 +2931,7 @@ async function rDocx(rep){
   rep.sections.filter(s=>s.on).forEach((s,i)=>kids.push(P(`${i+1}.  ${s.title}`,{after:60,size:21})));
   let num=0;
   for(const s of rep.sections){ if(!s.on) continue; num++;
-    if(["exec","kpi","pop","detail","content","root","recs"].includes(s.k)||num===1) kids.push(new Paragraph({children:[new PageBreak()]}));
+    kids.push(new Paragraph({children:[new PageBreak()]}));
     kids.push(H(`${num}. ${s.title}`));
     for(const b of s.blocks){
       if(b.t==="p") kids.push(P(b.text));
@@ -2773,7 +2945,7 @@ async function rDocx(rep){
       else if(b.t==="chart"){const w=b.kind==="change"||b.kind==="hosts"?1000:1100,h=b.kind==="change"?Math.max(300,b.labels.length*30+60):b.kind==="hosts"?Math.max(280,b.labels.length*32+60):440;
         const png=await rChartPng(b,w,h);kids.push(H(b.title,2));kids.push(new Paragraph({alignment:AlignmentType.CENTER,children:[new ImageRun({data:png,transformation:{width:600,height:Math.round(600*h/w)}})]}));}
       else if(b.t==="rec"){const r=b.r;kids.push(new Paragraph({keepNext:true,spacing:{before:160,after:60},children:[new TextRun({text:`[${r.priority.toUpperCase()}]  `,bold:true,size:18,color:r.priority==="High"?"9A3530":r.priority==="Medium"?"8A6516":GREY}),new TextRun({text:r.problem,bold:true,size:23,color:NAVY})]}));
-        kids.push(T(["Item","Detail"],[["Evidence",r.evidence],["Recommended action",r.action],["Expected impact",r.impact],["Priority",r.priority],["Timeline",r.timeline],["KPI to measure",r.kpi.label+(r.kpi.target!=null?` → ${rFmt(r.kpi.target,RMK[r.kpi.k]?RMK[r.kpi.k].f:"num1")}${r.kpi.per?" /"+r.kpi.per:""}`:"")],["Owner",r.owner]]));kids.push(P("",{after:80}));}
+        kids.push(T(["Item","Detail"],[["Evidence",r.evidence],["Recommended action",r.action],["Expected impact",r.impact],["Priority",r.priority],["Timeline",r.timeline],["KPI: baseline → target",`${r.kpi.label}: ${r.kpi.baseline!=null?rFmt(r.kpi.baseline,RMK[r.kpi.k].f):"–"} → ${r.kpi.target!=null?rFmt(r.kpi.target,RMK[r.kpi.k]?RMK[r.kpi.k].f:"num1"):"+5%"}${r.kpi.per?" /"+r.kpi.per:""}`],["Success if",r.success||"–"],["Issue status",(r.issueStatus||"New")+(r.adapt?" · "+r.adapt:"")],["Owner",r.owner],...(r.history&&r.history.length?[["Earlier attempts",r.history.join("; ")]]:[]),...(r.note?[["Note",r.note]]:[])]));kids.push(P("",{after:80}));}
     }
   }
   const doc=new Document({creator:"MIGO Live dashboard",title:`${rep.account} performance report ${fmtRange(rep.period)}`,
@@ -2791,10 +2963,8 @@ async function rDocx(rep){
 function rShiftMonth(iso,n){const d=new Date(iso+"T00:00:00"),t=new Date(d.getFullYear(),d.getMonth()+n,1),last=new Date(t.getFullYear(),t.getMonth()+1,0).getDate();return isoD(new Date(t.getFullYear(),t.getMonth(),Math.min(d.getDate(),last)));}
 function rCompareFor(P,mode,custom){
   const len=daysIn(P.s,P.e);
-  const fullMonth=P.s.slice(8)==="01"&&addDays(P.e,1).slice(8)==="01";
-  if(mode==="prev"&&fullMonth) return {s:rShiftMonth(P.s,-1),e:addDays(P.s,-1)};
   if(mode==="prev") return {s:addDays(P.s,-len),e:addDays(P.s,-1)};
-  if(mode==="mom"){
+  if(mode==="mom"){const fullMonth=P.s.slice(8)==="01"&&addDays(P.e,1).slice(8)==="01";
     if(fullMonth){const s=rShiftMonth(P.s,-1);return {s,e:addDays(P.s,-1)};} return {s:rShiftMonth(P.s,-1),e:rShiftMonth(P.e,-1)};}
   if(mode==="yoy"){const y=x=>x.replace(/^(\d{4})/,m=>String(+m-1));return {s:y(P.s),e:y(P.e)};}
   return custom&&custom.s&&custom.e?custom:null;
@@ -2892,7 +3062,7 @@ function renderRpt(){
             :st.kind==="monthly"?`<select id="rM" class="sel">${months.map(m=>`<option value="${m}" ${m===st.mon?"selected":""}>${mLabel(m)}</option>`).join("")}</select>`:`<input type="date" id="rS" value="${st.s}"><span>→</span><input type="date" id="rE" value="${st.e}">`}
             ${P?`<span class="muted" style="font-size:12px">${fmtRange(P)} · ${cov(P)}</span>`:""}</div></div></div>
         <div class="stp"><span class="sn">3</span><div><b>Comparison</b><label class="tgl"><input type="checkbox" id="rCo" ${st.cmpOn?"checked":""}> include a period-over-period section</label>
-          <div class="prow"><select id="rCm" class="sel">${[["prev","Previous period (previous month for a full month)"],["mom","Same dates, previous month"],["yoy","Same dates, last year"],["custom","Custom dates"]].map(([k,l])=>`<option value="${k}" ${k===st.cmpMode?"selected":""}>${l}</option>`).join("")}</select>
+          <div class="prow"><select id="rCm" class="sel">${[["prev","Previous period (same length)"],["mom","Same dates, previous month"],["yoy","Same dates, last year"],["custom","Custom dates"]].map(([k,l])=>`<option value="${k}" ${k===st.cmpMode?"selected":""}>${l}</option>`).join("")}</select>
           ${st.cmpMode==="custom"?`<input type="date" id="rCs" value="${st.Cs||""}"><span>→</span><input type="date" id="rCe" value="${st.Ce||""}">`:""}
           ${C?`<span class="muted" style="font-size:12px">${fmtRange(C)} · ${cov(C)}</span>`:""}</div>
           <div class="muted" style="font-size:11.5px">The comparison period is also the baseline for the root-cause analysis, even when the section is switched off.</div></div></div>
@@ -2953,20 +3123,93 @@ function renderRpt(){
     el.querySelectorAll("[data-open]").forEach(b=>b.onclick=()=>{const r=rLibAll().find(x=>x.id===b.dataset.open);if(!r) return;st.rep=JSON.parse(JSON.stringify(r));delete st.rep._local;delete st.rep._team;st.saved=true;drawOut();$("rOut").scrollIntoView({behavior:"smooth"});});
     el.querySelectorAll("[data-dl]").forEach(b=>b.onclick=async()=>{const r=rLibAll().find(x=>x.id===b.dataset.dl);if(!r) return;b.textContent="…";try{await rDocx(r);}catch(e){oToast(e.message,1);}b.textContent=".docx";});
     el.querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>{if(!confirm("Delete this report from this device?")) return;rDelLocal(b.dataset.del);drawLib();});
-    el.querySelectorAll("[data-rs]").forEach(s=>s.onchange=()=>{const m=rRecStatus();m[s.dataset.rs]=s.value;try{localStorage.setItem(REC_KEY,JSON.stringify(m));}catch(e){}oToast("Status saved");});
+    el.querySelectorAll("[data-rs]").forEach(s=>s.onchange=()=>{rSetRecStatus(s.dataset.rs,s.value);oToast("Status saved");});
   }
+}
+
+/* ---------- Account intelligence tab ---------- */
+async function rSyncStatusTeam(){
+  for(let i=0;i<3;i++){const cur=await ghReq("report-history/index.json","GET");const ix=cur?cur.json:{reports:[],status:{}};
+    ix.status={...(ix.status||{}),...rRecStatus()};ix.dates={...(ix.dates||{}),...rRecDates()};
+    try{await ghReq("report-history/index.json","PUT",{message:"Recommendation tracker update",content:b64(JSON.stringify(ix,null,1)),...(cur?{sha:cur.sha}:{})});return;}catch(e){if(i===2) throw e;}}
+}
+function rIntelFor(a){
+  const rg=rRange(a);if(!rg) return null;
+  const pr=rPreset("mom",rg.e,a), cmp=rCompare(a,pr.P,pr.C);if(!cmp.pr.length) return null;
+  const ins=rInsights(cmp,{sessions:rUploads(a).sessions}), K=rKnowledge(a,pr.P,cmp,ins), recs=rOptimizeRecs(rRecs(cmp,ins,rPic(a)),a,cmp,ins,K.issues,K.strats,pr.P);
+  const allStr=rStrategyRegister(a); // every saved recommendation, incl. the latest period
+  return {a,rg,pr,cmp,ins,K,recs,allStr,V:rValidate(a,pr.P),traj:rTrajectory(a,rg.e),hist:rMonthHistory(a)};
+}
+function renderIntel(){
+  const st=state.ai||(state.ai={a:ACCTS[0]});
+  if(RTEAM==null&&!st._loading){st._loading=1;rLoadTeam().then(()=>{st._loading=0;if(state.month==="intel") rerender();});}
+  const I=rIntelFor(st.a);
+  let html=`<section class="card"><div class="chead"><div><h2>Account intelligence</h2><div class="hint">Builds account knowledge from every month of data, every saved report and the recommendation tracker. Each new period is analysed against what is already known.</div></div>
+    <div class="otr">${rAcctSelect("aiA",st.a)}<button class="pbtn sm ghost" id="aiSync">Sync tracker to team</button></div></div>`;
+  if(!I){document.getElementById("main").innerHTML=html+`<div class="empty">No data for ${esc(st.a)} yet. Import a file in Analysis → Performance report.</div></section>`;bindAi();return;}
+  const {cmp,ins,K,recs,allStr,V,traj,hist,pr}=I, R=k=>cmp.rows.find(r=>r.m.k===k), g=R("g"), ach=R("ach"), md=cmp.dr?mainDriver(cmp.dr):null;
+  const done=allStr.filter(s=>s.done&&s.status!=="Dropped"), pend=allStr.filter(s=>!s.done&&s.status!=="Dropped"), stc=c=>allStr.filter(s=>s.status===c).length;
+  const steps=[
+    ["Data collection & validation",`${V.score}/100 · ${V.grade}`,V.score>=90?"good":V.score>=70?"warn":"bad"],
+    ["Performance measurement",`Rp ${fmtC(cmp.pa.g)}${ach&&ach.cur!=null?` · ${(ach.cur*100).toFixed(0)}% of target`:""}`,ach&&ach.cur!=null?(ach.cur>=1?"good":ach.cur>=.85?"warn":"bad"):"flat"],
+    ["Period comparison",g&&g.pct!=null?`GMV/day ${g.pct>=0?"+":""}${g.pct.toFixed(1)}% MoM`:"no baseline",g&&g.pct!=null?(g.pct>=0?"good":"bad"):"flat"],
+    ["Root cause",md?`${md.name} ${pctS(md.pct)}`:"not enough data",md?(md.up?"good":"bad"):"flat"],
+    ["Opportunities & risks",`${K.or.O.length} opportunities · ${K.or.R.length} risks`,K.or.R.some(r=>r.lvl==="High")?"bad":K.or.R.length?"warn":"good"],
+    ["Recommendations",`${recs.length} actions · ${recs.filter(r=>r.priority==="High").length} high`,recs.some(r=>r.priority==="High")?"warn":"good"],
+    ["Implementation tracking",allStr.length?`${stc("Implemented")} done · ${stc("In progress")} in progress · ${stc("Planned")} planned`:"no saved reports yet",allStr.length?(stc("Implemented")+stc("In progress")?"good":"warn"):"flat"],
+    ["Post-implementation evaluation",allStr.length?`${done.filter(s=>s.outcome==="Successful").length} successful · ${done.filter(s=>s.outcome==="Unsuccessful").length} unsuccessful · ${pend.length} pending`:"nothing to evaluate yet",done.some(s=>s.outcome==="Unsuccessful")?"warn":done.length?"good":"flat"],
+    ["Strategy optimisation",recs.filter(r=>r.adapt).length?`${recs.filter(r=>r.adapt).length} action${recs.filter(r=>r.adapt).length>1?"s":""} adapted from history`:"no history to adapt yet",recs.filter(r=>r.adapt).length?"good":"flat"]];
+  html+=`<div class="pipe">${steps.map((s,i)=>`<div class="pst ${s[2]}"><span>${i+1}</span><b>${esc(s[0])}</b><small>${esc(s[1])}</small></div>`).join("")}</div>
+    <div class="hint" style="margin-top:10px">Current analysis: ${fmtRange(pr.P)} vs ${fmtRange(pr.C)} (${esc(pr.label.toLowerCase())}) · direction over recent months: <b>${traj.label}</b>${traj.ch!=null?` (${pctS(traj.ch)})`:""}</div></section>`;
+  // issues + monthly history
+  html+=`<div class="grid2 eq sec"><section class="card"><div class="chead"><div><h2>Issue register</h2><div class="hint">New · Recurring · Chronic (3+ periods) · Returned · Resolved</div></div></div>
+      ${K.issues.length?`<table><thead><tr><th class="l">Issue</th><th class="l">Status</th><th class="l">First seen</th><th class="l">Last seen</th><th>Periods</th></tr></thead><tbody>${K.issues.map(i=>`<tr><td>${esc(i.name)}</td><td class="l"><span class="pill ${i.status==="Resolved"?"good":i.status==="Chronic"?"bad":i.status==="New"?"flat":"warn"}">${i.status}</span></td><td class="l muted">${esc(i.first)}</td><td class="l muted">${esc(i.last)}</td><td class="num">${i.count}</td></tr>`).join("")}</tbody></table>`:`<div class="muted">No issues recorded.</div>`}</section>
+    <section class="card"><div class="chead"><div><h2>Account history</h2><div class="hint">Each month vs the month before (computed automatically from the data)</div></div></div>
+      <table><thead><tr><th class="l">Month</th><th>GMV/day</th><th>Ach.</th><th class="l">Main driver</th><th class="l">Issues</th></tr></thead><tbody>${hist.slice().reverse().map(h=>{const d=h.dr?mainDriver(h.dr):null;return `<tr><td>${esc(h.label)}</td><td class="num">${fmtC(h.snap.g||0)}</td><td class="num">${h.ach!=null?(h.ach*100).toFixed(0)+"%":"–"}</td><td class="l">${d?`<span class="${d.up?"pos":"neg"}">${d.name} ${pctS(d.pct)}</span>`:"–"}</td><td class="l" style="white-space:normal">${h.keys.length?h.keys.map(k=>`<span class="atag">${esc(issueName(k).replace("Low-performing host: ","Host: "))}</span>`).join(" "):`<span class="pos">none</span>`}</td></tr>`;}).join("")}</tbody></table></section></div>`;
+  // recommendations now
+  html+=`<section class="card"><div class="chead"><div><h2>Recommended actions now</h2><div class="hint">Measurable: KPI baseline → target, evaluation window and success rule. Adapted using what worked or failed before.</div></div><button class="pbtn sm gold" id="aiRep">Create the full report →</button></div>
+    <div class="scroll"><table><thead><tr><th class="l">Priority</th><th class="l">Problem</th><th class="l">Action</th><th class="l">KPI: baseline → target</th><th class="l">Evaluate</th><th class="l">History</th></tr></thead><tbody>${recs.map(r=>{const m=RMK[r.kpi.k];return `<tr><td class="l"><span class="pill ${r.priority==="High"?"bad":r.priority==="Medium"?"warn":"flat"}">${r.priority}</span></td>
+      <td class="l wrapc"><b>${esc(r.problem)}</b><div style="margin-top:3px"><span class="chn">${esc(r.issueStatus||"New")}</span>${r.adapt?`<span class="chn" style="background:#fde7c2;color:#8a5a08">${esc(r.adapt)}</span>`:""}</div></td>
+      <td class="l wrapc" style="font-size:12px">${esc(r.action)}${r.note?`<div class="muted" style="margin-top:4px">${esc(r.note)}</div>`:""}</td>
+      <td class="l" style="font-size:12px">${esc(r.kpi.label)}<br><b>${r.kpi.baseline!=null?rFmt(r.kpi.baseline,m.f):"–"} → ${r.kpi.target!=null?rFmt(r.kpi.target,m.f):"+5%"}</b>${r.kpi.per?" /day":""}</td>
+      <td class="l" style="font-size:12px">${fmtDate(r.eval.s).slice(0,-5)} – ${fmtDate(r.eval.e)}</td><td class="l muted wrapc" style="font-size:11.5px">${r.history&&r.history.length?esc(r.history.join(" · ")):"first time"}</td></tr>`;}).join("")}</tbody></table></div></section>`;
+  // strategy register
+  html+=`<section class="card"><div class="chead"><div><h2>Strategy register</h2><div class="hint">Every recommendation from saved reports. Set the status here; outcomes are scored automatically when the evaluation window ends.</div></div></div>
+    ${allStr.length?`<div class="scroll"><table><thead><tr><th class="l">Recommendation</th><th class="l">Report</th><th class="l">Status</th><th class="l">Evaluation window</th><th class="l">KPI: baseline → result</th><th class="l">Outcome</th></tr></thead><tbody>${allStr.slice().reverse().map(s=>`<tr><td class="l wrapc"><b>${esc(s.rec.problem)}</b><div class="muted" style="font-size:11px">${esc(s.rec.action.split(". ")[0])}</div></td><td class="l muted">${esc(fmtRange(s.rep.period))}</td>
+      <td class="l"><select class="sel" data-rs="${esc(s.key)}">${["Planned","In progress","Implemented","Dropped"].map(o=>`<option ${o===s.status?"selected":""}>${o}</option>`).join("")}</select>${s.status==="Implemented"||s.status==="In progress"?`<div style="margin-top:4px;font-size:10.5px" class="muted">started <input type="date" class="dmini" data-rd="${esc(s.key)}" value="${esc(rRecDates()[s.key]||"")}"></div>`:""}</td>
+      <td class="l" style="font-size:12px">${fmtDate(s.win.s).slice(0,-5)} – ${fmtDate(s.win.e)}</td>
+      <td class="l" style="font-size:12px">${s.m&&s.base!=null?`${esc(s.rec.kpi.label)}: ${rFmt(s.base,s.m.f)} → ${s.value!=null?rFmt(s.value,s.m.f):"–"}${s.change!=null?` <b class="${s.change>=0?"pos":"neg"}">${pctS(s.change)}</b>`:""}`:"–"}</td>
+      <td class="l"><span class="pill ${s.outcome==="Successful"?"good":s.outcome==="Unsuccessful"||s.outcome==="Not implemented"?"bad":s.outcome==="Partly successful"||s.outcome.startsWith("Improved")?"warn":"flat"}">${esc(s.outcome)}</span></td></tr>`).join("")}</tbody></table></div>`
+      :`<div class="empty">No saved reports for this account yet. Generate a report in Performance report and save it; its recommendations appear here to track.</div>`}</section>`;
+  // opportunities / risks / validation
+  html+=`<div class="grid2 eq sec"><section class="card"><div class="chead"><div><h2>Opportunities</h2></div></div>${K.or.O.length?K.or.O.map(o=>`<div class="orow"><b class="pos">↗ ${esc(o.t)}</b><span>${esc(o.d)}</span></div>`).join(""):`<div class="muted">None identified.</div>`}</section>
+    <section class="card"><div class="chead"><div><h2>Risks</h2></div></div>${K.or.R.length?K.or.R.map(o=>`<div class="orow"><b class="${o.lvl==="High"?"neg":""}">${o.lvl==="High"?"⚠":"•"} ${esc(o.t)}</b><span>${esc(o.d)}</span></div>`).join(""):`<div class="muted">None identified.</div>`}</section></div>
+    <section class="card"><div class="chead"><div><h2>Data validation · ${fmtRange(pr.P)}</h2><div class="hint">Score ${V.score}/100 (${V.grade})</div></div></div><table><tbody>${V.checks.map(c=>`<tr><td>${esc(c.label)}</td><td class="l"><span class="pill ${c.info?"flat":c.ok?"good":"bad"}">${c.info?"Info":c.ok?"OK":"Check"}</span></td><td class="l muted wrapc">${esc(c.detail)}</td></tr>`).join("")}</tbody></table></section>`;
+  // portfolio
+  const port=ACCTS.map(x=>{const J=x===st.a?I:rIntelFor(x);if(!J) return null;const ds=J.allStr.filter(s=>s.done);return {a:x,J,open:J.K.issues.filter(i=>i.now),chron:J.K.issues.filter(i=>i.status==="Chronic").length,rec:J.K.issues.filter(i=>i.status==="Recurring").length,res:J.K.issues.filter(i=>i.status==="Resolved").length,ok:ds.filter(s=>s.outcome==="Successful").length,bad:ds.filter(s=>s.outcome==="Unsuccessful").length};}).filter(Boolean)
+    .sort((p,q)=>(q.chron*3+q.rec*2+q.open.length)-(p.chron*3+p.rec*2+p.open.length));
+  html+=`<section class="card"><div class="chead"><div><h2>Portfolio intelligence</h2><div class="hint">All dashboard accounts, ${esc(I.pr.label.toLowerCase())} · click an account to open it</div></div></div><div class="scroll"><table><thead><tr><th class="l">Account</th><th class="l">PIC</th><th class="l">Direction</th><th>GMV/day MoM</th><th class="l">Open issues</th><th>Chronic</th><th>Recurring</th><th>Resolved</th><th>Strategies ✓ / ✗</th><th>Data</th></tr></thead><tbody>${port.map(p=>{const gg=p.J.cmp.rows.find(r=>r.m.k==="g");return `<tr class="clk" data-acc="${esc(p.a)}"><td><b>${esc(p.a)}</b></td><td class="l muted">${esc(PIC[p.a]||"")}</td><td class="l"><span class="pill ${p.J.traj.label==="progressing"?"good":p.J.traj.label==="deteriorating"?"bad":"flat"}">${p.J.traj.label}</span></td>
+    <td class="num ${gg&&gg.pct>=0?"pos":"neg"}">${gg&&gg.pct!=null?(gg.pct>=0?"+":"")+gg.pct.toFixed(1)+"%":"–"}</td><td class="l wrapc" style="font-size:11.5px">${p.open.map(i=>esc(i.name.replace("Low-performing host: ","Host: "))).join(", ")||`<span class="pos">none</span>`}</td><td class="num ${p.chron?"neg":""}">${p.chron}</td><td class="num">${p.rec}</td><td class="num pos">${p.res}</td><td class="num">${p.ok} / ${p.bad}</td><td class="num">${p.J.V.score}</td></tr>`;}).join("")}</tbody></table></div></section>`;
+  document.getElementById("main").innerHTML=html;
+  bindAi();
+  document.getElementById("aiRep").onclick=()=>{state.rp={...(state.rp||{}),a:st.a,kind:"custom",s:I.pr.P.s,e:I.pr.P.e,cmpOn:true,cmpMode:"custom",Cs:I.pr.C.s,Ce:I.pr.C.e,rep:null};state.month="rpt";rerender();window.scrollTo(0,0);};
+  document.querySelectorAll("[data-rs]").forEach(s=>s.onchange=()=>{rSetRecStatus(s.dataset.rs,s.value);oToast("Status saved. Press “Sync tracker to team” to share it.");rerender();});
+  document.querySelectorAll("[data-rd]").forEach(i=>i.onchange=()=>{const d=rRecDates();if(i.value) d[i.dataset.rd]=i.value;else delete d[i.dataset.rd];try{localStorage.setItem(REC_DATE_KEY,JSON.stringify(d));}catch(e){}oToast("Start date saved: the evaluation window starts on this date");rerender();});
+  document.querySelectorAll("tr[data-acc]").forEach(tr=>tr.onclick=()=>{st.a=tr.dataset.acc;rerender();window.scrollTo(0,0);});
+  function bindAi(){document.getElementById("aiA").onchange=e=>{st.a=e.target.value;rerender();};
+    document.getElementById("aiSync").onclick=async()=>{const b=document.getElementById("aiSync");b.disabled=true;b.textContent="Syncing…";try{await rSyncStatusTeam();oToast("Tracker synced to the team library ✓");}catch(e){oToast(e.message,1);}b.disabled=false;b.textContent="Sync tracker to team";};}
 }
 
 /* ---------- navigation ---------- */
 const NAV=[
   {g:"Monthly",keys:()=>ORDER.filter(k=>model(k).last>=0)},
   {g:"My view",keys:()=>["me"]},
-  {g:"Analysis",keys:()=>["acc","pcmp","rpt","whatif","cmp","hist"]},
+  {g:"Analysis",keys:()=>["intel","acc","pcmp","rpt","whatif","cmp","hist"]},
   {g:"Team",keys:()=>["org","weekly","team","act"]},
   {g:"Planning",keys:()=>["camp","plan"]},
   {g:"Files",keys:()=>["files","rep"]}];
-const NAMES={me:"My view",acc:"Account analysis",whatif:"What-if",cmp:"Compare months",hist:"2026 history",weekly:"Weekly review",team:"Team & patterns",act:"Action log",camp:"Campaigns",plan:"Target planner",rep:"Reports",files:"Master files",org:"Team Organization",pcmp:"Compare periods",rpt:"Performance report"};
-const VIEWS={me:renderMe,acc:()=>renderAccounts(),whatif:renderWhatIf,cmp:()=>renderCompare(),hist:()=>renderHistory(),weekly:renderWeekly,team:renderTeam,act:renderActions,camp:renderCampaigns,plan:renderPlanner,rep:renderReports,files:renderFiles,org:renderOrg,pcmp:renderPCmp,rpt:renderRpt};
+const NAMES={me:"My view",acc:"Account analysis",whatif:"What-if",cmp:"Compare months",hist:"2026 history",weekly:"Weekly review",team:"Team & patterns",act:"Action log",camp:"Campaigns",plan:"Target planner",rep:"Reports",files:"Master files",org:"Team Organization",pcmp:"Compare periods",rpt:"Performance report",intel:"Account intelligence"};
+const VIEWS={me:renderMe,acc:()=>renderAccounts(),whatif:renderWhatIf,cmp:()=>renderCompare(),hist:()=>renderHistory(),weekly:renderWeekly,team:renderTeam,act:renderActions,camp:renderCampaigns,plan:renderPlanner,rep:renderReports,files:renderFiles,org:renderOrg,pcmp:renderPCmp,rpt:renderRpt,intel:renderIntel};
 
 /* ---------- shell ---------- */
 function buildTabs(){
