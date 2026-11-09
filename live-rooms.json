@@ -25,7 +25,9 @@
    "no": "03",
    "brand": "Mossdoom",
    "type": "Live",
-   "accounts": [],
+   "accounts": [
+    "Mossdoom Tiktok Official"
+   ],
    "pic": "",
    "notes": ""
   },
@@ -34,7 +36,9 @@
    "no": "05",
    "brand": "Mossdoom",
    "type": "Live",
-   "accounts": [],
+   "accounts": [
+    "Mossdoom Premium"
+   ],
    "pic": "",
    "notes": ""
   },
@@ -43,7 +47,9 @@
    "no": "06",
    "brand": "Mossdoom",
    "type": "Live",
-   "accounts": [],
+   "accounts": [
+    "Mossdoom Shopee Official"
+   ],
    "pic": "",
    "notes": ""
   },
@@ -51,26 +57,31 @@
    "id": "r07",
    "no": "07",
    "brand": "AG",
-   "type": "Live",
+   "type": "Storage",
    "accounts": [],
    "pic": "",
-   "notes": ""
+   "notes": "Agefree storage room"
   },
   {
    "id": "r08",
    "no": "08",
    "brand": "Bostanten",
    "type": "Live",
-   "accounts": [],
+   "accounts": [
+    "Bostanten Shoes Tiktok",
+    "Bostanten Shoes Shopee"
+   ],
    "pic": "",
-   "notes": ""
+   "notes": "Bostanten Shoes: confirm TikTok or Shopee (room 29 is also Shoes)"
   },
   {
    "id": "r09",
    "no": "09",
    "brand": "Bostanten",
    "type": "Live",
-   "accounts": [],
+   "accounts": [
+    "Bostanten Men Shopee"
+   ],
    "pic": "",
    "notes": ""
   },
@@ -79,7 +90,9 @@
    "no": "10",
    "brand": "Bostanten",
    "type": "Live",
-   "accounts": [],
+   "accounts": [
+    "Bostanten Outlet"
+   ],
    "pic": "",
    "notes": ""
   },
@@ -88,7 +101,9 @@
    "no": "11",
    "brand": "AG",
    "type": "Live",
-   "accounts": [],
+   "accounts": [
+    "AG Shopee"
+   ],
    "pic": "",
    "notes": ""
   },
@@ -108,7 +123,7 @@
    "type": "Live",
    "accounts": [],
    "pic": "",
-   "notes": ""
+   "notes": "Account not specified"
   },
   {
    "id": "r16",
@@ -124,7 +139,9 @@
    "no": "17",
    "brand": "Westbronco",
    "type": "Live",
-   "accounts": [],
+   "accounts": [
+    "Westbronco Shopee"
+   ],
    "pic": "",
    "notes": ""
   },
@@ -142,7 +159,9 @@
    "no": "19",
    "brand": "AG",
    "type": "Live",
-   "accounts": [],
+   "accounts": [
+    "AG Tiktok"
+   ],
    "pic": "",
    "notes": ""
   },
@@ -151,7 +170,9 @@
    "no": "20",
    "brand": "Bostanten",
    "type": "Live",
-   "accounts": [],
+   "accounts": [
+    "Bostanten Fashion"
+   ],
    "pic": "",
    "notes": ""
   },
@@ -160,9 +181,11 @@
    "no": "21",
    "brand": "Bostanten",
    "type": "Live",
-   "accounts": [],
+   "accounts": [
+    "Bostanten Bag Tiktok"
+   ],
    "pic": "",
-   "notes": ""
+   "notes": "Bostanten Bag Official"
   },
   {
    "id": "r22",
@@ -171,14 +194,16 @@
    "type": "Live",
    "accounts": [],
    "pic": "",
-   "notes": ""
+   "notes": "Account not specified"
   },
   {
    "id": "r23",
    "no": "23",
    "brand": "Mossdoom",
    "type": "Live",
-   "accounts": [],
+   "accounts": [
+    "Mossdoom ID"
+   ],
    "pic": "",
    "notes": ""
   },
@@ -187,7 +212,9 @@
    "no": "25",
    "brand": "Westbronco",
    "type": "Live",
-   "accounts": [],
+   "accounts": [
+    "Westbronco Tiktok"
+   ],
    "pic": "",
    "notes": ""
   },
@@ -196,7 +223,9 @@
    "no": "26",
    "brand": "Bostanten",
    "type": "Live",
-   "accounts": [],
+   "accounts": [
+    "Bostanten Bag Shopee"
+   ],
    "pic": "",
    "notes": ""
   },
@@ -214,27 +243,34 @@
    "no": "28",
    "brand": "Bostanten",
    "type": "Live",
-   "accounts": [],
+   "accounts": [
+    "Bostanten Men"
+   ],
    "pic": "",
-   "notes": ""
+   "notes": "Bostanten Men TikTok"
   },
   {
    "id": "r29",
    "no": "29",
    "brand": "Bostanten",
    "type": "Live",
-   "accounts": [],
+   "accounts": [
+    "Bostanten Shoes Tiktok",
+    "Bostanten Shoes Shopee"
+   ],
    "pic": "",
-   "notes": ""
+   "notes": "Bostanten Shoes: confirm TikTok or Shopee (room 08 is also Shoes)"
   },
   {
    "id": "r30",
    "no": "30",
    "brand": "Corolla",
    "type": "Live",
-   "accounts": [],
+   "accounts": [
+    "Corolla.indonesia"
+   ],
    "pic": "",
-   "notes": ""
+   "notes": "Corolla Indo TikTok"
   },
   {
    "id": "r31",
@@ -250,7 +286,9 @@
    "no": "32",
    "brand": "Corolla",
    "type": "Live",
-   "accounts": [],
+   "accounts": [
+    "Corolla Official Shopee"
+   ],
    "pic": "",
    "notes": ""
   },
@@ -259,7 +297,9 @@
    "no": "33",
    "brand": "Corolla",
    "type": "Live",
-   "accounts": [],
+   "accounts": [
+    "Corolla Official Tiktok"
+   ],
    "pic": "",
    "notes": ""
   },
@@ -270,7 +310,8 @@
    "type": "Live",
    "accounts": [],
    "pic": "",
-   "notes": ""
+   "notes": "Account not specified"
   }
- ]
+ ],
+ "by": "Putra"
 }

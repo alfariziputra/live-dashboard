@@ -517,7 +517,7 @@ a.drow[href]:hover{border-color:var(--gold);background:#fff}
 .lrt{flex:1;display:flex;gap:6px;flex-wrap:wrap;align-items:center;justify-content:flex-end}.lrt .sel{font-size:12px;padding:4px 8px}
 .lrb{font-size:12px;font-weight:700;color:#fff;background:var(--bc);border-radius:999px;padding:3px 10px}
 .lrty{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;border-radius:999px;padding:3px 8px;background:#eef1f6;color:#3d4a66}
-.lrty.content{background:#efe7fb;color:#5b3fa8}.lrty.empty{background:var(--good-bg);color:var(--good-ink)}
+.lrty.content{background:#efe7fb;color:#5b3fa8}.lrty.storage{background:#fde7c2;color:#8a5a08}.lrty.empty{background:var(--good-bg);color:var(--good-ink)}
 .lre{padding:0 16px 16px;font-size:12.5px;color:var(--ink-3)}
 .lrr{display:grid;grid-template-columns:62px 1fr;gap:8px;padding:8px 16px;border-top:1px solid var(--grid);align-items:start}
 .lrr small{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);padding-top:3px}
@@ -2291,13 +2291,13 @@ function renderRooms(){
   const main=document.getElementById("main");
   if(!LR.loaded){main.innerHTML=`<section class="card"><div class="empty">Loading live rooms…</div></section>`;lrLoad().then(()=>{if(state.month==="rooms") renderRooms();});return;}
   const D=LR.data, rooms=D.rooms.slice().sort((a,b)=>a.no.localeCompare(b.no,undefined,{numeric:true})), brands=lrBrands(), accs=lrOrgAccounts();
-  const used=rooms.filter(r=>r.type!=="Empty"), q=LR.q.trim().toLowerCase();
+  const used=rooms.filter(r=>r.type!=="Empty"&&r.type!=="Storage"), q=LR.q.trim().toLowerCase();
   const res=Object.fromEntries(rooms.map(r=>[r.id,lrResolve(r)]));
   const shown=rooms.filter(r=>(LR.brand==="all"||(LR.brand==="empty"?r.type==="Empty":r.brand===LR.brand))&&(!q||[r.no,r.brand,r.type,r.notes,...r.accounts,...res[r.id].pic,...res[r.id].hosts.map(h=>h.name)].join(" ").toLowerCase().includes(q)));
   const unassigned=used.filter(r=>!r.accounts.length).length;
-  let h=`<section class="kpis"><div class="kpi"><div class="l">Live rooms</div><div class="v">${rooms.length}</div><div class="s">${used.length} in use · ${rooms.length-used.length} empty</div></div>
+  let h=`<section class="kpis"><div class="kpi"><div class="l">Live rooms</div><div class="v">${rooms.length}</div><div class="s">${used.length} live / content · ${rooms.filter(r=>r.type==="Storage").length?rooms.filter(r=>r.type==="Storage").length+" storage · ":""}${rooms.filter(r=>r.type==="Empty").length} empty</div></div>
     ${brands.filter(b=>rooms.some(r=>r.brand===b)).slice(0,3).map(b=>`<div class="kpi"><div class="l">${esc(b)}</div><div class="v">${rooms.filter(r=>r.brand===b).length}</div><div class="s">${rooms.filter(r=>r.brand===b&&r.type==="Content").length?rooms.filter(r=>r.brand===b&&r.type==="Content").length+" content · ":""}${rooms.filter(r=>r.brand===b&&r.type==="Live").length} live</div></div>`).join("")}
-    <div class="kpi"><div class="l">Account assigned</div><div class="v">${used.length-unassigned} / ${used.length}</div><div class="s">${unassigned?`${unassigned} rooms still need an account (for hosts)`:"all rooms linked"}</div></div></section>`;
+    <div class="kpi"><div class="l">Account assigned</div><div class="v">${used.length-unassigned} / ${used.length}</div><div class="s">${unassigned?`${unassigned} rooms without an account (content rooms or not specified)`:"all rooms linked"}</div></div></section>`;
   h+=`<section class="card"><div class="otools" style="padding:0 0 16px;border:0"><div class="otl"><h2>Live rooms</h2><div class="hint">${LR.edit?"<b>Edit mode:</b> set brand, type and account(s) per room. PIC and hosts come from the Team Organization chart (change PIC only to override). Click Save to publish.":"PIC = LO specialist of the room's account · hosts = the account's hosts in Team Organization"}${LR.dirty?` · <span class="neg">unsaved changes on this device</span>`:""} · updated ${esc(D.updated||"")}</div></div>
     <div class="otr"><input id="lrQ" class="sel" type="search" placeholder="Find a room, host or PIC…" value="${esc(LR.q)}">
       <select id="lrB" class="sel"><option value="all">All brands</option>${brands.map(b=>`<option ${LR.brand===b?"selected":""}>${esc(b)}</option>`).join("")}<option value="empty" ${LR.brand==="empty"?"selected":""}>Empty rooms</option></select>
@@ -2329,7 +2329,7 @@ function lrCard(r,x,accs,brands){
   return `<div class="lr${empty?" empty":""}" style="--bc:${col}" data-room="${esc(r.id)}">
     <div class="lrh"><div class="lrn"><small>LIVEROOM</small>${ed?`<input data-f="no" value="${esc(r.no)}" class="lrno">`:`<b>${esc(r.no)}</b>`}</div>
       <div class="lrt">${ed?`<select data-f="brand" class="sel"><option value="">— no brand —</option>${brands.map(b=>`<option ${b===r.brand?"selected":""}>${esc(b)}</option>`).join("")}</select>
-        <select data-f="type" class="sel">${["Live","Content","Empty"].map(t=>`<option ${t===r.type?"selected":""}>${t}</option>`).join("")}</select>`
+        <select data-f="type" class="sel">${["Live","Content","Storage","Empty"].map(t=>`<option ${t===r.type?"selected":""}>${t}</option>`).join("")}</select>`
         :`${r.brand?`<span class="lrb">${esc(r.brand)}</span>`:""}<span class="lrty ${r.type.toLowerCase()}">${empty?"Available":r.type}</span>`}</div>
       ${ed?`<button class="xbtn sm" data-delroom="${esc(r.id)}" title="Remove room">✕</button>`:""}</div>
     ${empty&&!ed?`<div class="lre">No brand assigned</div>`:`
