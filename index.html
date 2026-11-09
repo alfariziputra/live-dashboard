@@ -506,6 +506,29 @@ a.drow[href]:hover{border-color:var(--gold);background:#fff}
 .otoast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);background:#0b1220;color:#fff;padding:12px 20px;border-radius:12px;font-size:13px;font-weight:500;box-shadow:0 12px 30px -10px rgba(0,0,0,.5);z-index:80;opacity:0;transition:opacity .25s;pointer-events:none;border:1px solid rgba(198,166,100,.5)}
 .otoast.bad{background:#7d2620}
 @media (max-width:700px){.otools{padding:14px}.otr input{min-width:0;flex:1}.ocanvas{max-height:70vh}}
+/* live rooms */
+.lrg{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px}
+.lr{border:1px solid var(--line);border-radius:16px;background:var(--surface);overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.04);border-top:4px solid var(--bc);display:flex;flex-direction:column}
+.lr.empty{border-style:dashed;border-top-style:solid;background:var(--surface-2)}
+.lrh{display:flex;gap:12px;align-items:center;padding:14px 16px 10px}
+.lrn{display:flex;flex-direction:column;line-height:1}.lrn small{font-size:9.5px;font-weight:700;letter-spacing:.14em;color:var(--ink-3)}.lrn b{font-size:30px;font-weight:700;letter-spacing:-.03em;color:var(--bc)}
+.lr.empty .lrn b{color:var(--ink-3)}
+.lrno{width:64px;font:inherit;font-size:22px;font-weight:700;border:1px solid var(--line);border-radius:8px;padding:2px 6px;margin-top:2px}
+.lrt{flex:1;display:flex;gap:6px;flex-wrap:wrap;align-items:center;justify-content:flex-end}.lrt .sel{font-size:12px;padding:4px 8px}
+.lrb{font-size:12px;font-weight:700;color:#fff;background:var(--bc);border-radius:999px;padding:3px 10px}
+.lrty{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;border-radius:999px;padding:3px 8px;background:#eef1f6;color:#3d4a66}
+.lrty.content{background:#efe7fb;color:#5b3fa8}.lrty.empty{background:var(--good-bg);color:var(--good-ink)}
+.lre{padding:0 16px 16px;font-size:12.5px;color:var(--ink-3)}
+.lrr{display:grid;grid-template-columns:62px 1fr;gap:8px;padding:8px 16px;border-top:1px solid var(--grid);align-items:start}
+.lrr small{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);padding-top:3px}
+.lrr>div{display:flex;flex-wrap:wrap;gap:5px;align-items:center;font-size:12.5px}.lrr .sel{font-size:12px;padding:4px 8px;width:100%}
+.lra{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:600;background:#f1efe9;border-radius:8px;padding:3px 8px}
+.lra button{appearance:none;border:0;background:none;cursor:pointer;color:var(--ink-3);font-size:14px;line-height:1;padding:0}
+.lradd{max-width:180px}
+.lrp{display:inline-flex;align-items:center;gap:6px;font-weight:600}.lrp i{font-style:normal;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;background:var(--hdr);color:var(--gold-2);font-size:11px}
+.lrhs{gap:4px!important}.lrhost{font-size:11.5px;border:1px solid color-mix(in srgb,var(--bc) 35%,#fff);background:color-mix(in srgb,var(--bc) 7%,#fff);border-radius:999px;padding:2px 8px}
+.lrhost.co{border-style:dashed}.lrhost em{font-style:normal;font-size:9.5px;color:var(--ink-3)}
+.lrnote{padding:8px 16px 12px;font-size:12px;color:var(--ink-2);border-top:1px solid var(--grid)}
 /* performance report + compare periods */
 .drow2{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;margin:4px 0 6px}
 .dgrp{display:flex;align-items:center;gap:6px;flex-wrap:wrap}.dgrp small{width:100%;font-size:10.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
@@ -2236,6 +2259,99 @@ async function orgSave(){
   }catch(e){oToast(e.message||"Save failed",1);if(b){b.disabled=false;b.textContent="Save to website";}}
 }
 
+/* ================= live rooms (editable, PIC + hosts from the org chart) ================= */
+const LR={pub:null,data:null,loaded:false,edit:false,dirty:false,brand:"all",q:"",open:{}};
+const LR_DRAFT="migo_rooms_draft";
+function lrLoad(){
+  if(LR.loaded) return Promise.resolve();
+  const j=u=>fetch(u+"?t="+Date.now(),{cache:"no-store"}).then(r=>r.ok?r.json():null).catch(()=>null);
+  return Promise.all([j("live-rooms.json"),orgLoad()]).then(([d])=>{
+    LR.loaded=true;LR.pub=d||{rooms:[]};let dr=null;try{dr=JSON.parse(localStorage.getItem(LR_DRAFT)||"null");}catch(e){}
+    if(dr&&dr._base!==(LR.pub.updated||"")+":"+JSON.stringify(LR.pub.rooms).length) dr=null; // published list changed since this draft
+    LR.data=JSON.parse(JSON.stringify(dr||LR.pub));LR.dirty=!!dr;});
+}
+/* accounts from the Team Organization chart: brand, LO (PIC), hosts */
+function lrOrgAccounts(){
+  const out=[];if(!OS.org||!OS.org.tree) return out;
+  const w=(n,brand,lo)=>{if(n.t==="brand") brand=n;if(n.t==="lo") lo=n;
+    if(n.t==="account"&&!n.grp) out.push({name:n.name,brand:brand?brand.name:"",color:brand?brand.color:"#0f1830",lo:lo?lo.name:"",hosts:(n.c||[]).filter(h=>h.t==="host").map(h=>({name:h.name,tag:h.tag||"",pid:h.pid||""}))});
+    (n.c||[]).forEach(c=>w(c,brand,lo));};
+  w(OS.org.tree,null,null);return out;
+}
+function lrBrands(){const s=new Set(lrOrgAccounts().map(a=>a.brand));(LR.data&&LR.data.rooms||[]).forEach(r=>{if(r.brand) s.add(r.brand);});return [...s];}
+function lrBrandColor(b){const a=lrOrgAccounts().find(x=>x.brand===b);return a?a.color:"#8b8f99";}
+function lrResolve(r){
+  const acc=lrOrgAccounts(), mine=acc.filter(a=>r.accounts.includes(a.name)), brandLOs=[...new Set(acc.filter(a=>a.brand===r.brand).map(a=>a.lo).filter(Boolean))];
+  const autoPic=mine.length?[...new Set(mine.map(a=>a.lo))]:brandLOs;
+  const hosts=[];mine.forEach(a=>a.hosts.forEach(h=>{if(!hosts.some(x=>x.name===h.name)) hosts.push({...h,acc:a.name});}));
+  return {mine,pic:r.pic?[r.pic]:autoPic,picAuto:!r.pic,hosts,brandLOs};
+}
+function lrChange(fn){fn();LR.dirty=true;LR.data._base=(LR.pub.updated||"")+":"+JSON.stringify(LR.pub.rooms).length;try{localStorage.setItem(LR_DRAFT,JSON.stringify(LR.data));}catch(e){}renderRooms();}
+function renderRooms(){
+  const main=document.getElementById("main");
+  if(!LR.loaded){main.innerHTML=`<section class="card"><div class="empty">Loading live rooms…</div></section>`;lrLoad().then(()=>{if(state.month==="rooms") renderRooms();});return;}
+  const D=LR.data, rooms=D.rooms.slice().sort((a,b)=>a.no.localeCompare(b.no,undefined,{numeric:true})), brands=lrBrands(), accs=lrOrgAccounts();
+  const used=rooms.filter(r=>r.type!=="Empty"), q=LR.q.trim().toLowerCase();
+  const res=Object.fromEntries(rooms.map(r=>[r.id,lrResolve(r)]));
+  const shown=rooms.filter(r=>(LR.brand==="all"||(LR.brand==="empty"?r.type==="Empty":r.brand===LR.brand))&&(!q||[r.no,r.brand,r.type,r.notes,...r.accounts,...res[r.id].pic,...res[r.id].hosts.map(h=>h.name)].join(" ").toLowerCase().includes(q)));
+  const unassigned=used.filter(r=>!r.accounts.length).length;
+  let h=`<section class="kpis"><div class="kpi"><div class="l">Live rooms</div><div class="v">${rooms.length}</div><div class="s">${used.length} in use · ${rooms.length-used.length} empty</div></div>
+    ${brands.filter(b=>rooms.some(r=>r.brand===b)).slice(0,3).map(b=>`<div class="kpi"><div class="l">${esc(b)}</div><div class="v">${rooms.filter(r=>r.brand===b).length}</div><div class="s">${rooms.filter(r=>r.brand===b&&r.type==="Content").length?rooms.filter(r=>r.brand===b&&r.type==="Content").length+" content · ":""}${rooms.filter(r=>r.brand===b&&r.type==="Live").length} live</div></div>`).join("")}
+    <div class="kpi"><div class="l">Account assigned</div><div class="v">${used.length-unassigned} / ${used.length}</div><div class="s">${unassigned?`${unassigned} rooms still need an account (for hosts)`:"all rooms linked"}</div></div></section>`;
+  h+=`<section class="card"><div class="otools" style="padding:0 0 16px;border:0"><div class="otl"><h2>Live rooms</h2><div class="hint">${LR.edit?"<b>Edit mode:</b> set brand, type and account(s) per room. PIC and hosts come from the Team Organization chart (change PIC only to override). Click Save to publish.":"PIC = LO specialist of the room's account · hosts = the account's hosts in Team Organization"}${LR.dirty?` · <span class="neg">unsaved changes on this device</span>`:""} · updated ${esc(D.updated||"")}</div></div>
+    <div class="otr"><input id="lrQ" class="sel" type="search" placeholder="Find a room, host or PIC…" value="${esc(LR.q)}">
+      <select id="lrB" class="sel"><option value="all">All brands</option>${brands.map(b=>`<option ${LR.brand===b?"selected":""}>${esc(b)}</option>`).join("")}<option value="empty" ${LR.brand==="empty"?"selected":""}>Empty rooms</option></select>
+      ${LR.edit?`<button class="pbtn sm ghost" id="lrAdd">＋ Add room</button>${LR.dirty?`<button class="pbtn sm ghost" id="lrDiscard">Discard changes</button>`:""}<button class="pbtn sm gold" id="lrSave">Save to website</button><button class="pbtn sm" id="lrEdit">Done</button>`:`<button class="pbtn sm" id="lrEdit">✎ Edit</button>`}</div></div>
+    <div class="lrg">${shown.map(r=>lrCard(r,res[r.id],accs,brands)).join("")||`<div class="empty">No room matches.</div>`}</div></section>`;
+  main.innerHTML=h;
+  // bindings
+  const $=id=>document.getElementById(id);
+  $("lrQ").oninput=e=>{LR.q=e.target.value;clearTimeout(LR._t);LR._t=setTimeout(()=>{renderRooms();const i=$("lrQ");i.focus();i.setSelectionRange(i.value.length,i.value.length);},250);};
+  $("lrB").onchange=e=>{LR.brand=e.target.value;renderRooms();};
+  $("lrEdit").onclick=()=>{LR.edit=!LR.edit;renderRooms();};
+  document.querySelectorAll("[data-more]").forEach(b=>b.onclick=()=>{LR.open[b.dataset.more]=!LR.open[b.dataset.more];renderRooms();});
+  if(!LR.edit) return;
+  const room=id=>LR.data.rooms.find(r=>r.id===id);
+  document.querySelectorAll("[data-f]").forEach(el=>el.onchange=()=>{const r=el.closest("[data-room]").dataset.room,f=el.dataset.f;
+    lrChange(()=>{const R=room(r);if(f==="no") R.no=el.value.trim().padStart(2,"0");else R[f]=el.value.trim();
+      if(f==="brand") R.accounts=R.accounts.filter(n=>accs.some(a=>a.name===n&&a.brand===R.brand));if(f==="type"&&R.type==="Empty"){R.accounts=[];R.brand="";R.pic="";}});});
+  document.querySelectorAll("[data-addacc]").forEach(el=>el.onchange=()=>{const v=el.value;if(!v) return;const r=el.dataset.addacc;lrChange(()=>{const R=room(r);if(!R.accounts.includes(v)) R.accounts.push(v);if(R.type==="Empty") R.type="Live";if(!R.brand){const a=accs.find(x=>x.name===v);if(a) R.brand=a.brand;}});});
+  document.querySelectorAll("[data-rmacc]").forEach(b=>b.onclick=()=>{const [r,n]=b.dataset.rmacc.split("|");lrChange(()=>{const R=room(r);R.accounts=R.accounts.filter(x=>x!==n);});});
+  document.querySelectorAll("[data-delroom]").forEach(b=>b.onclick=()=>{const R=room(b.dataset.delroom);if(!confirm(`Remove Liveroom ${R.no}?`)) return;lrChange(()=>{LR.data.rooms=LR.data.rooms.filter(x=>x.id!==R.id);});});
+  $("lrAdd").onclick=()=>{const nums=LR.data.rooms.map(r=>+r.no).filter(n=>!isNaN(n));const no=String((nums.length?Math.max(...nums):0)+1).padStart(2,"0");
+    lrChange(()=>{LR.data.rooms.push({id:"r"+Date.now().toString(36),no,brand:"",type:"Empty",accounts:[],pic:"",notes:""});});};
+  if($("lrDiscard")) $("lrDiscard").onclick=()=>{if(!confirm("Discard all unsaved room changes?")) return;LR.data=JSON.parse(JSON.stringify(LR.pub));LR.dirty=false;try{localStorage.removeItem(LR_DRAFT);}catch(e){}renderRooms();};
+  $("lrSave").onclick=lrSave;
+}
+function lrCard(r,x,accs,brands){
+  const col=r.brand?lrBrandColor(r.brand):"#c9ccd3", empty=r.type==="Empty", ed=LR.edit, many=x.hosts.length>8&&!LR.open[r.id];
+  const hostList=(many?x.hosts.slice(0,8):x.hosts);
+  return `<div class="lr${empty?" empty":""}" style="--bc:${col}" data-room="${esc(r.id)}">
+    <div class="lrh"><div class="lrn"><small>LIVEROOM</small>${ed?`<input data-f="no" value="${esc(r.no)}" class="lrno">`:`<b>${esc(r.no)}</b>`}</div>
+      <div class="lrt">${ed?`<select data-f="brand" class="sel"><option value="">— no brand —</option>${brands.map(b=>`<option ${b===r.brand?"selected":""}>${esc(b)}</option>`).join("")}</select>
+        <select data-f="type" class="sel">${["Live","Content","Empty"].map(t=>`<option ${t===r.type?"selected":""}>${t}</option>`).join("")}</select>`
+        :`${r.brand?`<span class="lrb">${esc(r.brand)}</span>`:""}<span class="lrty ${r.type.toLowerCase()}">${empty?"Available":r.type}</span>`}</div>
+      ${ed?`<button class="xbtn sm" data-delroom="${esc(r.id)}" title="Remove room">✕</button>`:""}</div>
+    ${empty&&!ed?`<div class="lre">No brand assigned</div>`:`
+    <div class="lrr"><small>Account${r.accounts.length>1?"s":""}</small><div>${r.accounts.map(n=>`<span class="lra">${esc(n)}${ed?`<button data-rmacc="${esc(r.id+"|"+n)}" title="Remove">×</button>`:""}</span>`).join("")||`<span class="muted">${ed?"":"not set"}</span>`}
+      ${ed?`<select data-addacc="${esc(r.id)}" class="sel lradd"><option value="">＋ add account</option>${accs.filter(a=>(!r.brand||a.brand===r.brand)&&!r.accounts.includes(a.name)).map(a=>`<option value="${esc(a.name)}">${esc(a.name)}</option>`).join("")}</select>`:""}</div></div>
+    <div class="lrr"><small>PIC</small><div>${ed?`<select data-f="pic" class="sel"><option value="">Auto: ${esc((x.mine.length?[...new Set(x.mine.map(a=>a.lo))]:x.brandLOs).join(", ")||"–")}</option>${[...new Set(accs.map(a=>a.lo).filter(Boolean))].map(p=>`<option ${p===r.pic?"selected":""}>${esc(p)}</option>`).join("")}</select>`
+      :x.pic.length?x.pic.map(p=>`<span class="lrp"><i>${esc(p.charAt(0))}</i>${esc(p)}</span>`).join("")+(x.picAuto&&!x.mine.length&&x.pic.length>1?`<span class="muted" style="font-size:11px"> brand LOs: set the account to narrow down</span>`:""):`<span class="muted">–</span>`}</div></div>
+    <div class="lrr"><small>Hosts${x.hosts.length?` · ${x.hosts.length}`:""}</small><div class="lrhs">${x.hosts.length?hostList.map(h=>`<span class="lrhost${/co-host/i.test(h.tag)?" co":""}" title="${esc(h.acc)}${h.tag?" · "+esc(h.tag):""}">${esc(h.name)}${/co-host/i.test(h.tag)?" <em>co</em>":""}</span>`).join("")+(x.hosts.length>8?`<button class="lnk" data-more="${esc(r.id)}">${many?`+${x.hosts.length-8} more`:"show less"}</button>`:""):`<span class="muted" style="font-size:12px">${r.accounts.length?"No hosts on this account in Team Organization":"Set the account to show its hosts"}</span>`}</div></div>
+    ${ed?`<div class="lrr"><small>Notes</small><input data-f="notes" class="sel" value="${esc(r.notes||"")}" placeholder="e.g. shared with content team on weekends"></div>`:r.notes?`<div class="lrnote">📝 ${esc(r.notes)}</div>`:""}`}
+  </div>`;
+}
+async function lrSave(){
+  const b=document.getElementById("lrSave");if(b){b.disabled=true;b.textContent="Saving…";}
+  try{let by="";try{by=localStorage.getItem("migo_me")||"";}catch(e){}
+    const body={...LR.data,updated:isoD(new Date()),by:by||"Putra"};delete body._base;
+    const cur=await ghReq("live-rooms.json","GET");
+    await ghReq("live-rooms.json","PUT",{message:`Live rooms update${by?" by "+by:""}`,content:b64(JSON.stringify(body,null,1)),...(cur?{sha:cur.sha}:{})});
+    LR.pub=JSON.parse(JSON.stringify(body));LR.data=JSON.parse(JSON.stringify(body));LR.dirty=false;LR.edit=false;try{localStorage.removeItem(LR_DRAFT);}catch(e){}
+    oToast("Saved ✓ Everyone sees the new room list within about a minute.");renderRooms();
+  }catch(e){oToast(e.message||"Save failed",1);if(b){b.disabled=false;b.textContent="Save to website";}}
+}
+
 /* ================= performance reports & period comparison: analysis engine ================= */
 const RLIB={docx:"https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.umd.js",xlsx:"https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"};
 function loadLib(name,glob){
@@ -3233,11 +3349,11 @@ const NAV=[
   {g:"Monthly",keys:()=>ORDER.filter(k=>model(k).last>=0)},
   {g:"My view",keys:()=>["me"]},
   {g:"Analysis",keys:()=>["acc","pcmp","rpt","whatif","cmp","hist"]},
-  {g:"Team",keys:()=>["org","weekly","team","act"]},
+  {g:"Team",keys:()=>["org","rooms","weekly","team","act"]},
   {g:"Planning",keys:()=>["camp","plan"]},
   {g:"Files",keys:()=>["files","rep"]}];
-const NAMES={me:"My view",acc:"Account analysis",whatif:"What-if",cmp:"Compare months",hist:"2026 history",weekly:"Weekly review",team:"Team & patterns",act:"Action log",camp:"Campaigns",plan:"Target planner",rep:"Reports",files:"Master files",org:"Team Organization",pcmp:"Compare periods",rpt:"Performance report"};
-const VIEWS={me:renderMe,acc:()=>renderAccounts(),whatif:renderWhatIf,cmp:()=>renderCompare(),hist:()=>renderHistory(),weekly:renderWeekly,team:renderTeam,act:renderActions,camp:renderCampaigns,plan:renderPlanner,rep:renderReports,files:renderFiles,org:renderOrg,pcmp:renderPCmp,rpt:renderRpt,intel:renderRpt};
+const NAMES={me:"My view",acc:"Account analysis",whatif:"What-if",cmp:"Compare months",hist:"2026 history",weekly:"Weekly review",team:"Team & patterns",act:"Action log",camp:"Campaigns",plan:"Target planner",rep:"Reports",files:"Master files",org:"Team Organization",rooms:"Live rooms",pcmp:"Compare periods",rpt:"Performance report"};
+const VIEWS={me:renderMe,acc:()=>renderAccounts(),whatif:renderWhatIf,cmp:()=>renderCompare(),hist:()=>renderHistory(),weekly:renderWeekly,team:renderTeam,act:renderActions,camp:renderCampaigns,plan:renderPlanner,rep:renderReports,files:renderFiles,org:renderOrg,rooms:renderRooms,pcmp:renderPCmp,rpt:renderRpt,intel:renderRpt};
 
 /* ---------- shell ---------- */
 function buildTabs(){

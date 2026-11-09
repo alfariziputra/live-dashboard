@@ -1,0 +1,276 @@
+{
+ "version": 1,
+ "updated": "2026-11-09",
+ "rooms": [
+  {
+   "id": "r01",
+   "no": "01",
+   "brand": "",
+   "type": "Empty",
+   "accounts": [],
+   "pic": "",
+   "notes": ""
+  },
+  {
+   "id": "r02",
+   "no": "02",
+   "brand": "Bostanten",
+   "type": "Content",
+   "accounts": [],
+   "pic": "",
+   "notes": ""
+  },
+  {
+   "id": "r03",
+   "no": "03",
+   "brand": "Mossdoom",
+   "type": "Live",
+   "accounts": [],
+   "pic": "",
+   "notes": ""
+  },
+  {
+   "id": "r05",
+   "no": "05",
+   "brand": "Mossdoom",
+   "type": "Live",
+   "accounts": [],
+   "pic": "",
+   "notes": ""
+  },
+  {
+   "id": "r06",
+   "no": "06",
+   "brand": "Mossdoom",
+   "type": "Live",
+   "accounts": [],
+   "pic": "",
+   "notes": ""
+  },
+  {
+   "id": "r07",
+   "no": "07",
+   "brand": "AG",
+   "type": "Live",
+   "accounts": [],
+   "pic": "",
+   "notes": ""
+  },
+  {
+   "id": "r08",
+   "no": "08",
+   "brand": "Bostanten",
+   "type": "Live",
+   "accounts": [],
+   "pic": "",
+   "notes": ""
+  },
+  {
+   "id": "r09",
+   "no": "09",
+   "brand": "Bostanten",
+   "type": "Live",
+   "accounts": [],
+   "pic": "",
+   "notes": ""
+  },
+  {
+   "id": "r10",
+   "no": "10",
+   "brand": "Bostanten",
+   "type": "Live",
+   "accounts": [],
+   "pic": "",
+   "notes": ""
+  },
+  {
+   "id": "r11",
+   "no": "11",
+   "brand": "AG",
+   "type": "Live",
+   "accounts": [],
+   "pic": "",
+   "notes": ""
+  },
+  {
+   "id": "r12",
+   "no": "12",
+   "brand": "",
+   "type": "Empty",
+   "accounts": [],
+   "pic": "",
+   "notes": ""
+  },
+  {
+   "id": "r15",
+   "no": "15",
+   "brand": "Mossdoom",
+   "type": "Live",
+   "accounts": [],
+   "pic": "",
+   "notes": ""
+  },
+  {
+   "id": "r16",
+   "no": "16",
+   "brand": "",
+   "type": "Empty",
+   "accounts": [],
+   "pic": "",
+   "notes": ""
+  },
+  {
+   "id": "r17",
+   "no": "17",
+   "brand": "Westbronco",
+   "type": "Live",
+   "accounts": [],
+   "pic": "",
+   "notes": ""
+  },
+  {
+   "id": "r18",
+   "no": "18",
+   "brand": "",
+   "type": "Empty",
+   "accounts": [],
+   "pic": "",
+   "notes": ""
+  },
+  {
+   "id": "r19",
+   "no": "19",
+   "brand": "AG",
+   "type": "Live",
+   "accounts": [],
+   "pic": "",
+   "notes": ""
+  },
+  {
+   "id": "r20",
+   "no": "20",
+   "brand": "Bostanten",
+   "type": "Live",
+   "accounts": [],
+   "pic": "",
+   "notes": ""
+  },
+  {
+   "id": "r21",
+   "no": "21",
+   "brand": "Bostanten",
+   "type": "Live",
+   "accounts": [],
+   "pic": "",
+   "notes": ""
+  },
+  {
+   "id": "r22",
+   "no": "22",
+   "brand": "Mossdoom",
+   "type": "Live",
+   "accounts": [],
+   "pic": "",
+   "notes": ""
+  },
+  {
+   "id": "r23",
+   "no": "23",
+   "brand": "Mossdoom",
+   "type": "Live",
+   "accounts": [],
+   "pic": "",
+   "notes": ""
+  },
+  {
+   "id": "r25",
+   "no": "25",
+   "brand": "Westbronco",
+   "type": "Live",
+   "accounts": [],
+   "pic": "",
+   "notes": ""
+  },
+  {
+   "id": "r26",
+   "no": "26",
+   "brand": "Bostanten",
+   "type": "Live",
+   "accounts": [],
+   "pic": "",
+   "notes": ""
+  },
+  {
+   "id": "r27",
+   "no": "27",
+   "brand": "",
+   "type": "Empty",
+   "accounts": [],
+   "pic": "",
+   "notes": ""
+  },
+  {
+   "id": "r28",
+   "no": "28",
+   "brand": "Bostanten",
+   "type": "Live",
+   "accounts": [],
+   "pic": "",
+   "notes": ""
+  },
+  {
+   "id": "r29",
+   "no": "29",
+   "brand": "Bostanten",
+   "type": "Live",
+   "accounts": [],
+   "pic": "",
+   "notes": ""
+  },
+  {
+   "id": "r30",
+   "no": "30",
+   "brand": "Corolla",
+   "type": "Live",
+   "accounts": [],
+   "pic": "",
+   "notes": ""
+  },
+  {
+   "id": "r31",
+   "no": "31",
+   "brand": "Mossdoom",
+   "type": "Content",
+   "accounts": [],
+   "pic": "",
+   "notes": ""
+  },
+  {
+   "id": "r32",
+   "no": "32",
+   "brand": "Corolla",
+   "type": "Live",
+   "accounts": [],
+   "pic": "",
+   "notes": ""
+  },
+  {
+   "id": "r33",
+   "no": "33",
+   "brand": "Corolla",
+   "type": "Live",
+   "accounts": [],
+   "pic": "",
+   "notes": ""
+  },
+  {
+   "id": "r35",
+   "no": "35",
+   "brand": "Corolla",
+   "type": "Live",
+   "accounts": [],
+   "pic": "",
+   "notes": ""
+  }
+ ]
+}
