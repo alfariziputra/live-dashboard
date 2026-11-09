@@ -330,6 +330,8 @@ a.pbtn{text-decoration:none;display:inline-flex;align-items:center}
 .form textarea{font:inherit;font-size:13.5px;text-transform:none;letter-spacing:0;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:9px 12px;width:100%;min-height:76px;resize:vertical;line-height:1.5;overflow:hidden}
 .form textarea:focus{outline:2px solid rgba(198,166,100,.45);border-color:var(--gold)}
 .lnote{white-space:pre-wrap}
+.pendc{border-color:rgba(201,154,46,.5);background:#fffaf0}
+.pend{display:flex;justify-content:space-between;gap:14px;align-items:center;padding:10px 0;border-bottom:1px solid var(--grid);font-size:12.5px}.pend:last-child{border-bottom:0}
 .form input,.form select{height:40px;font:inherit;font-size:13.5px;text-transform:none;letter-spacing:0;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:9px 12px;width:100%}
 .form input:focus,.form select:focus{outline:2px solid rgba(198,166,100,.45);border-color:var(--gold)}
 .pbtn.sm{padding:7px 14px;font-size:12px}
@@ -1618,8 +1620,25 @@ function fixLine(x){
 const ACT_KEY="migo_actions_v1";
 function localActs(){try{return JSON.parse(localStorage.getItem(ACT_KEY)||"[]");}catch(e){return [];}}
 function saveLocalActs(l){try{localStorage.setItem(ACT_KEY,JSON.stringify(l));return true;}catch(e){return false;}}
-function sharedActs(){return (typeof ACTIONS_SHARED!=="undefined"&&Array.isArray(ACTIONS_SHARED))?ACTIONS_SHARED:[];}
+let ACT_LIVE=null; // {form_url, table_url, actions} from actions.json, synced from the Feishu ACTION LOG table every 10 min
+let ACT_SIG="";
+function loadActions(){
+  if(location.protocol==="file:") return Promise.resolve();
+  return fetch("actions.json?t="+Date.now(),{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if(j&&Array.isArray(j.actions)){const sig=JSON.stringify(j);if(sig===ACT_SIG) return;ACT_SIG=sig;ACT_LIVE=j;actDedupe();
+    const ae=document.activeElement;if(["act","me","rpt","pcmp"].includes(state.month)&&!(ae&&/^(INPUT|TEXTAREA|SELECT)$/.test(ae.tagName))) rerender();}}).catch(()=>{});
+}
+function sharedActs(){return ACT_LIVE?ACT_LIVE.actions:((typeof ACTIONS_SHARED!=="undefined"&&Array.isArray(ACTIONS_SHARED))?ACTIONS_SHARED:[]);}
+const actSig=x=>[x.date,String(x.a||"").toLowerCase(),String(x.note||"").replace(/\s+/g," ").trim().toLowerCase().slice(0,80)].join("|");
+function actDedupe(){ // local entries that are now in the team log are removed from this device
+  const sh=new Set(sharedActs().map(actSig)), l=localActs(), keep=l.filter(x=>!sh.has(actSig(x)));
+  if(keep.length!==l.length) saveLocalActs(keep);
+}
 function allActs(){return [...sharedActs().map(x=>({...x,shared:1})),...localActs()].sort((p,q)=>q.date.localeCompare(p.date));}
+function actFormUrl(x){
+  const f=ACT_LIVE&&ACT_LIVE.form_url; if(!f) return "";
+  const q=[["Action",x.note],["Date",x.date],["Account",x.a],["Type",x.cat],["By",x.by]].filter(([,v])=>v).map(([k,v])=>`prefill_${encodeURIComponent(k)}=${encodeURIComponent(v)}`).join("&");
+  const u=f+(f.includes("?")?"&":"?")+q; return u.length>7500?f+(f.includes("?")?"&":"?")+q.replace(/prefill_Action=[^&]*&?/,""):u;
+}
 function actImpact(x){
   const s=serC(x.a), d=new Date(x.date+"T00:00:00");
   const before=s.filter(r=>r.date<=d).slice(-7), after=s.filter(r=>r.date>d).slice(0,7);
@@ -1709,28 +1728,31 @@ function renderActions(){
   const cats=["Live hours","Host / script","Ads boost","Short video","Voucher / price","Product / bundle","KOL / affiliate","Other"];
   let html=`<section class="card"><div class="chead"><div><h2>Log an action</h2><div class="hint">What did you change on the account? The site checks the result automatically after 3–7 days.</div></div></div>
     <div class="form">
-      <label>Account<select id="fA">${ACCTS.map(a=>`<option ${a===pre?"selected":""}>${a}</option>`).join("")}</select></label>
+      <label>Account<select id="fA">${rAccounts().map(a=>`<option ${a===pre?"selected":""}>${a}</option>`).join("")}</select></label>
       <label>Date<input id="fD" type="date" value="${lastDate}"></label>
       <label>Type<select id="fC">${cats.map(c=>`<option>${c}</option>`).join("")}</select></label>
       <label class="wide">What did you do?<textarea id="fN" rows="3" placeholder="e.g. Added 2 extra hours 19:00–21:00 with host Dita. Why: views dropped after 21:00. Expected: +20% views on weekdays. Write as much detail as you need."></textarea></label>
       <label>By<input id="fB" type="text" maxlength="40" value="${esc(by)}" placeholder="Your name"></label>
-      <button class="pbtn" id="fAdd">Add action</button></div><div class="muted" id="fMsg" style="font-size:12px;margin-top:8px"></div></section>`;
+      <button class="pbtn" id="fAdd">Add action → team log</button></div><div class="muted" id="fMsg" style="font-size:12px;margin-top:8px">${ACT_LIVE&&ACT_LIVE.form_url?"Opens the Feishu form with everything filled in. Press <b>Submit</b> there and the action appears here for the whole team within about 10 minutes.":"Loading the team log…"}</div></section>`;
+  const pending=localActs();
+  if(pending.length) html+=`<section class="card pendc"><div class="chead"><div><h2>⚠ ${pending.length} action${pending.length>1?"s are":" is"} only on this device</h2><div class="hint">Not in the team log yet, so nobody else can see ${pending.length>1?"them":"it"}. Press <b>Send</b>, then <b>Submit</b> in the Feishu form. ${pending.length>1?"They disappear":"It disappears"} from this list once the team log has ${pending.length>1?"them":"it"} (about 10 minutes).</div></div></div>
+    ${pending.map(x=>`<div class="pend"><div><b>${esc(x.a)}</b> · ${fmtD(new Date(x.date+"T00:00:00"))} · <span class="atag">${esc(x.cat)}</span> <span class="lnote">${esc(x.note.length>160?x.note.slice(0,160)+"…":x.note)}</span></div><div style="display:flex;gap:6px">${ACT_LIVE&&ACT_LIVE.form_url?`<a class="pbtn sm gold" href="${esc(actFormUrl(x))}" target="_blank" rel="noopener">Send to team log ↗</a>`:""}<button class="xbtn sm" data-del="${esc(x.id)}" title="Delete">✕</button></div></div>`).join("")}</section>`;
   const list=allActs(), pics=PICS();
   const shown=state.actFilter==="all"?list:list.filter(x=>PIC[x.a]===state.actFilter);
   const imps=shown.map(x=>({x,im:actImpact(x)}));
   const done=imps.filter(r=>r.im.st==="ok"), worked=done.filter(r=>r.im.verdict==="worked").length;
   const byCat={};done.forEach(r=>{const c=r.x.cat;(byCat[c]=byCat[c]||{n:0,w:0});byCat[c].n++;if(r.im.verdict==="worked") byCat[c].w++;});
-  html+=`<section class="kpis k3"><div class="kpi"><div class="l">Actions logged</div><div class="v">${shown.length}</div><div class="s">${localActs().length} on this device · ${sharedActs().length} shared</div></div>
+  html+=`<section class="kpis k3"><div class="kpi"><div class="l">Actions logged</div><div class="v">${shown.length}</div><div class="s">${sharedActs().length} in the team log${localActs().length?` · ${localActs().length} not sent yet`:""}</div></div>
     <div class="kpi"><div class="l">Success rate</div><div class="v">${done.length?Math.round(worked/done.length*100)+"%":"–"}</div><div class="s">${worked} of ${done.length} with a result</div></div>
     <div class="kpi"><div class="l">What works best</div><div class="v" style="font-size:20px">${(()=>{const b=Object.entries(byCat).filter(e=>e[1].n>=2).sort((p,q)=>q[1].w/q[1].n-p[1].w/p[1].n)[0];return b?esc(b[0]):"–";})()}</div><div class="s">action type with the highest success rate (min. 2)</div></div></section>`;
   html+=`<section class="card"><div class="chead"><div><h2>All actions</h2><div class="hint">Result = 7 days after vs 7 days before. Judged on achievement vs target, so campaign and payday days don't fake a win.</div></div>
     <div style="display:flex;gap:8px;flex-wrap:wrap"><select id="fF" class="sel"><option value="all">All specialists</option>${pics.map(p=>`<option ${p===state.actFilter?"selected":""}>${esc(p)}</option>`).join("")}</select>
-    <button class="pbtn sm ghost" id="fCopy">Copy for Feishu</button></div></div>
+    ${ACT_LIVE&&ACT_LIVE.table_url?`<a class="pbtn sm ghost" href="${esc(ACT_LIVE.table_url)}" target="_blank" rel="noopener">Open in Feishu ↗</a>`:""}<button class="pbtn sm ghost" id="fCopy">Copy unsent rows</button></div></div>
     ${shown.length?`<div class="scroll"><table><thead><tr><th class="l">Date</th><th class="l">Account</th><th class="l">By</th><th class="l">Action</th><th class="l">Result</th><th></th></tr></thead><tbody>`+
     imps.map(({x,im})=>`<tr><td class="l">${fmtD(new Date(x.date+"T00:00:00"))}</td><td class="l"><b>${esc(x.a)}</b><div class="muted" style="font-size:11px">${esc(PIC[x.a]||"")}</div></td><td class="l">${esc(x.by||"–")}</td>
       <td class="l wrapc"><span class="atag">${esc(x.cat)}</span> <span class="lnote">${esc(x.note)}</span></td><td class="l">${impactHtml(im)}</td>
-      <td>${x.shared?`<span class="muted" style="font-size:11px">Shared</span>`:`<button class="xbtn sm" data-del="${esc(x.id)}" title="Delete">✕</button>`}</td></tr>`).join("")+`</tbody></table></div>`:`<div class="muted" style="font-size:13px">No actions yet.</div>`}
-    <div class="hint" style="margin-top:12px">Entries are saved on this device. To share with the team, press <b>Copy for Feishu</b> and paste into the <b>ACTION LOG</b> table in Feishu Base (columns: Date, Account, Type, Action, By). Shared entries are added to the site with the daily data update.</div></section>`;
+      <td>${x.shared?`<span class="muted" style="font-size:11px">Team log</span>`:`<span class="neg" style="font-size:11px;white-space:nowrap">Not sent</span>`}</td></tr>`).join("")+`</tbody></table></div>`:`<div class="muted" style="font-size:13px">No actions yet.</div>`}
+    <div class="hint" style="margin-top:12px">All actions live in the <b>ACTION LOG</b> table in Feishu Base and sync to this page every 10 minutes (08:00–22:50). Edit or delete an action in Feishu.</div></section>`;
   document.getElementById("main").innerHTML=html;
   const msg=t=>{const el=document.getElementById("fMsg");if(el) el.textContent=t;};
   const fN=document.getElementById("fN");fN.addEventListener("input",()=>{fN.style.height="auto";fN.style.height=fN.scrollHeight+2+"px";});
@@ -1738,8 +1760,11 @@ function renderActions(){
     const x={id:"l"+Date.now(),a:document.getElementById("fA").value,date:document.getElementById("fD").value,cat:document.getElementById("fC").value,note:document.getElementById("fN").value.trim(),by:document.getElementById("fB").value.trim()};
     if(!x.note){msg("Write what you did first.");return;}
     if(!x.date){msg("Pick a date.");return;}
-    const l=localActs();l.push(x);if(!saveLocalActs(l)){msg("This browser blocks saving. Use Copy for Feishu instead.");return;}
+    const l=localActs();l.push(x);saveLocalActs(l); // kept here until the team log has it
     if(x.by){try{if(PICS().includes(x.by)) localStorage.setItem("migo_me",x.by);}catch(e){}}
+    const u=actFormUrl(x);
+    if(u){const w=window.open(u,"_blank","noopener");oToast(w?"Feishu form opened: press Submit there":"Allow pop-ups, or use the Send button below",!w);}
+    else oToast("Team log is not reachable right now. Saved on this device; send it later.",1);
     rerender();
   };
   document.getElementById("fF").onchange=e=>{state.actFilter=e.target.value;rerender();};
@@ -1747,7 +1772,7 @@ function renderActions(){
   document.getElementById("fCopy").onclick=()=>{
     const flat=v=>String(v||"").replace(/[\t\r\n]+/g," ").trim(); // one row per action when pasted into Feishu
     const rows=localActs().map(x=>[x.date,x.a,x.cat,flat(x.note),x.by].map(flat).join("\t"));
-    if(!rows.length){alertMsg("Nothing on this device to copy.");return;}
+    if(!rows.length){alertMsg("Nothing unsent on this device.");return;}
     copyText(rows.join("\n")).then(ok=>alertMsg(ok?`Copied ${rows.length} row${rows.length>1?"s":""}. Paste into Feishu Base ACTION LOG.`:"Copy failed"));
   };
   function alertMsg(t){const b=document.getElementById("fCopy");const o=b.textContent;b.textContent=t;setTimeout(()=>{b.textContent=o;},2600);}
@@ -3239,7 +3264,7 @@ function rerender(){
 window.addEventListener("hashchange",()=>{const h=decodeURIComponent(location.hash.replace("#",""));if(h.startsWith("me=")){state.month="me";state.me=h.split("=")[1];rerender();}});
 rerender();
 document.getElementById("btnBrief").onclick=openBrief;
-loadReports(); loadMaster();
+loadReports(); loadMaster(); loadActions();
 if(typeof Chart==="undefined") document.getElementById("main").insertAdjacentHTML("afterbegin",`<div class="note">Charts could not load (Chart.js CDN blocked). Tables below still work.</div>`);
 /* ---------- auto-update: poll for new data, no manual refresh needed ---------- */
 function deepSet(t,s){
@@ -3264,7 +3289,7 @@ function checkLive(){
       const ae=document.activeElement; if(ae&&/^(INPUT|TEXTAREA)$/.test(ae.tagName)) return; // don't interrupt typing; retry next tick
       deepSet(DATA,next); LIVE_SIG=sig; rerender(); liveToast("Data updated");
     }
-    loadReports(); loadMaster();
+    loadReports(); loadMaster(); loadActions();
   }).catch(()=>{}).finally(()=>{LIVE_BUSY=false;});
 }
 setInterval(checkLive,60000);
