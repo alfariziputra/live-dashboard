@@ -323,9 +323,13 @@ a.pbtn{text-decoration:none;display:inline-flex;align-items:center}
 .fxs b{font-size:16px;font-weight:600;letter-spacing:-.01em}
 .fxd{display:flex;gap:14px;font-size:12px;color:var(--ink-3);flex-wrap:wrap}
 .fxt{font-size:12.5px;color:var(--ink-2);line-height:1.5}.fxt b{color:var(--ink)}
-.form{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;align-items:end}
+.form{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;align-items:start}
+.form #fAdd{align-self:start}
 .form label{display:flex;flex-direction:column;gap:5px;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
 .form label.wide{grid-column:span 2}
+.form textarea{font:inherit;font-size:13.5px;text-transform:none;letter-spacing:0;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:9px 12px;width:100%;min-height:76px;resize:vertical;line-height:1.5;overflow:hidden}
+.form textarea:focus{outline:2px solid rgba(198,166,100,.45);border-color:var(--gold)}
+.lnote{white-space:pre-wrap}
 .form input,.form select{height:40px;font:inherit;font-size:13.5px;text-transform:none;letter-spacing:0;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:9px 12px;width:100%}
 .form input:focus,.form select:focus{outline:2px solid rgba(198,166,100,.45);border-color:var(--gold)}
 .pbtn.sm{padding:7px 14px;font-size:12px}
@@ -1708,7 +1712,7 @@ function renderActions(){
       <label>Account<select id="fA">${ACCTS.map(a=>`<option ${a===pre?"selected":""}>${a}</option>`).join("")}</select></label>
       <label>Date<input id="fD" type="date" value="${lastDate}"></label>
       <label>Type<select id="fC">${cats.map(c=>`<option>${c}</option>`).join("")}</select></label>
-      <label class="wide">What did you do?<input id="fN" type="text" maxlength="160" placeholder="e.g. Added 2 extra hours 19:00–21:00 with host Dita"></label>
+      <label class="wide">What did you do?<textarea id="fN" rows="3" placeholder="e.g. Added 2 extra hours 19:00–21:00 with host Dita. Why: views dropped after 21:00. Expected: +20% views on weekdays. Write as much detail as you need."></textarea></label>
       <label>By<input id="fB" type="text" maxlength="40" value="${esc(by)}" placeholder="Your name"></label>
       <button class="pbtn" id="fAdd">Add action</button></div><div class="muted" id="fMsg" style="font-size:12px;margin-top:8px"></div></section>`;
   const list=allActs(), pics=PICS();
@@ -1724,11 +1728,12 @@ function renderActions(){
     <button class="pbtn sm ghost" id="fCopy">Copy for Feishu</button></div></div>
     ${shown.length?`<div class="scroll"><table><thead><tr><th class="l">Date</th><th class="l">Account</th><th class="l">By</th><th class="l">Action</th><th class="l">Result</th><th></th></tr></thead><tbody>`+
     imps.map(({x,im})=>`<tr><td class="l">${fmtD(new Date(x.date+"T00:00:00"))}</td><td class="l"><b>${esc(x.a)}</b><div class="muted" style="font-size:11px">${esc(PIC[x.a]||"")}</div></td><td class="l">${esc(x.by||"–")}</td>
-      <td class="l wrapc"><span class="atag">${esc(x.cat)}</span> ${esc(x.note)}</td><td class="l">${impactHtml(im)}</td>
+      <td class="l wrapc"><span class="atag">${esc(x.cat)}</span> <span class="lnote">${esc(x.note)}</span></td><td class="l">${impactHtml(im)}</td>
       <td>${x.shared?`<span class="muted" style="font-size:11px">Shared</span>`:`<button class="xbtn sm" data-del="${esc(x.id)}" title="Delete">✕</button>`}</td></tr>`).join("")+`</tbody></table></div>`:`<div class="muted" style="font-size:13px">No actions yet.</div>`}
     <div class="hint" style="margin-top:12px">Entries are saved on this device. To share with the team, press <b>Copy for Feishu</b> and paste into the <b>ACTION LOG</b> table in Feishu Base (columns: Date, Account, Type, Action, By). Shared entries are added to the site with the daily data update.</div></section>`;
   document.getElementById("main").innerHTML=html;
   const msg=t=>{const el=document.getElementById("fMsg");if(el) el.textContent=t;};
+  const fN=document.getElementById("fN");fN.addEventListener("input",()=>{fN.style.height="auto";fN.style.height=fN.scrollHeight+2+"px";});
   document.getElementById("fAdd").onclick=()=>{
     const x={id:"l"+Date.now(),a:document.getElementById("fA").value,date:document.getElementById("fD").value,cat:document.getElementById("fC").value,note:document.getElementById("fN").value.trim(),by:document.getElementById("fB").value.trim()};
     if(!x.note){msg("Write what you did first.");return;}
@@ -1740,7 +1745,8 @@ function renderActions(){
   document.getElementById("fF").onchange=e=>{state.actFilter=e.target.value;rerender();};
   document.querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>{saveLocalActs(localActs().filter(x=>x.id!==b.dataset.del));rerender();});
   document.getElementById("fCopy").onclick=()=>{
-    const rows=localActs().map(x=>[x.date,x.a,x.cat,x.note,x.by].join("\t"));
+    const flat=v=>String(v||"").replace(/[\t\r\n]+/g," ").trim(); // one row per action when pasted into Feishu
+    const rows=localActs().map(x=>[x.date,x.a,x.cat,flat(x.note),x.by].map(flat).join("\t"));
     if(!rows.length){alertMsg("Nothing on this device to copy.");return;}
     copyText(rows.join("\n")).then(ok=>alertMsg(ok?`Copied ${rows.length} row${rows.length>1?"s":""}. Paste into Feishu Base ACTION LOG.`:"Copy failed"));
   };
