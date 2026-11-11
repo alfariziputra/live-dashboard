@@ -385,6 +385,7 @@ td.selc{font-weight:700;background:rgba(198,166,100,.12)}
 .rephero{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr)}
 .repbtns{display:flex;flex-direction:column;gap:12px}
 .bigbtn{display:flex;flex-direction:column;justify-content:center;text-decoration:none;font-weight:600;font-size:16px;padding:18px 22px;border-radius:16px;border:1px solid rgba(255,255,255,.18);color:#fff;background:rgba(255,255,255,.06)}
+button.bigbtn{font-family:inherit;cursor:pointer;text-align:left}button.bigbtn:disabled{opacity:.6;cursor:wait}
 .bigbtn:hover{background:rgba(255,255,255,.12)}
 .bigbtn.gold{background:linear-gradient(135deg,var(--gold-2),var(--gold));color:#0b1220;border-color:transparent;box-shadow:0 10px 26px -12px rgba(198,166,100,.8)}
 .bigbtn.dis{opacity:.55;cursor:not-allowed}
@@ -1784,7 +1785,7 @@ function renderActions(){
   html+=`<section class="kpis k3"><div class="kpi"><div class="l">Actions logged</div><div class="v">${shown.length}</div><div class="s">${sharedActs().length} in the team log${localActs().length?` · ${localActs().length} not sent yet`:""}</div></div>
     <div class="kpi"><div class="l">Success rate</div><div class="v">${done.length?Math.round(worked/done.length*100)+"%":"–"}</div><div class="s">${worked} of ${done.length} with a result</div></div>
     <div class="kpi"><div class="l">What works best</div><div class="v" style="font-size:20px">${(()=>{const b=Object.entries(byCat).filter(e=>e[1].n>=2).sort((p,q)=>q[1].w/q[1].n-p[1].w/p[1].n)[0];return b?esc(b[0]):"–";})()}</div><div class="s">action type with the highest success rate (min. 2)</div></div></section>`;
-  html+=`<section class="card"><div class="chead"><div><h2>All actions</h2><div class="hint">Result = 7 days after vs 7 days before. Judged on achievement vs target, so campaign and payday days don't fake a win.</div></div>
+  html+=`<section class="card"><div class="chead"><div><h2>All actions <button class="pbtn sm ghost" data-syncnow style="margin-left:8px;vertical-align:middle"><span data-sl>⟳ Sync now</span></button></h2><div class="hint">Result = 7 days after vs 7 days before. Judged on achievement vs target, so campaign and payday days don't fake a win.</div></div>
     <div style="display:flex;gap:8px;flex-wrap:wrap"><select id="fF" class="sel"><option value="all">All specialists</option>${pics.map(p=>`<option ${p===state.actFilter?"selected":""}>${esc(p)}</option>`).join("")}</select>
     ${ACT_LIVE&&ACT_LIVE.table_url?`<a class="pbtn sm ghost" href="${esc(ACT_LIVE.table_url)}" target="_blank" rel="noopener">Open in Feishu ↗</a>`:""}<button class="pbtn sm ghost" id="fCopy">Copy unsent rows</button></div></div>
     ${shown.length?`<div class="scroll"><table><thead><tr><th class="l">Date</th><th class="l">Account</th><th class="l">By</th><th class="l">Action</th><th class="l">Result</th><th></th></tr></thead><tbody>`+
@@ -2005,8 +2006,9 @@ function renderReports(){
   let html=`<section class="hero rephero"><div class="hl1"><div class="eyebrow">Report drop box</div><div class="hn" style="font-size:40px">Reports</div>
       <div class="hd">Put every report link in one place so anyone can find it later. Submissions go into the Feishu Base table.</div></div>
     <div class="repbtns">${form?`<a class="bigbtn gold" href="${esc(form)}" target="_blank" rel="noopener">＋ Submit a report</a>`:`<span class="bigbtn dis">＋ Submit a report<small>form link not set yet</small></span>`}
+      <button class="bigbtn" data-syncnow><span data-sl>⟳ Sync now</span><small>pull new reports from Feishu</small></button>
       ${table?`<a class="bigbtn" href="${esc(table)}" target="_blank" rel="noopener">Open report table ↗</a>`:`<span class="bigbtn dis ghost">Open report table<small>table link not set yet</small></span>`}</div></section>`;
-  html+=`<section class="card"><div class="chead"><div><h2>Find a report</h2><div class="hint">${list.length?`${list.length} reports · synced from Feishu every 30 minutes (08:00–22:30)`:"New submissions appear here within about 30 minutes. For the very latest, use “Open report table”."}</div></div>
+  html+=`<section class="card"><div class="chead"><div><h2>Find a report</h2><div class="hint">${list.length?`${list.length} reports · synced from Feishu automatically · press <b>Sync now</b> for the latest`:"Press <b>Sync now</b> after submitting to see it here within a minute."}</div></div>
     <div class="repf"><input id="rQ" class="sel" type="search" placeholder="Search name, account, title…" value="${esc(R.q)}">
       <select id="rT" class="sel"><option value="all">${months.length?"All months":"All types"}</option>${cats.map(t=>`<option ${t===R.t?"selected":""}>${esc(t)}</option>`).join("")}</select>
       <select id="rP" class="sel"><option value="all">Everyone</option>${PICS().map(p=>`<option ${p===R.p?"selected":""}>${esc(p)}</option>`).join("")}</select></div></div>
@@ -2052,6 +2054,7 @@ function renderFiles(){
   let html=`<section class="hero rephero"><div class="hl1"><div class="eyebrow">Master files</div><div class="hn" style="font-size:40px">Documents</div>
       <div class="hd">Every form and sheet the team fills in, in one place. Open a folder, then click the document.</div></div>
     <div class="repbtns"><label class="srch"><input id="fQ" type="search" placeholder="Search all documents…" value="${esc(state.fq)}"></label>
+      <button class="bigbtn" data-syncnow><span data-sl>⟳ Sync now</span><small>pull link changes from Feishu</small></button>
       ${tUrl?`<a class="bigbtn" href="${esc(tUrl)}" target="_blank" rel="noopener">Add or edit links ↗<small>in the Feishu MASTER FILES table</small></a>`:""}</div></section>
     <div class="fgrid">${folders.map(f=>{const n=files.filter(x=>x.folder===f).length;return `<button class="fcard${state.folder===f?" on":""}" data-f="${esc(f)}">${FOLDER_ICON}<b>${esc(f)}</b><span>${n} document${n===1?"":"s"}</span></button>`;}).join("")}</div>
     <div id="fOut"></div>`;
@@ -2438,6 +2441,27 @@ async function lgSaveUrl(){const u=(document.getElementById("lgUrl").value||"").
   if(!/^https:\/\/[a-z0-9-]+(\.[a-z0-9-]+)*\.(firebasedatabase\.app|firebaseio\.com)$/i.test(u)){oToast("That doesn't look like a Firebase database URL",1);return;}
   try{const cur=await ghReq("live-config.json","GET");await ghReq("live-config.json","PUT",{message:"Live GMV: set database URL",content:b64(JSON.stringify({firebase:u},null,1)),...(cur?{sha:cur.sha}:{})});
     LG.cfg={firebase:u};oToast("Connected ✓ live GMV will appear in a few seconds");lgPoll();}catch(e){oToast(e.message,1);}}
+/* sync now: ask the Feishu bot to pull reports, master files, team list and action log immediately */
+const GH_SYNC_KEY="migo_gh_sync_token", SYNC={busy:false};
+async function syncNow(){
+  if(SYNC.busy){oToast("Already syncing, a moment…");return;}
+  const send=tok=>fetch("https://api.github.com/repos/alfariziputra/feishu-sync/dispatches",{method:"POST",headers:{Authorization:"Bearer "+tok,Accept:"application/vnd.github+json"},body:JSON.stringify({event_type:"sync-now"})}).catch(()=>null);
+  let tok="";try{tok=localStorage.getItem(GH_SYNC_KEY)||localStorage.getItem(GH_TOK_KEY)||"";}catch(e){}
+  let r=tok?await send(tok):null;
+  if(!r||!r.ok){
+    const t=(prompt("One-time setup for Sync now: paste a GitHub token that can access the feishu-sync repo (fine-grained, Contents: Read and write). It is stored only in this browser.")||"").trim();
+    if(!t) return; r=await send(t);
+    if(!r||!r.ok){oToast(r&&(r.status===401||r.status===403||r.status===404)?"GitHub refused that token. It needs access to the feishu-sync repo.":"Couldn't reach GitHub. Try again.",1);return;}
+    try{localStorage.setItem(GH_SYNC_KEY,t);}catch(e){}
+  }
+  SYNC.busy=true;const sig=()=>JSON.stringify([REPORTS_LIVE,MASTER_LIVE,ACT_SIG]),before=sig(),t0=Date.now();
+  const label=on=>document.querySelectorAll("[data-syncnow]").forEach(b=>{b.disabled=on;const l=b.querySelector("[data-sl]")||b;l.textContent=on?"Syncing… about 1 min":"⟳ Sync now";});
+  label(true);oToast("Sync started, new items appear in about a minute");
+  await new Promise(res=>{const iv=setInterval(()=>{loadReports();loadMaster();loadActions();
+    const el=Date.now()-t0;if((el>40e3&&sig()!==before)||el>150e3){clearInterval(iv);res();}},10000);});
+  SYNC.busy=false;label(false);oToast(sig()!==before?"Synced ✓ updated from Feishu":"Synced ✓ nothing new in Feishu");
+}
+document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-syncnow]");if(b){e.preventDefault();syncNow();}});
 /* ================= performance reports & period comparison: analysis engine ================= */
 const RLIB={docx:"https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.umd.js",xlsx:"https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"};
 function loadLib(name,glob){
