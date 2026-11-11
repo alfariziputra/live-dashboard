@@ -506,6 +506,16 @@ a.drow[href]:hover{border-color:var(--gold);background:#fff}
 .otoast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);background:#0b1220;color:#fff;padding:12px 20px;border-radius:12px;font-size:13px;font-weight:500;box-shadow:0 12px 30px -10px rgba(0,0,0,.5);z-index:80;opacity:0;transition:opacity .25s;pointer-events:none;border:1px solid rgba(198,166,100,.5)}
 .otoast.bad{background:#7d2620}
 @media (max-width:700px){.otools{padding:14px}.otr input{min-width:0;flex:1}.ocanvas{max-height:70vh}}
+/* live GMV */
+.lgdot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;vertical-align:1px}
+.lgbadge{display:inline-block;background:#e0313c;color:#fff;font-size:10px;font-weight:700;letter-spacing:.06em;padding:1px 6px;border-radius:4px;vertical-align:2px;animation:lgp 1.6s infinite}
+@keyframes lgp{50%{opacity:.55}}
+.lgbar{position:relative;height:8px;background:var(--line);border-radius:5px;margin:3px 0 2px;overflow:visible}
+.lgbar i{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,#c6a664,#1f8a4c);border-radius:5px}
+.lgbar u{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--ink,#0e1320);opacity:.55}
+.lgset{display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;margin:12px 0}
+.lgset label{display:flex;flex-direction:column;gap:5px;font-size:12px;color:var(--muted,#6b7080);flex:1;min-width:280px}
+.lgset input{width:100%}
 /* live rooms */
 .lrg{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px}
 .lr{border:1px solid var(--line);border-radius:16px;background:var(--surface);overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.04);border-top:4px solid var(--bc);display:flex;flex-direction:column}
@@ -2352,6 +2362,82 @@ async function lrSave(){
   }catch(e){oToast(e.message||"Save failed",1);if(b){b.disabled=false;b.textContent="Save to website";}}
 }
 
+/* live GMV (Chrome extension → Firebase → here, every 30 s) */
+const LG={cfg:null,data:null,prev:{},delta:{},at:0,err:"",timer:null,daily:null,dailyFor:""};
+const lgSlug=s=>s.toLowerCase().replace(/[^a-z0-9]+/g,"-");
+function lgCfg(){if(LG.cfg) return Promise.resolve(LG.cfg);
+  return fetch("live-config.json?t="+Date.now(),{cache:"no-store"}).then(r=>r.ok?r.json():{}).catch(()=>({})).then(c=>{LG.cfg=c||{};return LG.cfg;});}
+function lgDate(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;}
+function lgPoll(){
+  return lgCfg().then(c=>{if(!c.firebase) return;const base=c.firebase.replace(/\/$/,"");
+    return fetch(base+"/live.json?t="+Date.now(),{cache:"no-store"}).then(r=>{if(!r.ok) throw new Error("Database returned "+r.status);return r.json();}).then(d=>{
+      d=d||{};Object.keys(d).forEach(k=>{const v=d[k],p=LG.data&&LG.data[k];if(p&&v&&p.date===v.date&&v.ts!==p.ts) LG.delta[k]=(v.gmv||0)-(p.gmv||0);});
+      LG.data=d;LG.at=Date.now();LG.err="";
+      const y=new Date();y.setDate(y.getDate()-1);const yd=lgDate(y);
+      if(LG.dailyFor!==yd){LG.dailyFor=yd;fetch(base+"/daily/"+yd+".json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(x=>{LG.daily=x||{};if(state.month==="live") renderLive();}).catch(()=>{});}
+    }).catch(e=>{LG.err=e.message||"Could not reach the live database";});
+  }).finally(()=>{if(state.month==="live") renderLive();});
+}
+function lgStart(){if(LG.timer) return;lgPoll();LG.timer=setInterval(()=>{if(!document.hidden) lgPoll();},30000);
+  setInterval(()=>{if(state.month==="live"&&!document.hidden) lgTick();},5000);}
+function lgTick(){document.querySelectorAll("[data-ago]").forEach(el=>el.textContent=lgAgo(+el.dataset.ago));const s=document.getElementById("lgNext");if(s&&LG.at) s.textContent=Math.max(0,30-Math.round((Date.now()-LG.at)/1000))+"s";}
+function lgAgo(ts){const s=Math.round((Date.now()-ts)/1000);return s<60?s+"s ago":s<3600?Math.round(s/60)+" min ago":Math.round(s/3600)+" h ago";}
+function lgShortRp(n){if(n==null) return "–";const a=Math.abs(n);return "Rp "+(a>=1e9?(n/1e9).toFixed(2)+" M":a>=1e6?(n/1e6).toFixed(1)+" jt":a>=1e3?(n/1e3).toFixed(0)+" rb":Math.round(n));}
+function lgTodayTarget(acc){const now=new Date(),lab=now.toLocaleString("en-US",{month:"long"})+" "+now.getFullYear();
+  const k=ORDER.find(k=>M[k].label===lab);if(!k) return null;const t=M[k].tgt&&M[k].tgt[acc];return t?t[now.getDate()-1]||null:null;}
+function lgYesterdayActual(acc){const y=new Date();y.setDate(y.getDate()-1);const lab=y.toLocaleString("en-US",{month:"long"})+" "+y.getFullYear();
+  const k=ORDER.find(k=>M[k].label===lab);if(!k) return null;const g=M[k].g&&M[k].g[acc];const v=g?g[y.getDate()-1]:null;return v||null;}
+function lgStatus(v){const today=lgDate(new Date());
+  if(!v) return {k:"none",t:"Not connected",c:"#9aa0ab",d:"No extension has sent data for this account yet"};
+  const age=(Date.now()-v.ts)/1000;
+  if(v.status==="logged_out") return {k:"out",t:"Logged out",c:"#c2413b",d:"Seller Center asked to log in again in that Chrome profile"};
+  if(age>600||v.date!==today) return {k:"off",t:"Offline",c:"#c2413b",d:"No update for "+lgAgo(v.ts).replace(" ago","")+": laptop asleep, Chrome closed or profile window closed"};
+  if(v.status&&v.status!=="ok") return {k:"warn",t:"Check page",c:"#c98a1b",d:({no_data:"Page loaded but no GMV card found",not_today:"Date range is not Today",wrong_page:"Tab is not on LIVE Manager → Live Performance",no_today_button:"Could not find the Today button"})[v.status]||v.status};
+  if(age>90) return {k:"late",t:"Delayed",c:"#c98a1b",d:"Last update "+lgAgo(v.ts)};
+  return {k:"ok",t:"Live",c:"#1f8a4c",d:"Updating every 30 s"};}
+function renderLive(){
+  const main=document.getElementById("main");if(!main) return;
+  if(!LG.cfg){main.innerHTML=`<section class="card"><div class="empty">Loading live GMV…</div></section>`;lgStart();return;}
+  if(!LG.cfg.firebase){main.innerHTML=`<section class="card"><h2>Live GMV</h2><p class="hint" style="max-width:640px">Today's TikTok GMV per account, refreshed every 30 seconds. It is read from LIVE Manager by the Migo Live Sync Chrome extension on the office laptop and passed through a small live database.</p>
+    <div class="lgset"><label>Live database URL<input id="lgUrl" class="sel" placeholder="https://your-project-default-rtdb.asia-southeast1.firebasedatabase.app"></label><button class="pbtn sm gold" id="lgSaveUrl">Connect</button></div>
+    <p class="hint">Paste only the database URL here, never the secret. It is saved to the website so everyone on the team sees live GMV.</p></section>`;
+    document.getElementById("lgSaveUrl").onclick=lgSaveUrl;lgStart();return;}
+  const d=LG.data||{}, today=lgDate(new Date());
+  const rows=ACCTS.map(a=>{const v=d[lgSlug(a)];const st=lgStatus(v);const fresh=v&&v.date===today;const gmv=fresh?v.gmv:null;const tg=lgTodayTarget(a);
+    return {a,v,st,gmv,tg,pct:gmv!=null&&tg?gmv/tg:null,dl:fresh?LG.delta[lgSlug(a)]:null};});
+  const tot=rows.reduce((s,r)=>s+(r.gmv||0),0), ttg=rows.reduce((s,r)=>s+(r.gmv!=null&&r.tg?r.tg:0),0), on=rows.filter(r=>r.st.k==="ok").length, liveNow=rows.filter(r=>r.v&&r.v.live_now&&r.st.k==="ok").length;
+  const now=new Date(), dayFrac=(now.getHours()*60+now.getMinutes())/1440;
+  rows.sort((x,y)=>(y.gmv||-1)-(x.gmv||-1));
+  let h=`<section class="kpis"><div class="kpi"><div class="l">GMV today · connected accounts</div><div class="v">${lgShortRp(tot)}</div><div class="s">${ttg?Math.round(tot/ttg*100)+"% of today's target for these accounts":"no target for today"}</div></div>
+    <div class="kpi"><div class="l">Accounts updating</div><div class="v">${on} / ${ACCTS.length}</div><div class="s">${ACCTS.length-on?ACCTS.length-on+" need attention (see status)":"all live"}</div></div>
+    <div class="kpi"><div class="l">LIVE right now</div><div class="v">${liveNow}</div><div class="s">accounts streaming</div></div>
+    <div class="kpi"><div class="l">Day elapsed</div><div class="v">${Math.round(dayFrac*100)}%</div><div class="s">compare with % of target</div></div>
+    <div class="kpi"><div class="l">Last refresh</div><div class="v" style="font-size:20px">${LG.at?`<span data-ago="${LG.at}">${lgAgo(LG.at)}</span>`:"–"}</div><div class="s">next in <span id="lgNext">30s</span>${LG.err?` · <span class="neg">${esc(LG.err)}</span>`:""}</div></div></section>`;
+  h+=`<section class="card"><div class="otools" style="padding:0 0 14px;border:0"><div class="otl"><h2>Live GMV · today</h2><div class="hint">TikTok LIVE Manager · Attributed GMV for today. The page refreshes this every 30 seconds by itself.</div></div><div class="otr"><button class="pbtn sm ghost" id="lgNow">Refresh now</button></div></div>
+    <div class="scroll"><table><thead><tr><th class="l">Account</th><th class="l">Status</th><th>GMV today</th><th>Last 30 s</th><th>Today's target</th><th class="l" style="min-width:160px">Progress</th><th>GMV / hour</th><th>Items</th><th>Views</th><th class="l">Updated</th></tr></thead><tbody>
+    ${rows.map(r=>{const p=r.pct, w=p==null?0:Math.min(100,p*100), pace=p==null?"":p>=dayFrac?"pos":"neg";const v=r.v||{};
+      return `<tr><td class="l"><b>${esc(SHORT[r.a]||r.a)}</b>${v.live_now&&r.st.k==="ok"?` <span class="lgbadge">LIVE</span>`:""}<div class="hint">${esc(DATA.pic[r.a]||"")}${v.handle?" · "+esc(v.handle):""}</div></td>
+      <td class="l"><span class="lgdot" style="background:${r.st.c}"></span>${r.st.t}<div class="hint" style="max-width:220px;white-space:normal">${esc(r.st.d)}</div></td>
+      <td class="num"><b>${r.gmv!=null?lgShortRp(r.gmv):"–"}</b></td>
+      <td class="num ${r.dl>0?"pos":""}">${r.dl>0?"+"+lgShortRp(r.dl):r.dl===0?"0":"–"}</td>
+      <td class="num">${r.tg?lgShortRp(r.tg):"–"}</td>
+      <td class="l">${p!=null?`<div class="lgbar"><i style="width:${w}%"></i><u style="left:${dayFrac*100}%"></u></div><span class="${pace}" style="font-size:12px">${Math.round(p*100)}%</span>`:"–"}</td>
+      <td class="num">${r.gmv!=null&&v.gmv_per_hour!=null?lgShortRp(v.gmv_per_hour):"–"}</td><td class="num">${r.gmv!=null&&v.items!=null?fmtN(v.items):"–"}</td><td class="num">${r.gmv!=null&&v.views!=null?fmtN(v.views):"–"}</td>
+      <td class="l">${v.ts?`<span data-ago="${v.ts}">${lgAgo(v.ts)}</span>`:"–"}</td></tr>`;}).join("")}
+    </tbody></table></div><div class="hint" style="margin-top:8px">Progress bar: green fill = GMV vs today's target, thin line = how much of the day has passed. Ahead of the line = on pace.</div></section>`;
+  // accuracy check vs yesterday's export
+  if(LG.daily){const chk=ACCTS.map(a=>{const x=LG.daily[lgSlug(a)],act=lgYesterdayActual(a);if(!x||!act) return null;const diff=(x.gmv-act)/act;return {a,live:x.gmv,act,diff};}).filter(Boolean);
+    if(chk.length) h+=`<section class="card"><h2>Accuracy check · yesterday</h2><div class="hint" style="margin-bottom:8px">Last live reading yesterday vs the GMV in the dashboard data. Differences over 2% are flagged. Some gap is normal: LIVE Manager counts GMV attributed to lives, the export may count all net sales.</div>
+      <div class="scroll"><table><thead><tr><th class="l">Account</th><th>Live reading</th><th>Dashboard data</th><th>Difference</th></tr></thead><tbody>${chk.map(c=>`<tr><td class="l">${esc(SHORT[c.a]||c.a)}</td><td class="num">${fmtRp(c.live)}</td><td class="num">${fmtRp(c.act)}</td><td class="num ${Math.abs(c.diff)>0.02?"neg":"pos"}">${(c.diff>=0?"+":"")+(c.diff*100).toFixed(1)}%${Math.abs(c.diff)>0.02?" ⚑":""}</td></tr>`).join("")}</tbody></table></div></section>`;}
+  h+=`<section class="card"><details><summary><b>Settings</b> · live database</summary><div class="lgset" style="margin-top:10px"><label>Live database URL<input id="lgUrl" class="sel" value="${esc(LG.cfg.firebase)}"></label><button class="pbtn sm ghost" id="lgSaveUrl">Save</button></div></details></section>`;
+  main.innerHTML=h;
+  document.getElementById("lgNow").onclick=()=>{LG.at=0;lgPoll();};
+  document.getElementById("lgSaveUrl").onclick=lgSaveUrl;
+}
+async function lgSaveUrl(){const u=(document.getElementById("lgUrl").value||"").trim().replace(/\/$/,"");
+  if(!/^https:\/\/[a-z0-9-]+(\.[a-z0-9-]+)*\.(firebasedatabase\.app|firebaseio\.com)$/i.test(u)){oToast("That doesn't look like a Firebase database URL",1);return;}
+  try{const cur=await ghReq("live-config.json","GET");await ghReq("live-config.json","PUT",{message:"Live GMV: set database URL",content:b64(JSON.stringify({firebase:u},null,1)),...(cur?{sha:cur.sha}:{})});
+    LG.cfg={firebase:u};oToast("Connected ✓ live GMV will appear in a few seconds");lgPoll();}catch(e){oToast(e.message,1);}}
 /* ================= performance reports & period comparison: analysis engine ================= */
 const RLIB={docx:"https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.umd.js",xlsx:"https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"};
 function loadLib(name,glob){
@@ -3348,12 +3434,12 @@ function rBindIntelPanel(onChange){
 const NAV=[
   {g:"Monthly",keys:()=>ORDER.filter(k=>model(k).last>=0)},
   {g:"My view",keys:()=>["me"]},
-  {g:"Analysis",keys:()=>["acc","pcmp","rpt","whatif","cmp","hist"]},
+  {g:"Analysis",keys:()=>["live","acc","pcmp","rpt","whatif","cmp","hist"]},
   {g:"Team",keys:()=>["org","rooms","weekly","team","act"]},
   {g:"Planning",keys:()=>["camp","plan"]},
   {g:"Files",keys:()=>["files","rep"]}];
-const NAMES={me:"My view",acc:"Account analysis",whatif:"What-if",cmp:"Compare months",hist:"2026 history",weekly:"Weekly review",team:"Team & patterns",act:"Action log",camp:"Campaigns",plan:"Target planner",rep:"Reports",files:"Master files",org:"Team Organization",rooms:"Live rooms",pcmp:"Compare periods",rpt:"Performance report"};
-const VIEWS={me:renderMe,acc:()=>renderAccounts(),whatif:renderWhatIf,cmp:()=>renderCompare(),hist:()=>renderHistory(),weekly:renderWeekly,team:renderTeam,act:renderActions,camp:renderCampaigns,plan:renderPlanner,rep:renderReports,files:renderFiles,org:renderOrg,rooms:renderRooms,pcmp:renderPCmp,rpt:renderRpt,intel:renderRpt};
+const NAMES={live:"Live GMV",me:"My view",acc:"Account analysis",whatif:"What-if",cmp:"Compare months",hist:"2026 history",weekly:"Weekly review",team:"Team & patterns",act:"Action log",camp:"Campaigns",plan:"Target planner",rep:"Reports",files:"Master files",org:"Team Organization",rooms:"Live rooms",pcmp:"Compare periods",rpt:"Performance report"};
+const VIEWS={live:renderLive,me:renderMe,acc:()=>renderAccounts(),whatif:renderWhatIf,cmp:()=>renderCompare(),hist:()=>renderHistory(),weekly:renderWeekly,team:renderTeam,act:renderActions,camp:renderCampaigns,plan:renderPlanner,rep:renderReports,files:renderFiles,org:renderOrg,rooms:renderRooms,pcmp:renderPCmp,rpt:renderRpt,intel:renderRpt};
 
 /* ---------- shell ---------- */
 function buildTabs(){
@@ -3386,7 +3472,7 @@ function rerender(){
 window.addEventListener("hashchange",()=>{const h=decodeURIComponent(location.hash.replace("#",""));if(h.startsWith("me=")){state.month="me";state.me=h.split("=")[1];rerender();}});
 rerender();
 document.getElementById("btnBrief").onclick=openBrief;
-loadReports(); loadMaster(); loadActions();
+loadReports(); loadMaster(); loadActions(); lgStart();
 if(typeof Chart==="undefined") document.getElementById("main").insertAdjacentHTML("afterbegin",`<div class="note">Charts could not load (Chart.js CDN blocked). Tables below still work.</div>`);
 /* ---------- auto-update: poll for new data, no manual refresh needed ---------- */
 function deepSet(t,s){
