@@ -2014,9 +2014,10 @@ function renderReports(){
       <select id="rP" class="sel"><option value="all">Everyone</option>${PICS().map(p=>`<option ${p===R.p?"selected":""}>${esc(p)}</option>`).join("")}</select></div></div>
     <div id="rOut"></div></section>`;
   // this week's submissions by specialist
-  const wk=weekList(), cw=wk[wk.length-1], days=new Set(cw?cw.days:[]);
+  const cw=(()=>{const d=new Date();d.setHours(0,0,0,0);d.setDate(d.getDate()-((d.getDay()+6)%7));const days=[];for(let j=0;j<7;j++){const x=new Date(d);x.setDate(x.getDate()+j);days.push(isoD(x));}return {start:d,days};})(), days=new Set(cw.days);
+  const isMe=(by,p)=>{const a=String(by||"").trim().toLowerCase(),b=String(p||"").trim().toLowerCase();return !!a&&!!b&&(a===b||a.split(/\s+/)[0]===b.split(/\s+/)[0]);};
   html+=`<section class="card"><div class="chead"><div><h2>This week's submissions</h2><div class="hint">${cw?`Week of ${fmtD(cw.start)} · `:""}who has sent a report link (from the synced list)</div></div></div><div class="subg">`+
-    PICS().map(p=>{const n=list.filter(r=>same(r.by,p)&&days.has(String(r.date).slice(0,10))).length;return `<div class="sub1 ${n?"ok":""}"><b>${esc(p)}</b><span>${n?`✓ ${n} report${n>1?"s":""}`:"none yet"}</span></div>`;}).join("")+`</div></section>`;
+    PICS().map(p=>{const n=list.filter(r=>isMe(r.by,p)&&days.has(String(r.date).slice(0,10))).length;return `<div class="sub1 ${n?"ok":""}"><b>${esc(p)}</b><span>${n?`✓ ${n} report${n>1?"s":""}`:"none yet"}</span></div>`;}).join("")+`</div></section>`;
   if(!form||!table) html+=`<section class="card"><div class="chead"><div><h2>Set up (one time)</h2><div class="hint">For Putra · takes about 5 minutes</div></div></div><ol class="steps">
     <li>In Feishu Base, create a table <b>REPORTS</b> with fields: <b>Date</b> (date), <b>Name</b> (single select: ${PICS().map(esc).join(", ")}), <b>Account</b> (multi select), <b>Report type</b> (single select: ${types.map(esc).join(", ")}), <b>Title</b> (text), <b>Link</b> (URL), <b>Notes</b> (text).</li>
     <li>Add a <b>Form</b> view to that table → Share → turn on link sharing → copy the form link.</li>
@@ -2025,7 +2026,7 @@ function renderReports(){
   document.getElementById("main").innerHTML=html;
   const draw=()=>{
     const q=R.q.trim().toLowerCase();
-    const f=list.filter(r=>(R.t==="all"||catOf(r)===R.t)&&(R.p==="all"||same(r.by,R.p))&&(!q||[r.by,r.a,r.title,r.type,r.month,r.notes].join(" ").toLowerCase().includes(q)));
+    const f=list.filter(r=>(R.t==="all"||catOf(r)===R.t)&&(R.p==="all"||isMe(r.by,R.p))&&(!q||[r.by,r.a,r.title,r.type,r.month,r.notes].join(" ").toLowerCase().includes(q)));
     document.getElementById("rOut").innerHTML=f.length?`<div class="scroll"><table><thead><tr><th class="l">Date</th><th class="l">By</th><th class="l">${months.length?"Month":"Type"}</th><th class="l">Report</th><th class="l">Account</th><th></th></tr></thead><tbody>`+
       f.slice(0,200).map(r=>{const u=safeUrl(r.link);return `<tr><td class="l">${r.date?fmtD(new Date(String(r.date).slice(0,10)+"T00:00:00")):"–"}</td><td class="l">${esc(r.by)}</td><td class="l"><span class="atag">${esc(catOf(r)||r.type||"")}</span></td><td class="l wrapc"><b>${esc(r.title||"Report")}</b>${r.notes?`<div class="muted" style="font-size:11.5px">${esc(r.notes)}</div>`:""}</td><td class="l muted">${esc(r.a||"")}</td><td>${r.files?`<span class="muted" style="font-size:11px;margin-right:8px">📎 ${r.files}</span>`:""}${u?`<a class="pbtn sm ghost" href="${esc(u)}" target="_blank" rel="noopener">Open ↗</a>`:""}</td></tr>`;}).join("")+`</tbody></table></div>`
       :`<div class="empty">${list.length?"No report matches.":"No reports synced yet."}</div>`;
